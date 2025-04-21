@@ -1,0 +1,372 @@
+﻿using MaterialSkin.Controls;
+using System;
+using System.Threading;
+using System.Windows.Forms;
+using TanHungHa.Common;
+using TanHungHa.Common.TaskCustomize;
+using System.Drawing;
+using System.Collections.Generic;
+using TanHungHa.Common.Parameter;
+using System.Windows.Forms.DataVisualization.Charting;
+
+namespace TanHungHa.Tabs
+{
+    public partial class FormAuto : MaterialForm
+    {
+        private static FormAuto _instance;
+        private static readonly object _lock = new object();
+        public static FormAuto GetInstance()
+        {
+            if (_instance == null)
+            {
+                lock (_lock)
+                {
+
+                    if (_instance == null)
+                    {
+                        _instance = new FormAuto();
+                    }
+                }
+            }
+            return _instance;
+        }
+
+        public FormAuto()
+        {
+            InitializeComponent();
+            SetupChart(chartIQC);
+            SetupChart(chartOQC);
+        }
+
+        public void StopProgram()
+        {
+            this.Cursor = Cursors.WaitCursor;
+            //Close all connection
+            MyLib.CloseAllDevices((int)eTaskLoop.Task_HEATBEAT);
+            
+            MyParam.commonParam.myComportIQC.DisConnect();
+            MyParam.commonParam.myComportOQC.DisConnect();
+            btnStart.Enabled = true;
+            btnReset.Enabled = true;
+            btnStop.Enabled = true;
+
+            MainProcess.isRunLoopCOM = false;
+            MyParam.runParam.ProgramStatus = ePRGSTATUS.Stoped;
+            this.Cursor = Cursors.Default;
+        }
+
+        
+
+        //void StartProgram()
+        //{
+          
+        //    EnableBtn(btnReset, false);
+        //    EnableBtn(btnStop, true); 
+        //    MyParam.runParam.ProgramStatus = ePRGSTATUS.Started;
+        //}
+
+        public async void StartProgram()
+        {
+           // bool bEnableInit = false;
+            //if(MyParam.runParam.ProgramStatus == ePRGSTATUS.Start_Up ||
+            //    MyParam.runParam.ProgramStatus == ePRGSTATUS.Stoped)
+            //{
+            //    bEnableInit = true;
+            //}
+
+            //if(!bEnableInit)
+            //{
+            //    MyLib.showDlgWarning("Please RESET program and try again!");
+            //    return;
+            //}
+
+            this.Cursor = Cursors.WaitCursor;
+            var x = THHInitial.InitDevice();
+            await x;
+            Console.WriteLine("-------------btnInitial = " + x.Result);
+           
+            if (x.Result)
+            {
+                EnableBtn(btnStart, false);
+                EnableBtn(btnReset, true);
+                EnableBtn(btnStop, true);
+                MainProcess.RunLoopCOM();
+                MainProcess.MainIQC_StepCtrl.SetStep(eProcessing.ReceiveData);
+                MainProcess.MainOQC_StepCtrl.SetStep(eProcessing.ReceiveData);
+            }
+            else
+            {
+                EnableBtn(btnReset, false);
+                EnableBtn(btnStop, false);
+            }
+            MyParam.runParam.ProgramStatus = ePRGSTATUS.Started;
+            this.Cursor = Cursors.Default;
+        }
+
+
+
+        void ResetProgram()
+        {
+            this.Cursor = Cursors.WaitCursor;
+            lvIQC.Items.Clear();
+            lvOQC.Items.Clear();
+            lvLogIQC.Items.Clear();
+            lvLogOQC.Items.Clear();
+            StopProgram();
+            
+            MyParam.runParam.ProgramStatus = ePRGSTATUS.Reset;
+             this.Cursor = Cursors.Default;
+        }
+
+        void EnableBtn(MaterialButton btn, bool bEnable)
+        {
+            if (btn.InvokeRequired)
+            {
+                btn.BeginInvoke(new Action(() =>
+                {
+                    btn.Enabled = bEnable;
+                }));
+            }
+            else
+            {
+                btn.Enabled = bEnable;
+            }
+        }
+
+        private void btnProgramAction(object sender, EventArgs e)
+        {
+            var btnName = ((MaterialButton)sender).Name;
+            switch (btnName)
+            {
+                case "btnStop":
+                    StopProgram();
+                    break;
+
+                case "btnStart":
+                    StartProgram();
+                    break;
+
+                case "btnReset":
+                    ResetProgram();
+                    break;
+            }
+        }
+       
+
+        private void clearLogTapeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+                 
+            lvIQC.Items.Clear();
+            lvLogOQC.Items.Clear();
+            lvLogIQC.Items.Clear();
+            lvLogIQC.Items.Clear();
+
+        }
+
+        private void SetupChart(Chart chart)
+        {
+            chart.Series.Clear();
+            chart.ChartAreas.Clear();
+            chart.Titles.Clear();
+
+            chart.ChartAreas.Add(new ChartArea("Main"));
+            var area = chart.ChartAreas[0];
+
+            // Tắt grid
+            area.AxisX.MajorGrid.Enabled = false;
+            area.AxisY.MajorGrid.Enabled = false;
+            area.AxisX.Enabled = AxisEnabled.False;
+          //  area.AxisY.Enabled = AxisEnabled.False;
+            area.AxisX.Title = "Result";
+            area.AxisY.Title = "Tỉ lệ OK/NG (%)";
+            
+
+            // Series OK
+            var seriesOK = new Series("OK");
+            seriesOK.ChartType = SeriesChartType.Column;
+            seriesOK.Color = Color.Green;
+            
+            chart.Series.Add(seriesOK);
+
+            // Series NG
+            var seriesNG = new Series("NG");
+            seriesNG.ChartType = SeriesChartType.Column;
+            seriesNG.Color = Color.Red;
+            
+            chart.Series.Add(seriesNG);
+
+            chart.Legends[0].Docking = Docking.Right;
+
+            UpdateChart(chart,0,0);
+        }
+        private void UpdateChart(Chart chart,int countOK,int countNG)
+        {
+            if (chart.InvokeRequired)
+            {
+                chart.Invoke(new Action(() => UpdateChart(chart, countOK, countNG))); 
+                return;
+            }
+            chart.Series["OK"].Points.Clear();
+            chart.Series["NG"].Points.Clear();
+            chart.ChartAreas[0].AxisX.CustomLabels.Clear();
+
+            int total = countOK + countNG;
+            double percentOK = total > 0 ? countOK * 100.0 / total : 0;
+            double percentNG = total > 0 ? countNG * 100.0 / total : 0;
+
+            // Gán giá trị phần trăm cho cột OK
+            int idxOK = chart.Series["OK"].Points.AddXY("", percentOK);
+            var pointOK = chart.Series["OK"].Points[idxOK];
+            pointOK.Label = $"{percentOK:F1}%";
+            pointOK.LabelForeColor = Color.White;
+            pointOK.Font = new Font("Arial", 10, FontStyle.Bold);
+            pointOK.LabelBackColor = Color.Green;
+            pointOK.LabelBorderColor = Color.Transparent;
+
+            // Gán giá trị phần trăm cho cột NG
+            int idxNG = chart.Series["NG"].Points.AddXY("", percentNG);
+            var pointNG = chart.Series["NG"].Points[idxNG];
+            pointNG.Label = $"{percentNG:F1}%";
+            pointNG.LabelForeColor = Color.White;
+            pointNG.Font = new Font("Arial", 10, FontStyle.Bold);
+            pointNG.LabelBackColor = Color.Red;
+            pointNG.LabelBorderColor = Color.Transparent;
+
+            // Hiển thị số lượng OK/NG bên dưới
+            var cl = new CustomLabel
+            {
+                FromPosition = 0.5,
+                ToPosition = 1.5,
+                Text = $"OK: {countOK}  NG: {countNG}",
+                RowIndex = 1
+            };
+            chart.ChartAreas[0].AxisX.CustomLabels.Add(cl);
+
+            // Cố định trục Y từ 0 đến 100%
+            var axisY = chart.ChartAreas[0].AxisY;
+            axisY.Minimum = 0;
+            axisY.Maximum = 100;
+            axisY.Interval = 10; 
+            axisY.Title = "Tỉ lệ OK/NG (%)";
+        }
+
+
+        //public void ChangeColor(GroupBox groupBox, bool bState)
+        //{
+        //    if(groupBox.InvokeRequired)
+        //    {
+        //        groupBox.BeginInvoke(new Action(() =>
+        //        {
+        //            if(bState)
+        //            {
+        //                groupBox.BackColor = Color.FromArgb(0, 120, 215);
+        //            }   
+        //            else
+        //            {
+        //                groupBox.BackColor = Color.Gray;
+        //            }    
+        //        }));
+        //    }   
+        //    else
+        //    {
+        //        if (bState)
+        //        {
+        //            groupBox3D.BackColor = Color.FromArgb(0, 120, 215);
+        //        }
+        //        else
+        //        {
+        //            groupBox3D.BackColor = Color.Gray;
+        //        }
+        //    }    
+
+        //}
+
+
+
+
+
+
+
+        public void AddLog(string message, eIndex index = eIndex.Index_IQC_Log)
+        {
+            //if (!MyParam.autoForm.IsHandleCreated) return;
+            switch (index)
+            {
+                case eIndex.Index_IQC_Data:
+                    MyLib.ShowLogListview(MyParam.autoForm.lvIQC, message);
+                    break;
+
+                case eIndex.Index_OQC_Data:
+                    MyLib.ShowLogListview(MyParam.autoForm.lvOQC, message);
+                    break;
+
+                case eIndex.Index_IQC_Log:
+                    MyLib.ShowLogListview(MyParam.autoForm.lvLogIQC, message);
+                    break;
+
+                case eIndex.Index_OQC_Log:
+                    MyLib.ShowLogListview(MyParam.autoForm.lvLogOQC, message);
+                    break;
+                default:
+                    break;
+            }
+            MyLib.log(message, SvLogger.LogType.SEQUENCE);
+        }
+        private int countOK_IQC = 0;
+        private int countNG_IQC = 0;
+        private int countOK_OQC = 0;
+        private int countNG_OQC = 0;
+
+        public void UpdateChartOQC_OK()
+        {
+            countOK_OQC++;
+            UpdateChart(chartOQC, countOK_OQC, countNG_OQC);
+            UpdateLabelOQC();
+        }
+        public void UpdateChartOQC_NG()
+        {
+            countNG_OQC++;
+            UpdateChart(chartOQC, countOK_OQC, countNG_OQC);
+            UpdateLabelOQC();
+        }
+
+        private void UpdateLabelOQC()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(UpdateLabelOQC));  
+                return;
+            }
+            lbOQC_OK.Text = ($"OK: {countOK_OQC.ToString()}");
+            lbOQC_NG.Text = ($"NG: {countNG_OQC.ToString()}");
+            lbOQC_Total.Text = ($"Total: {countOK_OQC + countNG_OQC}");
+
+        }
+
+        public void UpdateChartIQC_OK()
+        {
+            countOK_IQC++;
+            UpdateChart(chartIQC, countOK_IQC, countNG_IQC);
+            UpdateLabelIQC();
+        }
+        public void UpdateChartIQC_NG()
+        {
+            countNG_IQC++;
+            UpdateChart(chartIQC, countOK_IQC, countNG_IQC);
+            UpdateLabelIQC();
+        }
+       
+        private void UpdateLabelIQC()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(UpdateLabelIQC));  // Gọi lại chính hàm này nhưng trên UI thread
+                return;
+            }
+            lbIQC_OK.Text = ($"OK: {countOK_IQC.ToString()}");
+            lbNG_IQC.Text = ($"NG: {countNG_IQC.ToString()}");
+            lbTotal_IQC.Text = ($"Total: {countOK_IQC + countNG_IQC}");
+
+        }
+    }
+}

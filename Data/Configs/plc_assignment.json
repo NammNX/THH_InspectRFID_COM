@@ -1,0 +1,160 @@
+[
+  //Trigger
+  {
+    "plc_type": "M",
+    "address": 1000,
+    "assignment": "Trigger Cam_Tape"
+  },
+
+  {
+    "plc_type": "M",
+    "address": 1001,
+    "assignment": "Trigger Cam_Jig"
+  },
+
+  //----------------Tape--------------------
+  //Tape Quantity
+  {
+    "plc_type": "D",
+    "address": 1000,
+    "assignment": "Tape Quantity"
+  },
+  
+  //Tape 1
+  {
+    "plc_type": "D",
+    "address": 1010,
+    "assignment": "Tape 1 - X"
+  },
+  {
+    "plc_type": "D",
+    "address": 1012,
+    "assignment": "Tape 1 - Y"
+  },
+  //Tape 2
+  {
+    "plc_type": "D",
+    "address": 1020,
+    "assignment": "Tape 2 - X"
+  },
+  
+  {
+    "plc_type": "D",
+    "address": 1022,
+    "assignment": "Tape 2 - Y"
+  },  
+  
+  //Tape 3
+  {
+    "plc_type": "D",
+    "address": 1030,
+    "assignment": "Tape 3 - X"
+  },
+  
+  {
+    "plc_type": "D",
+    "address": 1032,
+    "assignment": "Tape 3 - Y"
+  },
+  
+  //Tape 4
+  {
+    "plc_type": "D",
+    "address": 1040,
+    "assignment": "Tape 4 - X"
+  },
+  
+  {
+    "plc_type": "D",
+    "address": 1042,
+    "assignment": "Tape 4 - Y"
+  },
+
+  //Tape 5
+  {
+    "plc_type": "D",
+    "address": 1050,
+    "assignment": "Tape 5 - X"
+  },
+  
+  {
+    "plc_type": "D",
+    "address": 1052,
+    "assignment": "Tape 5 - Y"
+  },
+  
+  //Tape 6
+  {
+    "plc_type": "D",
+    "address": 1060,
+    "assignment": "Tape 6 - X"
+  },
+  
+  {
+    "plc_type": "D",
+    "address": 1062,
+    "assignment": "Tape 6 - Y"
+  },
+
+  //----------------Jig--------------------
+  //Cam Quantity
+  {
+    "plc_type": "D",
+    "address": 2000,
+    "assignment": "Cam Quantity"
+  },
+  
+  //Cam Index 1 to 10
+  {
+    "plc_type": "M",
+    "address": 2001,
+    "assignment": "Index 1"
+  },
+  {
+    "plc_type": "M",
+    "address": 2002,
+    "assignment": "Index 2"
+  },
+  {
+    "plc_type": "M",
+    "address": 2003,
+    "assignment": "Index 3"
+  },
+  {
+    "plc_type": "M",
+    "address": 2004,
+    "assignment": "Index 4"
+  },
+  
+  {
+    "plc_type": "M",
+    "address": 2005,
+    "assignment": "Index 5"
+  },
+  {
+    "plc_type": "M",
+    "address": 2006,
+    "assignment": "Index 6"
+  },
+  {
+    "plc_type": "M",
+    "address": 2007,
+    "assignment": "Index 7"
+  },
+  {
+    "plc_type": "M",
+    "address": 2008,
+    "assignment": "Index 8"
+  },
+  {
+    "plc_type": "M",
+    "address": 2009,
+    "assignment": "Index 9"
+  },
+  {
+    "plc_type": "M",
+    "address": 2010,
+    "assignment": "Index 10"
+  }
+
+]

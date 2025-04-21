@@ -1,0 +1,107 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TanHungHa.Common
+{
+    public class MyDefine
+    {
+        //public static DateTime expried_time = new DateTime(2024, 8, 13, 9, 0, 0);
+        public const string VERSION = @"Ver 1.0.0.200823";
+        
+        public const int HEIGHT_OF_ROW = 50;
+        
+        public const int MIN_ROW = 1;
+        public const int MAX_ROW = 5;
+        
+        public const int ROUND_DIGIT = 5;
+        public const int RATIO = 1000;
+        
+       
+
+
+        public static readonly string title = "Logistics App";
+        public static readonly string version = "Version 0.1.0 \r\n 03/10/2022";
+
+        public const string treenodeRunParam = "Run Param";
+        public const string treenodeRS232 = "RS232";
+        public const string treenodeTime = "Time";
+        public const string treenodeTheme = "Theme";
+        public const string treenodeDev = "Developer";
+
+      
+     
+
+        public const int NUM_FAIL_HEART_BEAR = 5;
+        public const int NUM_THREAD = 7;
+        public const int MAX_QUEUE_DATA = 10;
+        public const int NUM_DEVICES = 2;
+
+        public static int[] baudrates = new int[] { 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200 } ;
+        public static int[] dataSize = new int[] { 7,8 };
+
+        
+
+        public static readonly string workingDirectory = Environment.CurrentDirectory;
+        public static readonly string projectDirectory = Directory.GetParent(workingDirectory).Parent.FullName;
+        //public static readonly string workspaceDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+
+      
+
+
+        #region Path file json
+       
+
+        
+        public static readonly string file_config = String.Format($"{workingDirectory}\\Configs\\config_param.json");
+        public static readonly string file_uiParam= String.Format($"{workingDirectory}\\Configs\\uiParameter.json");
+        public static readonly string file_runParam= String.Format($"{workingDirectory}\\Configs\\runParameter.json");
+        public static readonly string file_model= String.Format($"{workingDirectory}\\Configs\\models.json");
+        
+        //public static readonly string path_solution= String.Format($"{workingDirectory}\\Data\\TapeAlignment.sol");
+       
+
+        public static readonly string file_cameraParam= String.Format($"{workingDirectory}\\Configs\\camParameter.json");
+        public static readonly string file_excel = String.Format($"{workingDirectory}\\Data\\ImportData.xlsx");
+
+        public static readonly string file_config_format_data = String.Format($"{workingDirectory}\\Data\\configs\\format_data.json");
+        public static readonly string file_config_common_param = String.Format($"{workingDirectory}\\Data\\configs\\common_param.json");
+        public static readonly string file_config_filter_window = String.Format($"{workingDirectory}\\Data\\configs\\filter_window.json");
+        public static readonly string path_load_img_database = @"C:\Program Files\Cognex\VisionPro\Images";
+        public static readonly string path_load_vpp_file = @"C:\Users\Admin\Desktop\Vpp_file";
+        public static readonly string path_save_images = String.Format("{0}\\Images", projectDirectory);
+        public static readonly string path_grab_images = String.Format("{0}\\GrabImages", projectDirectory);
+
+        public static readonly string key_thh = @"https://tanhungha.com.vn/";
+        public static readonly string hash_key = "";
+        #endregion
+
+        #region api
+        public static string API_OK = "success";
+        public static string API_NG = "error";
+        public static string API_Warning = "warning";
+        public static string API_LOSS_CONNECTION = "network";
+        public static string dev_pass = "tuanna@2022";
+        public static string user_pass = "cttv@2022";
+        #endregion
+
+        [DllImport("USER32.DLL")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+
+        [DllImport("kernel32", SetLastError = true)]
+        static extern IntPtr LoadLibrary(string lpFileName);
+
+        public static bool CheckLibrary(string fileName)
+        {
+            return LoadLibrary(fileName) == IntPtr.Zero;
+        }
+
+
+
+    }
+}
