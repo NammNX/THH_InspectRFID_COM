@@ -25,7 +25,7 @@ namespace TanHungHa.Common
 
 
         public static readonly string title = "RFID Inspection";
-        public static readonly string version = "Version 0.1.0 \r\n 22/04/2025";
+        public static readonly string version = "Version 1.0.0 \r\n 22/04/2025";
 
         public const string treenodeRunParam = "Run Param";
         public const string treenodeRS232 = "RS232";
@@ -80,14 +80,6 @@ namespace TanHungHa.Common
         public static readonly string hash_key = "";
         #endregion
 
-        #region api
-        public static string API_OK = "success";
-        public static string API_NG = "error";
-        public static string API_Warning = "warning";
-        public static string API_LOSS_CONNECTION = "network";
-        public static string dev_pass = "tuanna@2022";
-        public static string user_pass = "cttv@2022";
-        #endregion
 
         [DllImport("USER32.DLL")]
         public static extern bool SetForegroundWindow(IntPtr hWnd);

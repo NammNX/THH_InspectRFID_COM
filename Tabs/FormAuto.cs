@@ -425,5 +425,7 @@ namespace TanHungHa.Tabs
             lbIQCbuffer.Text = ($"IQC Buffer: {MongoDBService.GetIqcBufferCount()}");
             lbOQCbuffer.Text = ($"OQC Buffer: {MongoDBService.GetOqcBufferCount()}");
         }
+
+      
     }
 }

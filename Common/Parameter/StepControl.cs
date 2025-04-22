@@ -12,6 +12,7 @@ namespace TanHungHa.Common.Parameter
     {
         None,
         ReceiveData,
+        FlushDataBase,
         UpdateLog,
         UpdateChart
 

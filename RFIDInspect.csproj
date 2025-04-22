@@ -8,7 +8,7 @@
     <ProjectGuid>{2483C090-EFC4-404A-95BA-C6CC2341EFF8}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>TanHungHa</RootNamespace>
-    <AssemblyName>LogisticsApp</AssemblyName>
+    <AssemblyName>RFIDInspect</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -91,7 +91,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Pictures\vision_inspection_icon.ico</ApplicationIcon>
+    <ApplicationIcon>Pictures\logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />

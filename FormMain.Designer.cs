@@ -33,6 +33,10 @@
             this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
             this.tabPageAuto = new System.Windows.Forms.TabPage();
             this.panelAuto = new System.Windows.Forms.Panel();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.sttIQC = new System.Windows.Forms.ToolStripStatusLabel();
+            this.sttOQC = new System.Windows.Forms.ToolStripStatusLabel();
+            this.sttRAM = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabPageManual = new System.Windows.Forms.TabPage();
             this.panelManual = new System.Windows.Forms.Panel();
             this.tabPageManager = new System.Windows.Forms.TabPage();
@@ -46,19 +50,15 @@
             this.tabPageTeaching = new System.Windows.Forms.TabPage();
             this.panelTeaching = new System.Windows.Forms.Panel();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.sttIQC = new System.Windows.Forms.ToolStripStatusLabel();
-            this.sttOQC = new System.Windows.Forms.ToolStripStatusLabel();
-            this.sttRAM = new System.Windows.Forms.ToolStripStatusLabel();
             this.materialTabControl1.SuspendLayout();
             this.tabPageAuto.SuspendLayout();
             this.panelAuto.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.tabPageManual.SuspendLayout();
             this.tabPageManager.SuspendLayout();
             this.tabPageInfo.SuspendLayout();
             this.tabPageLog.SuspendLayout();
             this.tabPageTeaching.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // materialTabControl1
@@ -101,6 +101,36 @@
             this.panelAuto.Name = "panelAuto";
             this.panelAuto.Size = new System.Drawing.Size(1260, 612);
             this.panelAuto.TabIndex = 0;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sttIQC,
+            this.sttOQC,
+            this.sttRAM});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 590);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1260, 22);
+            this.statusStrip1.TabIndex = 4;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // sttIQC
+            // 
+            this.sttIQC.Name = "sttIQC";
+            this.sttIQC.Size = new System.Drawing.Size(27, 17);
+            this.sttIQC.Text = "IQC";
+            // 
+            // sttOQC
+            // 
+            this.sttOQC.Name = "sttOQC";
+            this.sttOQC.Size = new System.Drawing.Size(33, 17);
+            this.sttOQC.Text = "OQC";
+            // 
+            // sttRAM
+            // 
+            this.sttRAM.Name = "sttRAM";
+            this.sttRAM.Size = new System.Drawing.Size(33, 17);
+            this.sttRAM.Text = "RAM";
             // 
             // tabPageManual
             // 
@@ -253,36 +283,6 @@
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sttIQC,
-            this.sttOQC,
-            this.sttRAM});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 590);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1260, 22);
-            this.statusStrip1.TabIndex = 4;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // sttIQC
-            // 
-            this.sttIQC.Name = "sttIQC";
-            this.sttIQC.Size = new System.Drawing.Size(27, 17);
-            this.sttIQC.Text = "IQC";
-            // 
-            // sttOQC
-            // 
-            this.sttOQC.Name = "sttOQC";
-            this.sttOQC.Size = new System.Drawing.Size(33, 17);
-            this.sttOQC.Text = "OQC";
-            // 
-            // sttRAM
-            // 
-            this.sttRAM.Name = "sttRAM";
-            this.sttRAM.Size = new System.Drawing.Size(33, 17);
-            this.sttRAM.Text = "RAM";
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -300,13 +300,13 @@
             this.tabPageAuto.ResumeLayout(false);
             this.panelAuto.ResumeLayout(false);
             this.panelAuto.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.tabPageManual.ResumeLayout(false);
             this.tabPageManager.ResumeLayout(false);
             this.tabPageInfo.ResumeLayout(false);
             this.tabPageLog.ResumeLayout(false);
             this.tabPageTeaching.ResumeLayout(false);
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }

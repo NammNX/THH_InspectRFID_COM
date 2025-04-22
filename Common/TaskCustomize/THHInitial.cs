@@ -26,7 +26,7 @@ namespace TanHungHa.Common.TaskCustomize
             await task2;
             bool bInitConnectCOMOQC = task2.Result;
             MainProcess.AddLogAuto($"Connect COM OQC = {bInitConnectCOMOQC}", eIndex.Index_IQC_OQC_Log);
-
+            
             await task3;
             bool bInitConnectMongoDB = task3.Result;
             MainProcess.AddLogAuto($"Connect to MongoDB: {MyParam.runParam.MongoClient} = {bInitConnectMongoDB}", eIndex.Index_MongoDB_Log);

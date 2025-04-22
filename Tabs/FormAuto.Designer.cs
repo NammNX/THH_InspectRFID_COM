@@ -28,13 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea13 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend13 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series13 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea14 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend14 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series14 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.lbOQCbuffer = new System.Windows.Forms.Label();
+            this.lbIQCbuffer = new System.Windows.Forms.Label();
+            this.lbOQCflushed = new System.Windows.Forms.Label();
+            this.lbIQCflushed = new System.Windows.Forms.Label();
             this.btnStop = new MaterialSkin.Controls.MaterialButton();
             this.btnReset = new MaterialSkin.Controls.MaterialButton();
             this.btnStart = new MaterialSkin.Controls.MaterialButton();
@@ -73,10 +77,8 @@
             this.lvLogDB = new MaterialSkin.Controls.MaterialListView();
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.lbIQCflushed = new System.Windows.Forms.Label();
-            this.lbOQCflushed = new System.Windows.Forms.Label();
-            this.lbIQCbuffer = new System.Windows.Forms.Label();
-            this.lbOQCbuffer = new System.Windows.Forms.Label();
+            this.groupBoxFlushDBChecked = new System.Windows.Forms.GroupBox();
+            this.swFlushDB = new MaterialSkin.Controls.MaterialSwitch();
             this.tableLayoutPanel5.SuspendLayout();
             this.groupDB_UI.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -95,6 +97,7 @@
             this.groupBoxIQC.SuspendLayout();
             this.groupBoxLogIQC_OQC.SuspendLayout();
             this.groupBoxLogDB.SuspendLayout();
+            this.groupBoxFlushDBChecked.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel5
@@ -114,8 +117,60 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(80, 133);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(80, 134);
             this.tableLayoutPanel5.TabIndex = 0;
+            // 
+            // lbOQCbuffer
+            // 
+            this.lbOQCbuffer.AutoSize = true;
+            this.lbOQCbuffer.BackColor = System.Drawing.Color.White;
+            this.lbOQCbuffer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbOQCbuffer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbOQCbuffer.Location = new System.Drawing.Point(3, 104);
+            this.lbOQCbuffer.Name = "lbOQCbuffer";
+            this.lbOQCbuffer.Size = new System.Drawing.Size(74, 30);
+            this.lbOQCbuffer.TabIndex = 4;
+            this.lbOQCbuffer.Text = "OQC buffer";
+            this.lbOQCbuffer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lbIQCbuffer
+            // 
+            this.lbIQCbuffer.AutoSize = true;
+            this.lbIQCbuffer.BackColor = System.Drawing.Color.White;
+            this.lbIQCbuffer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbIQCbuffer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbIQCbuffer.Location = new System.Drawing.Point(3, 78);
+            this.lbIQCbuffer.Name = "lbIQCbuffer";
+            this.lbIQCbuffer.Size = new System.Drawing.Size(74, 26);
+            this.lbIQCbuffer.TabIndex = 3;
+            this.lbIQCbuffer.Text = "IQC buffer";
+            this.lbIQCbuffer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lbOQCflushed
+            // 
+            this.lbOQCflushed.AutoSize = true;
+            this.lbOQCflushed.BackColor = System.Drawing.Color.White;
+            this.lbOQCflushed.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbOQCflushed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbOQCflushed.Location = new System.Drawing.Point(3, 26);
+            this.lbOQCflushed.Name = "lbOQCflushed";
+            this.lbOQCflushed.Size = new System.Drawing.Size(74, 26);
+            this.lbOQCflushed.TabIndex = 1;
+            this.lbOQCflushed.Text = "OQC flushed";
+            this.lbOQCflushed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lbIQCflushed
+            // 
+            this.lbIQCflushed.AutoSize = true;
+            this.lbIQCflushed.BackColor = System.Drawing.Color.White;
+            this.lbIQCflushed.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbIQCflushed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbIQCflushed.Location = new System.Drawing.Point(3, 0);
+            this.lbIQCflushed.Name = "lbIQCflushed";
+            this.lbIQCflushed.Size = new System.Drawing.Size(74, 26);
+            this.lbIQCflushed.TabIndex = 0;
+            this.lbIQCflushed.Text = "IQC flushed";
+            this.lbIQCflushed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnStop
             // 
@@ -188,11 +243,11 @@
             this.groupDB_UI.Controls.Add(this.tableLayoutPanel5);
             this.groupDB_UI.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupDB_UI.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupDB_UI.Location = new System.Drawing.Point(2, 358);
+            this.groupDB_UI.Location = new System.Drawing.Point(2, 357);
             this.groupDB_UI.Margin = new System.Windows.Forms.Padding(2);
             this.groupDB_UI.Name = "groupDB_UI";
             this.groupDB_UI.Padding = new System.Windows.Forms.Padding(2);
-            this.groupDB_UI.Size = new System.Drawing.Size(84, 152);
+            this.groupDB_UI.Size = new System.Drawing.Size(84, 153);
             this.groupDB_UI.TabIndex = 8;
             this.groupDB_UI.TabStop = false;
             this.groupDB_UI.Text = "DB";
@@ -204,15 +259,17 @@
             this.tableLayoutPanel4.Controls.Add(this.btnStart, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.btnReset, 0, 2);
             this.tableLayoutPanel4.Controls.Add(this.btnStop, 0, 1);
-            this.tableLayoutPanel4.Controls.Add(this.groupDB_UI, 0, 4);
+            this.tableLayoutPanel4.Controls.Add(this.groupDB_UI, 0, 5);
+            this.tableLayoutPanel4.Controls.Add(this.groupBoxFlushDBChecked, 0, 3);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(837, 3);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 5;
+            this.tableLayoutPanel4.RowCount = 6;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(88, 512);
             this.tableLayoutPanel4.TabIndex = 2;
@@ -247,17 +304,17 @@
             // 
             // chartOQC
             // 
-            chartArea13.Name = "ChartArea1";
-            this.chartOQC.ChartAreas.Add(chartArea13);
+            chartArea3.Name = "ChartArea1";
+            this.chartOQC.ChartAreas.Add(chartArea3);
             this.chartOQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend13.Name = "Legend1";
-            this.chartOQC.Legends.Add(legend13);
+            legend3.Name = "Legend1";
+            this.chartOQC.Legends.Add(legend3);
             this.chartOQC.Location = new System.Drawing.Point(3, 3);
             this.chartOQC.Name = "chartOQC";
-            series13.ChartArea = "ChartArea1";
-            series13.Legend = "Legend1";
-            series13.Name = "Series1";
-            this.chartOQC.Series.Add(series13);
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.chartOQC.Series.Add(series3);
             this.chartOQC.Size = new System.Drawing.Size(188, 365);
             this.chartOQC.TabIndex = 0;
             this.chartOQC.Text = "chart1";
@@ -346,17 +403,17 @@
             // 
             // chartIQC
             // 
-            chartArea14.Name = "ChartArea1";
-            this.chartIQC.ChartAreas.Add(chartArea14);
+            chartArea4.Name = "ChartArea1";
+            this.chartIQC.ChartAreas.Add(chartArea4);
             this.chartIQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend14.Name = "Legend1";
-            this.chartIQC.Legends.Add(legend14);
+            legend4.Name = "Legend1";
+            this.chartIQC.Legends.Add(legend4);
             this.chartIQC.Location = new System.Drawing.Point(3, 3);
             this.chartIQC.Name = "chartIQC";
-            series14.ChartArea = "ChartArea1";
-            series14.Legend = "Legend1";
-            series14.Name = "Series1";
-            this.chartIQC.Series.Add(series14);
+            series4.ChartArea = "ChartArea1";
+            series4.Legend = "Legend1";
+            series4.Name = "Series1";
+            this.chartIQC.Series.Add(series4);
             this.chartIQC.Size = new System.Drawing.Size(187, 365);
             this.chartIQC.TabIndex = 0;
             this.chartIQC.Text = "chart1";
@@ -668,57 +725,33 @@
             this.columnHeader6.Text = "Info";
             this.columnHeader6.Width = 1200;
             // 
-            // lbIQCflushed
+            // groupBoxFlushDBChecked
             // 
-            this.lbIQCflushed.AutoSize = true;
-            this.lbIQCflushed.BackColor = System.Drawing.Color.White;
-            this.lbIQCflushed.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbIQCflushed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbIQCflushed.Location = new System.Drawing.Point(3, 0);
-            this.lbIQCflushed.Name = "lbIQCflushed";
-            this.lbIQCflushed.Size = new System.Drawing.Size(74, 26);
-            this.lbIQCflushed.TabIndex = 0;
-            this.lbIQCflushed.Text = "IQC flushed";
-            this.lbIQCflushed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.groupBoxFlushDBChecked.BackColor = System.Drawing.Color.White;
+            this.groupBoxFlushDBChecked.Controls.Add(this.swFlushDB);
+            this.groupBoxFlushDBChecked.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxFlushDBChecked.Location = new System.Drawing.Point(3, 231);
+            this.groupBoxFlushDBChecked.Name = "groupBoxFlushDBChecked";
+            this.groupBoxFlushDBChecked.Size = new System.Drawing.Size(82, 45);
+            this.groupBoxFlushDBChecked.TabIndex = 9;
+            this.groupBoxFlushDBChecked.TabStop = false;
+            this.groupBoxFlushDBChecked.Text = "Flush DB";
             // 
-            // lbOQCflushed
+            // swFlushDB
             // 
-            this.lbOQCflushed.AutoSize = true;
-            this.lbOQCflushed.BackColor = System.Drawing.Color.White;
-            this.lbOQCflushed.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbOQCflushed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbOQCflushed.Location = new System.Drawing.Point(3, 26);
-            this.lbOQCflushed.Name = "lbOQCflushed";
-            this.lbOQCflushed.Size = new System.Drawing.Size(74, 26);
-            this.lbOQCflushed.TabIndex = 1;
-            this.lbOQCflushed.Text = "OQC flushed";
-            this.lbOQCflushed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lbIQCbuffer
-            // 
-            this.lbIQCbuffer.AutoSize = true;
-            this.lbIQCbuffer.BackColor = System.Drawing.Color.White;
-            this.lbIQCbuffer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbIQCbuffer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbIQCbuffer.Location = new System.Drawing.Point(3, 78);
-            this.lbIQCbuffer.Name = "lbIQCbuffer";
-            this.lbIQCbuffer.Size = new System.Drawing.Size(74, 26);
-            this.lbIQCbuffer.TabIndex = 3;
-            this.lbIQCbuffer.Text = "IQC buffer";
-            this.lbIQCbuffer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lbOQCbuffer
-            // 
-            this.lbOQCbuffer.AutoSize = true;
-            this.lbOQCbuffer.BackColor = System.Drawing.Color.White;
-            this.lbOQCbuffer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbOQCbuffer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbOQCbuffer.Location = new System.Drawing.Point(3, 104);
-            this.lbOQCbuffer.Name = "lbOQCbuffer";
-            this.lbOQCbuffer.Size = new System.Drawing.Size(74, 29);
-            this.lbOQCbuffer.TabIndex = 4;
-            this.lbOQCbuffer.Text = "OQC buffer";
-            this.lbOQCbuffer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.swFlushDB.AutoSize = true;
+            this.swFlushDB.BackColor = System.Drawing.Color.Lime;
+            this.swFlushDB.Depth = 0;
+            this.swFlushDB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.swFlushDB.Location = new System.Drawing.Point(3, 16);
+            this.swFlushDB.Margin = new System.Windows.Forms.Padding(0);
+            this.swFlushDB.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.swFlushDB.MouseState = MaterialSkin.MouseState.HOVER;
+            this.swFlushDB.Name = "swFlushDB";
+            this.swFlushDB.Ripple = true;
+            this.swFlushDB.Size = new System.Drawing.Size(76, 26);
+            this.swFlushDB.TabIndex = 0;
+            this.swFlushDB.UseVisualStyleBackColor = false;
             // 
             // FormAuto
             // 
@@ -752,6 +785,8 @@
             this.groupBoxIQC.ResumeLayout(false);
             this.groupBoxLogIQC_OQC.ResumeLayout(false);
             this.groupBoxLogDB.ResumeLayout(false);
+            this.groupBoxFlushDBChecked.ResumeLayout(false);
+            this.groupBoxFlushDBChecked.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -800,5 +835,7 @@
         private System.Windows.Forms.Label lbOQCbuffer;
         private System.Windows.Forms.Label lbIQCbuffer;
         private System.Windows.Forms.Label lbOQCflushed;
+        private System.Windows.Forms.GroupBox groupBoxFlushDBChecked;
+        public MaterialSkin.Controls.MaterialSwitch swFlushDB;
     }
 }

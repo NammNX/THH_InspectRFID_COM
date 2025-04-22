@@ -152,7 +152,7 @@ namespace TanHungHa.Common
             {
                 Console.WriteLine("Flush lỗi: " + ex.Message);
                 MyLib.showDlgError("Flush lỗi: " + ex.Message);
-                MyParam.autoForm.StopProgram();
+               // ????
             }
         }
         public static void FlushBuffersOQC()
@@ -174,7 +174,7 @@ namespace TanHungHa.Common
             {
                 Console.WriteLine("Flush lỗi: " + ex.Message);
                 MyLib.showDlgError("Flush lỗi: " + ex.Message);
-                StopFlushLoop();
+              //  StopFlushLoop();
             }
         }
 
@@ -316,13 +316,19 @@ namespace TanHungHa.Common
                     //UpdateTextBox(dataCom);
                     dataComIQC.Data = dataComIQC.Data.TrimEnd(new char[] { '\r', '\n' });
                     MyParam.commonParam.myComportIQC.ClearDataCom();
-                    MainIQC_StepCtrl.SetStep(eProcessing.UpdateLog);
+                    MainIQC_StepCtrl.SetStep(eProcessing.FlushDataBase);
                     break;
+                case eProcessing.FlushDataBase:
+                    {
+                        if (MyParam.autoForm.swFlushDB.Checked)
+                        {
+                            MongoDBService.AddToBuffer(dataComIQC.Data, dataComIQC.Timestamp, "IQC");
+                        }
+                        MainIQC_StepCtrl.SetStep(eProcessing.UpdateLog);
+                        break;
+                    }    
                 case eProcessing.UpdateLog:
                     AddLogAuto(dataComIQC.Data,dataComIQC.Timestamp, eIndex.Index_IQC_Data);
-                    MongoDBService.AddToBuffer(dataComIQC.Data, dataComIQC.Timestamp, "IQC");
-
-                    //  MongoDBService.InsertData(dataComIQC, "IQC");
                     MainIQC_StepCtrl.SetStep(eProcessing.UpdateChart);
                     break;
                 case eProcessing.UpdateChart:
@@ -358,12 +364,19 @@ namespace TanHungHa.Common
                     //UpdateTextBox(dataCom);
                     dataComOQC.Data = dataComOQC.Data.TrimEnd(new char[] { '\r', '\n' });
                     MyParam.commonParam.myComportOQC.ClearDataCom();
-                    MainOQC_StepCtrl.SetStep(eProcessing.UpdateLog);
+                    MainOQC_StepCtrl.SetStep(eProcessing.FlushDataBase);
                     break;
+                case eProcessing.FlushDataBase:
+                    {
+                        if (MyParam.autoForm.swFlushDB.Checked)
+                        {
+                            MongoDBService.AddToBuffer(dataComOQC.Data, dataComOQC.Timestamp, "OQC");
+                        }
+                        MainOQC_StepCtrl.SetStep(eProcessing.UpdateLog);
+                        break;
+                    }
                 case eProcessing.UpdateLog:
                     AddLogAuto(dataComOQC.Data, dataComOQC.Timestamp, eIndex.Index_OQC_Data);
-                    MongoDBService.AddToBuffer(dataComOQC.Data, dataComOQC.Timestamp, "OQC");
-                    //  MongoDBService.InsertData(dataComIQC, "IQC");
                     MainOQC_StepCtrl.SetStep(eProcessing.UpdateChart);
                     break;
                 case eProcessing.UpdateChart:

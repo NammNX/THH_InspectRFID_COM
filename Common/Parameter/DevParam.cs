@@ -33,6 +33,13 @@ namespace TanHungHa.Common
 
         [Category("Validation"), DescriptionAttribute("Độ dài tối đa của chuỗi NG")]
         public int LengthNG { get; set; }
+        [Category("Common Param"), DescriptionAttribute("If not used DataBase, set to True, else set to False")]
+        public bool ignoreDataBase { get; set; }
+        [Category("Common Param"), DescriptionAttribute("If not used IQC, set to True, else set to False")]
+        public bool ignoreIQC { get; set; }
+        [Category("Common Param"), DescriptionAttribute("If not used OQC, set to True, else set to False")]
+        public bool ignoreOQC { get; set; }
+
 
         [Category("Layout"), DescriptionAttribute("Layout size when zoom out")]
         public Size LayoutMax { get; set; }
@@ -59,6 +66,9 @@ namespace TanHungHa.Common
         //--------------------------------------------
         DevParam()
         {
+            ignoreDataBase = false;
+            ignoreIQC = false;
+            ignoreOQC = false;
             LengthNG = 5;
             LayoutMax = new Size(100, 1500);
             LayoutMin = new Size(400, 1050);
