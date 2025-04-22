@@ -17,21 +17,26 @@ namespace TanHungHa.Common.TaskCustomize
 
             var task1 = THHTask.RunTask(eTaskToDo.ConnectCOMIQC);
             var task2 = THHTask.RunTask(eTaskToDo.ConnectCOMOQC);
-            var task3 = THHTask.RunTask(eTaskToDo.HEATBEAT);
+            var task3 = THHTask.RunTask(eTaskToDo.ConnectMongoDB);
+            var task4 = THHTask.RunTask(eTaskToDo.HEATBEAT);
             await task1;
             bool bInitConnectCOMIQC = task1.Result;
-            MainProcess.AddLogAuto($"Connect COM IQC = {bInitConnectCOMIQC}", eIndex.Index_IQC_Log);
+            MainProcess.AddLogAuto($"Connect COM IQC = {bInitConnectCOMIQC}", eIndex.Index_IQC_OQC_Log);
 
             await task2;
             bool bInitConnectCOMOQC = task2.Result;
-            MainProcess.AddLogAuto($"Connect COM OQC = {bInitConnectCOMOQC}", eIndex.Index_OQC_Log);
-           
+            MainProcess.AddLogAuto($"Connect COM OQC = {bInitConnectCOMOQC}", eIndex.Index_IQC_OQC_Log);
+
+            await task3;
+            bool bInitConnectMongoDB = task3.Result;
+            MainProcess.AddLogAuto($"Connect to MongoDB: {MyParam.runParam.MongoClient} = {bInitConnectMongoDB}", eIndex.Index_MongoDB_Log);
+
             var timeProcess = watch.Elapsed.TotalMilliseconds.ToString();
             Console.WriteLine($"Time process total = {timeProcess}");
 
 
-            MyLib.showDlgInfo($"IQC = {bInitConnectCOMIQC}, OQC = {bInitConnectCOMOQC}");
-            return bInitConnectCOMIQC && bInitConnectCOMOQC;
+            MyLib.showDlgInfo($"IQC = {bInitConnectCOMIQC}, OQC = {bInitConnectCOMOQC}, DataBase = {bInitConnectMongoDB}");
+            return bInitConnectCOMIQC && bInitConnectCOMOQC && bInitConnectMongoDB;
         }
         
         public static async Task<bool> RunHeatbeat()

@@ -40,26 +40,42 @@ namespace TanHungHa.Tabs
 
         public void StopProgram()
         {
+            if ((MyParam.commonParam.myComportIQC.GetQueueCount() > 0) || (MyParam.commonParam.myComportOQC.GetQueueCount() > 0)
+                || (MongoDBService.GetIqcBufferCount() > 0) || (MongoDBService.GetOqcBufferCount() > 0))
+            {
+                MyLib.showDlgInfo("Quá trình ghi dữ liệu vào data base chưa hoàn tất, vui lòng đợi trong giây lát");
+                return;
+            }
+
             this.Cursor = Cursors.WaitCursor;
             //Close all connection
             MyLib.CloseAllDevices((int)eTaskLoop.Task_HEATBEAT);
-            
+
             MyParam.commonParam.myComportIQC.DisConnect();
             MyParam.commonParam.myComportOQC.DisConnect();
-            btnStart.Enabled = true;
-            btnReset.Enabled = true;
-            btnStop.Enabled = true;
 
+            EnableBtn(btnStart, true);
+            EnableBtn(btnReset, true);
+            EnableBtn(btnStop, false);
+            ChangeColor(groupBoxIQC, false);
+            ChangeColor(groupBoxOQC, false);
+
+            if (MyParam.runParam.ProgramStatus == ePRGSTATUS.Started)
+            {
+                MainProcess.AddLogAuto($"Disconnect COM IQC", eIndex.Index_IQC_OQC_Log);
+                MainProcess.AddLogAuto($"Disconnect COM OQC", eIndex.Index_IQC_OQC_Log);
+            }
             MainProcess.isRunLoopCOM = false;
+            MongoDBService.isFlushLoop = false;
             MyParam.runParam.ProgramStatus = ePRGSTATUS.Stoped;
             this.Cursor = Cursors.Default;
         }
 
-        
+
 
         //void StartProgram()
         //{
-          
+
         //    EnableBtn(btnReset, false);
         //    EnableBtn(btnStop, true); 
         //    MyParam.runParam.ProgramStatus = ePRGSTATUS.Started;
@@ -67,7 +83,7 @@ namespace TanHungHa.Tabs
 
         public async void StartProgram()
         {
-           // bool bEnableInit = false;
+            // bool bEnableInit = false;
             //if(MyParam.runParam.ProgramStatus == ePRGSTATUS.Start_Up ||
             //    MyParam.runParam.ProgramStatus == ePRGSTATUS.Stoped)
             //{
@@ -84,13 +100,17 @@ namespace TanHungHa.Tabs
             var x = THHInitial.InitDevice();
             await x;
             Console.WriteLine("-------------btnInitial = " + x.Result);
-           
+
             if (x.Result)
             {
                 EnableBtn(btnStart, false);
-                EnableBtn(btnReset, true);
+                EnableBtn(btnReset, false);
                 EnableBtn(btnStop, true);
+                ChangeColor(groupBoxIQC, true);
+                ChangeColor(groupBoxOQC, true);
                 MainProcess.RunLoopCOM();
+                MongoDBService.RunFlushLoop(); 
+
                 MainProcess.MainIQC_StepCtrl.SetStep(eProcessing.ReceiveData);
                 MainProcess.MainOQC_StepCtrl.SetStep(eProcessing.ReceiveData);
             }
@@ -107,15 +127,39 @@ namespace TanHungHa.Tabs
 
         void ResetProgram()
         {
-            this.Cursor = Cursors.WaitCursor;
-            lvIQC.Items.Clear();
-            lvOQC.Items.Clear();
-            lvLogIQC.Items.Clear();
-            lvLogOQC.Items.Clear();
-            StopProgram();
-            
-            MyParam.runParam.ProgramStatus = ePRGSTATUS.Reset;
-             this.Cursor = Cursors.Default;
+            MaterialDialog materialDialog = new MaterialDialog(this, "Reset?", "Tất cả bộ đếm và log sẽ bị Clear", "OK", true, "Cancel");
+            DialogResult result = materialDialog.ShowDialog(this);
+
+            //MaterialSnackBar SnackBarMessage = new MaterialSnackBar(result.ToString(), 750);
+            //SnackBarMessage.Show(this);
+
+            if (result == DialogResult.OK)
+            {
+
+                this.Cursor = Cursors.WaitCursor;
+                // reset listview
+                lvIQC.Items.Clear();
+                lvOQC.Items.Clear();
+                lvLogIQC_OQC.Items.Clear();
+                lvLogDB.Items.Clear();
+                // reset chart
+                UpdateChart(chartIQC, 0, 0);
+                UpdateChart(chartOQC, 0, 0);
+                // reset labelDataBase
+                MongoDBService.ClearDBFlushed();
+                //reset label IQCOQC
+                countOK_IQC = 0;
+                countNG_IQC = 0;
+                countOK_OQC = 0;
+                countNG_OQC = 0;
+                UpdateLabelOQC();
+                UpdateLabelIQC();
+
+                StopProgram();
+                EnableBtn(btnReset, false);
+                MyParam.runParam.ProgramStatus = ePRGSTATUS.Reset;
+                this.Cursor = Cursors.Default;
+            }
         }
 
         void EnableBtn(MaterialButton btn, bool bEnable)
@@ -139,6 +183,7 @@ namespace TanHungHa.Tabs
             switch (btnName)
             {
                 case "btnStop":
+
                     StopProgram();
                     break;
 
@@ -151,15 +196,15 @@ namespace TanHungHa.Tabs
                     break;
             }
         }
-       
+
 
         private void clearLogTapeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-                 
+
             lvIQC.Items.Clear();
-            lvLogOQC.Items.Clear();
-            lvLogIQC.Items.Clear();
-            lvLogIQC.Items.Clear();
+            lvLogDB.Items.Clear();
+            lvLogIQC_OQC.Items.Clear();
+            lvLogIQC_OQC.Items.Clear();
 
         }
 
@@ -176,34 +221,34 @@ namespace TanHungHa.Tabs
             area.AxisX.MajorGrid.Enabled = false;
             area.AxisY.MajorGrid.Enabled = false;
             area.AxisX.Enabled = AxisEnabled.False;
-          //  area.AxisY.Enabled = AxisEnabled.False;
+            //  area.AxisY.Enabled = AxisEnabled.False;
             area.AxisX.Title = "Result";
             area.AxisY.Title = "Tỉ lệ OK/NG (%)";
-            
+
 
             // Series OK
             var seriesOK = new Series("OK");
             seriesOK.ChartType = SeriesChartType.Column;
             seriesOK.Color = Color.Green;
-            
+
             chart.Series.Add(seriesOK);
 
             // Series NG
             var seriesNG = new Series("NG");
             seriesNG.ChartType = SeriesChartType.Column;
             seriesNG.Color = Color.Red;
-            
+
             chart.Series.Add(seriesNG);
 
             chart.Legends[0].Docking = Docking.Right;
 
-            UpdateChart(chart,0,0);
+            UpdateChart(chart, 0, 0);
         }
-        private void UpdateChart(Chart chart,int countOK,int countNG)
+        private void UpdateChart(Chart chart, int countOK, int countNG)
         {
             if (chart.InvokeRequired)
             {
-                chart.Invoke(new Action(() => UpdateChart(chart, countOK, countNG))); 
+                chart.Invoke(new Action(() => UpdateChart(chart, countOK, countNG)));
                 return;
             }
             chart.Series["OK"].Points.Clear();
@@ -246,48 +291,48 @@ namespace TanHungHa.Tabs
             var axisY = chart.ChartAreas[0].AxisY;
             axisY.Minimum = 0;
             axisY.Maximum = 100;
-            axisY.Interval = 10; 
+            axisY.Interval = 10;
             axisY.Title = "Tỉ lệ OK/NG (%)";
         }
 
 
-        //public void ChangeColor(GroupBox groupBox, bool bState)
-        //{
-        //    if(groupBox.InvokeRequired)
-        //    {
-        //        groupBox.BeginInvoke(new Action(() =>
-        //        {
-        //            if(bState)
-        //            {
-        //                groupBox.BackColor = Color.FromArgb(0, 120, 215);
-        //            }   
-        //            else
-        //            {
-        //                groupBox.BackColor = Color.Gray;
-        //            }    
-        //        }));
-        //    }   
-        //    else
-        //    {
-        //        if (bState)
-        //        {
-        //            groupBox3D.BackColor = Color.FromArgb(0, 120, 215);
-        //        }
-        //        else
-        //        {
-        //            groupBox3D.BackColor = Color.Gray;
-        //        }
-        //    }    
+        public void ChangeColor(GroupBox groupBox, bool bState)
+        {
+            if (groupBox.InvokeRequired)
+            {
+                groupBox.BeginInvoke(new Action(() =>
+                {
+                    if (bState)
+                    {
+                        groupBox.BackColor = Color.FromArgb(0, 120, 215);
+                    }
+                    else
+                    {
+                        groupBox.BackColor = Color.Gray;
+                    }
+                }));
+            }
+            else
+            {
+                if (bState)
+                {
+                    groupBox.BackColor = Color.FromArgb(0, 120, 215);
+                }
+                else
+                {
+                    groupBox.BackColor = Color.Gray;
+                }
+            }
 
-        //}
-
-
+        }
 
 
 
 
 
-        public void AddLog(string message, eIndex index = eIndex.Index_IQC_Log)
+
+
+        public void AddLog(string message, eIndex index = eIndex.Index_IQC_Data)
         {
             //if (!MyParam.autoForm.IsHandleCreated) return;
             switch (index)
@@ -300,12 +345,12 @@ namespace TanHungHa.Tabs
                     MyLib.ShowLogListview(MyParam.autoForm.lvOQC, message);
                     break;
 
-                case eIndex.Index_IQC_Log:
-                    MyLib.ShowLogListview(MyParam.autoForm.lvLogIQC, message);
+                case eIndex.Index_IQC_OQC_Log:
+                    MyLib.ShowLogListview(MyParam.autoForm.lvLogIQC_OQC, message);
                     break;
 
-                case eIndex.Index_OQC_Log:
-                    MyLib.ShowLogListview(MyParam.autoForm.lvLogOQC, message);
+                case eIndex.Index_MongoDB_Log:
+                    MyLib.ShowLogListview(MyParam.autoForm.lvLogDB, message);
                     break;
                 default:
                     break;
@@ -334,7 +379,7 @@ namespace TanHungHa.Tabs
         {
             if (InvokeRequired)
             {
-                Invoke(new Action(UpdateLabelOQC));  
+                Invoke(new Action(UpdateLabelOQC));
                 return;
             }
             lbOQC_OK.Text = ($"OK: {countOK_OQC.ToString()}");
@@ -355,7 +400,7 @@ namespace TanHungHa.Tabs
             UpdateChart(chartIQC, countOK_IQC, countNG_IQC);
             UpdateLabelIQC();
         }
-       
+
         private void UpdateLabelIQC()
         {
             if (InvokeRequired)
@@ -367,6 +412,18 @@ namespace TanHungHa.Tabs
             lbNG_IQC.Text = ($"NG: {countNG_IQC.ToString()}");
             lbTotal_IQC.Text = ($"Total: {countOK_IQC + countNG_IQC}");
 
+        }
+        public void UpdateLabelDataBase()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(UpdateLabelDataBase));
+                return;
+            }
+            lbIQCflushed.Text = ($"IQC Flushed: {MongoDBService.GetTotalIqcFlushed()}");
+            lbOQCflushed.Text = ($"OQC Flushed: {MongoDBService.GetTotalOqcFlushed()}");
+            lbIQCbuffer.Text = ($"IQC Buffer: {MongoDBService.GetIqcBufferCount()}");
+            lbOQCbuffer.Text = ($"OQC Buffer: {MongoDBService.GetOqcBufferCount()}");
         }
     }
 }

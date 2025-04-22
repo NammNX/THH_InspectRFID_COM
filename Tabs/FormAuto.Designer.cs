@@ -28,21 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea13 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend13 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series13 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea14 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend14 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series14 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.mtDatePicker = new MaterialWinforms.Controls.MaterialDropDownDatePicker();
-            this.btnViewChart = new MaterialSkin.Controls.MaterialButton();
             this.btnStop = new MaterialSkin.Controls.MaterialButton();
             this.btnReset = new MaterialSkin.Controls.MaterialButton();
             this.btnStart = new MaterialSkin.Controls.MaterialButton();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupDB_UI = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBoxOQChart = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.chartOQC = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
+            this.lbOQC_Total = new System.Windows.Forms.Label();
+            this.lbOQC_NG = new System.Windows.Forms.Label();
+            this.lbOQC_OK = new System.Windows.Forms.Label();
             this.groupBoxChartIQC = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.chartIQC = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -61,24 +65,25 @@
             this.lvIQC = new MaterialSkin.Controls.MaterialListView();
             this.columnHeaderTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderLog = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.groupBoxLogIQC = new System.Windows.Forms.GroupBox();
-            this.lvLogIQC = new MaterialSkin.Controls.MaterialListView();
+            this.groupBoxLogIQC_OQC = new System.Windows.Forms.GroupBox();
+            this.lvLogIQC_OQC = new MaterialSkin.Controls.MaterialListView();
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.groupBoxLogOQC = new System.Windows.Forms.GroupBox();
-            this.lvLogOQC = new MaterialSkin.Controls.MaterialListView();
+            this.groupBoxLogDB = new System.Windows.Forms.GroupBox();
+            this.lvLogDB = new MaterialSkin.Controls.MaterialListView();
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.chartOQC = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
-            this.lbOQC_OK = new System.Windows.Forms.Label();
-            this.lbOQC_NG = new System.Windows.Forms.Label();
-            this.lbOQC_Total = new System.Windows.Forms.Label();
+            this.lbIQCflushed = new System.Windows.Forms.Label();
+            this.lbOQCflushed = new System.Windows.Forms.Label();
+            this.lbIQCbuffer = new System.Windows.Forms.Label();
+            this.lbOQCbuffer = new System.Windows.Forms.Label();
             this.tableLayoutPanel5.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.groupDB_UI.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.groupBoxOQChart.SuspendLayout();
+            this.tableLayoutPanel8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chartOQC)).BeginInit();
+            this.tableLayoutPanel9.SuspendLayout();
             this.groupBoxChartIQC.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartIQC)).BeginInit();
@@ -88,62 +93,29 @@
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBoxOQC.SuspendLayout();
             this.groupBoxIQC.SuspendLayout();
-            this.groupBoxLogIQC.SuspendLayout();
-            this.groupBoxLogOQC.SuspendLayout();
-            this.tableLayoutPanel8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chartOQC)).BeginInit();
-            this.tableLayoutPanel9.SuspendLayout();
+            this.groupBoxLogIQC_OQC.SuspendLayout();
+            this.groupBoxLogDB.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 1;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Controls.Add(this.mtDatePicker, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.btnViewChart, 0, 1);
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Controls.Add(this.lbOQCbuffer, 0, 4);
+            this.tableLayoutPanel5.Controls.Add(this.lbIQCbuffer, 0, 3);
+            this.tableLayoutPanel5.Controls.Add(this.lbOQCflushed, 0, 1);
+            this.tableLayoutPanel5.Controls.Add(this.lbIQCflushed, 0, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(2, 17);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 2;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 29.09091F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70.90909F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(80, 261);
+            this.tableLayoutPanel5.RowCount = 5;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(80, 133);
             this.tableLayoutPanel5.TabIndex = 0;
-            // 
-            // mtDatePicker
-            // 
-            this.mtDatePicker.AnchorSize = new System.Drawing.Size(76, 71);
-            this.mtDatePicker.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            this.mtDatePicker.Date = new System.DateTime(2024, 12, 20, 0, 0, 0, 0);
-            this.mtDatePicker.Depth = 0;
-            this.mtDatePicker.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mtDatePicker.DockSide = MaterialWinforms.Controls.DropDownControl.eDockSide.Left;
-            this.mtDatePicker.Location = new System.Drawing.Point(2, 2);
-            this.mtDatePicker.Margin = new System.Windows.Forms.Padding(2);
-            this.mtDatePicker.MouseState = MaterialWinforms.MouseState.HOVER;
-            this.mtDatePicker.Name = "mtDatePicker";
-            this.mtDatePicker.Size = new System.Drawing.Size(76, 71);
-            this.mtDatePicker.TabIndex = 8;
-            // 
-            // btnViewChart
-            // 
-            this.btnViewChart.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnViewChart.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnViewChart.Depth = 0;
-            this.btnViewChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnViewChart.HighEmphasis = true;
-            this.btnViewChart.Icon = null;
-            this.btnViewChart.Location = new System.Drawing.Point(4, 81);
-            this.btnViewChart.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnViewChart.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnViewChart.Name = "btnViewChart";
-            this.btnViewChart.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnViewChart.Size = new System.Drawing.Size(72, 174);
-            this.btnViewChart.TabIndex = 3;
-            this.btnViewChart.Text = "View Chart";
-            this.btnViewChart.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
-            this.btnViewChart.UseAccentColor = false;
-            this.btnViewChart.UseVisualStyleBackColor = true;
             // 
             // btnStop
             // 
@@ -151,6 +123,7 @@
             this.btnStop.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             this.btnStop.Depth = 0;
             this.btnStop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnStop.Enabled = false;
             this.btnStop.HighEmphasis = true;
             this.btnStop.Icon = null;
             this.btnStop.Location = new System.Drawing.Point(4, 82);
@@ -172,6 +145,7 @@
             this.btnReset.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             this.btnReset.Depth = 0;
             this.btnReset.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnReset.Enabled = false;
             this.btnReset.HighEmphasis = true;
             this.btnReset.Icon = null;
             this.btnReset.Location = new System.Drawing.Point(4, 158);
@@ -208,37 +182,38 @@
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnProgramAction);
             // 
-            // groupBox1
+            // groupDB_UI
             // 
-            this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            this.groupBox1.Controls.Add(this.tableLayoutPanel5);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(2, 230);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(84, 280);
-            this.groupBox1.TabIndex = 8;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Date Time Select";
+            this.groupDB_UI.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.groupDB_UI.Controls.Add(this.tableLayoutPanel5);
+            this.groupDB_UI.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupDB_UI.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupDB_UI.Location = new System.Drawing.Point(2, 358);
+            this.groupDB_UI.Margin = new System.Windows.Forms.Padding(2);
+            this.groupDB_UI.Name = "groupDB_UI";
+            this.groupDB_UI.Padding = new System.Windows.Forms.Padding(2);
+            this.groupDB_UI.Size = new System.Drawing.Size(84, 152);
+            this.groupDB_UI.TabIndex = 8;
+            this.groupDB_UI.TabStop = false;
+            this.groupDB_UI.Text = "DB";
             // 
             // tableLayoutPanel4
             // 
             this.tableLayoutPanel4.ColumnCount = 1;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Controls.Add(this.btnStart, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.groupBox1, 0, 3);
             this.tableLayoutPanel4.Controls.Add(this.btnReset, 0, 2);
             this.tableLayoutPanel4.Controls.Add(this.btnStop, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.groupDB_UI, 0, 4);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(837, 3);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 4;
+            this.tableLayoutPanel4.RowCount = 5;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 55F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(88, 512);
             this.tableLayoutPanel4.TabIndex = 2;
             // 
@@ -254,6 +229,91 @@
             this.groupBoxOQChart.TabIndex = 1;
             this.groupBoxOQChart.TabStop = false;
             this.groupBoxOQChart.Text = "OQC Chart";
+            // 
+            // tableLayoutPanel8
+            // 
+            this.tableLayoutPanel8.ColumnCount = 1;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel8.Controls.Add(this.chartOQC, 0, 0);
+            this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel9, 0, 1);
+            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 18);
+            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
+            this.tableLayoutPanel8.RowCount = 2;
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 76.49484F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 23.50516F));
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(194, 485);
+            this.tableLayoutPanel8.TabIndex = 0;
+            // 
+            // chartOQC
+            // 
+            chartArea13.Name = "ChartArea1";
+            this.chartOQC.ChartAreas.Add(chartArea13);
+            this.chartOQC.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend13.Name = "Legend1";
+            this.chartOQC.Legends.Add(legend13);
+            this.chartOQC.Location = new System.Drawing.Point(3, 3);
+            this.chartOQC.Name = "chartOQC";
+            series13.ChartArea = "ChartArea1";
+            series13.Legend = "Legend1";
+            series13.Name = "Series1";
+            this.chartOQC.Series.Add(series13);
+            this.chartOQC.Size = new System.Drawing.Size(188, 365);
+            this.chartOQC.TabIndex = 0;
+            this.chartOQC.Text = "chart1";
+            // 
+            // tableLayoutPanel9
+            // 
+            this.tableLayoutPanel9.ColumnCount = 1;
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel9.Controls.Add(this.lbOQC_Total, 0, 2);
+            this.tableLayoutPanel9.Controls.Add(this.lbOQC_NG, 0, 1);
+            this.tableLayoutPanel9.Controls.Add(this.lbOQC_OK, 0, 0);
+            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 374);
+            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
+            this.tableLayoutPanel9.RowCount = 3;
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.34F));
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(188, 108);
+            this.tableLayoutPanel9.TabIndex = 1;
+            // 
+            // lbOQC_Total
+            // 
+            this.lbOQC_Total.AutoSize = true;
+            this.lbOQC_Total.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.lbOQC_Total.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbOQC_Total.Location = new System.Drawing.Point(3, 70);
+            this.lbOQC_Total.Name = "lbOQC_Total";
+            this.lbOQC_Total.Size = new System.Drawing.Size(182, 38);
+            this.lbOQC_Total.TabIndex = 3;
+            this.lbOQC_Total.Text = "Total";
+            this.lbOQC_Total.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbOQC_NG
+            // 
+            this.lbOQC_NG.AutoSize = true;
+            this.lbOQC_NG.BackColor = System.Drawing.Color.Red;
+            this.lbOQC_NG.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbOQC_NG.Location = new System.Drawing.Point(3, 35);
+            this.lbOQC_NG.Name = "lbOQC_NG";
+            this.lbOQC_NG.Size = new System.Drawing.Size(182, 35);
+            this.lbOQC_NG.TabIndex = 2;
+            this.lbOQC_NG.Text = "NG";
+            this.lbOQC_NG.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbOQC_OK
+            // 
+            this.lbOQC_OK.AutoSize = true;
+            this.lbOQC_OK.BackColor = System.Drawing.Color.Lime;
+            this.lbOQC_OK.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbOQC_OK.Location = new System.Drawing.Point(3, 0);
+            this.lbOQC_OK.Name = "lbOQC_OK";
+            this.lbOQC_OK.Size = new System.Drawing.Size(182, 35);
+            this.lbOQC_OK.TabIndex = 1;
+            this.lbOQC_OK.Text = "OK";
+            this.lbOQC_OK.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // groupBoxChartIQC
             // 
@@ -286,17 +346,17 @@
             // 
             // chartIQC
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chartIQC.ChartAreas.Add(chartArea2);
+            chartArea14.Name = "ChartArea1";
+            this.chartIQC.ChartAreas.Add(chartArea14);
             this.chartIQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend2.Name = "Legend1";
-            this.chartIQC.Legends.Add(legend2);
+            legend14.Name = "Legend1";
+            this.chartIQC.Legends.Add(legend14);
             this.chartIQC.Location = new System.Drawing.Point(3, 3);
             this.chartIQC.Name = "chartIQC";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chartIQC.Series.Add(series2);
+            series14.ChartArea = "ChartArea1";
+            series14.Legend = "Legend1";
+            series14.Name = "Series1";
+            this.chartIQC.Series.Add(series14);
             this.chartIQC.Size = new System.Drawing.Size(187, 365);
             this.chartIQC.TabIndex = 0;
             this.chartIQC.Text = "chart1";
@@ -393,8 +453,8 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 53.02013F));
             this.tableLayoutPanel1.Controls.Add(this.groupBoxOQC, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.groupBoxIQC, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.groupBoxLogIQC, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.groupBoxLogOQC, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.groupBoxLogIQC_OQC, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.groupBoxLogDB, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -506,46 +566,46 @@
             this.columnHeaderLog.Text = "Info";
             this.columnHeaderLog.Width = 1200;
             // 
-            // groupBoxLogIQC
+            // groupBoxLogIQC_OQC
             // 
-            this.groupBoxLogIQC.BackColor = System.Drawing.Color.Cyan;
-            this.groupBoxLogIQC.Controls.Add(this.lvLogIQC);
-            this.groupBoxLogIQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxLogIQC.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBoxLogIQC.Location = new System.Drawing.Point(3, 348);
-            this.groupBoxLogIQC.Name = "groupBoxLogIQC";
-            this.groupBoxLogIQC.Size = new System.Drawing.Size(187, 161);
-            this.groupBoxLogIQC.TabIndex = 2;
-            this.groupBoxLogIQC.TabStop = false;
-            this.groupBoxLogIQC.Text = "Log IQC";
+            this.groupBoxLogIQC_OQC.BackColor = System.Drawing.Color.Cyan;
+            this.groupBoxLogIQC_OQC.Controls.Add(this.lvLogIQC_OQC);
+            this.groupBoxLogIQC_OQC.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxLogIQC_OQC.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxLogIQC_OQC.Location = new System.Drawing.Point(3, 348);
+            this.groupBoxLogIQC_OQC.Name = "groupBoxLogIQC_OQC";
+            this.groupBoxLogIQC_OQC.Size = new System.Drawing.Size(187, 161);
+            this.groupBoxLogIQC_OQC.TabIndex = 2;
+            this.groupBoxLogIQC_OQC.TabStop = false;
+            this.groupBoxLogIQC_OQC.Text = "Log IQC - OQC";
             // 
-            // lvLogIQC
+            // lvLogIQC_OQC
             // 
-            this.lvLogIQC.Activation = System.Windows.Forms.ItemActivation.OneClick;
-            this.lvLogIQC.AllowColumnReorder = true;
-            this.lvLogIQC.AutoSizeTable = false;
-            this.lvLogIQC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.lvLogIQC.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lvLogIQC.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lvLogIQC_OQC.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.lvLogIQC_OQC.AllowColumnReorder = true;
+            this.lvLogIQC_OQC.AutoSizeTable = false;
+            this.lvLogIQC_OQC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.lvLogIQC_OQC.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lvLogIQC_OQC.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader3,
             this.columnHeader4});
-            this.lvLogIQC.Depth = 0;
-            this.lvLogIQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvLogIQC.FullRowSelect = true;
-            this.lvLogIQC.HideSelection = false;
-            this.lvLogIQC.HotTracking = true;
-            this.lvLogIQC.HoverSelection = true;
-            this.lvLogIQC.Location = new System.Drawing.Point(3, 18);
-            this.lvLogIQC.Margin = new System.Windows.Forms.Padding(0);
-            this.lvLogIQC.MinimumSize = new System.Drawing.Size(200, 100);
-            this.lvLogIQC.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.lvLogIQC.MouseState = MaterialSkin.MouseState.OUT;
-            this.lvLogIQC.Name = "lvLogIQC";
-            this.lvLogIQC.OwnerDraw = true;
-            this.lvLogIQC.Size = new System.Drawing.Size(200, 140);
-            this.lvLogIQC.TabIndex = 10;
-            this.lvLogIQC.UseCompatibleStateImageBehavior = false;
-            this.lvLogIQC.View = System.Windows.Forms.View.Details;
+            this.lvLogIQC_OQC.Depth = 0;
+            this.lvLogIQC_OQC.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvLogIQC_OQC.FullRowSelect = true;
+            this.lvLogIQC_OQC.HideSelection = false;
+            this.lvLogIQC_OQC.HotTracking = true;
+            this.lvLogIQC_OQC.HoverSelection = true;
+            this.lvLogIQC_OQC.Location = new System.Drawing.Point(3, 18);
+            this.lvLogIQC_OQC.Margin = new System.Windows.Forms.Padding(0);
+            this.lvLogIQC_OQC.MinimumSize = new System.Drawing.Size(200, 100);
+            this.lvLogIQC_OQC.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.lvLogIQC_OQC.MouseState = MaterialSkin.MouseState.OUT;
+            this.lvLogIQC_OQC.Name = "lvLogIQC_OQC";
+            this.lvLogIQC_OQC.OwnerDraw = true;
+            this.lvLogIQC_OQC.Size = new System.Drawing.Size(200, 140);
+            this.lvLogIQC_OQC.TabIndex = 10;
+            this.lvLogIQC_OQC.UseCompatibleStateImageBehavior = false;
+            this.lvLogIQC_OQC.View = System.Windows.Forms.View.Details;
             // 
             // columnHeader3
             // 
@@ -557,46 +617,46 @@
             this.columnHeader4.Text = "Info";
             this.columnHeader4.Width = 1200;
             // 
-            // groupBoxLogOQC
+            // groupBoxLogDB
             // 
-            this.groupBoxLogOQC.BackColor = System.Drawing.Color.Cyan;
-            this.groupBoxLogOQC.Controls.Add(this.lvLogOQC);
-            this.groupBoxLogOQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxLogOQC.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBoxLogOQC.Location = new System.Drawing.Point(196, 348);
-            this.groupBoxLogOQC.Name = "groupBoxLogOQC";
-            this.groupBoxLogOQC.Size = new System.Drawing.Size(212, 161);
-            this.groupBoxLogOQC.TabIndex = 3;
-            this.groupBoxLogOQC.TabStop = false;
-            this.groupBoxLogOQC.Text = "Log OQC";
+            this.groupBoxLogDB.BackColor = System.Drawing.Color.Cyan;
+            this.groupBoxLogDB.Controls.Add(this.lvLogDB);
+            this.groupBoxLogDB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxLogDB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxLogDB.Location = new System.Drawing.Point(196, 348);
+            this.groupBoxLogDB.Name = "groupBoxLogDB";
+            this.groupBoxLogDB.Size = new System.Drawing.Size(212, 161);
+            this.groupBoxLogDB.TabIndex = 3;
+            this.groupBoxLogDB.TabStop = false;
+            this.groupBoxLogDB.Text = "Log Data Base";
             // 
-            // lvLogOQC
+            // lvLogDB
             // 
-            this.lvLogOQC.Activation = System.Windows.Forms.ItemActivation.OneClick;
-            this.lvLogOQC.AllowColumnReorder = true;
-            this.lvLogOQC.AutoSizeTable = false;
-            this.lvLogOQC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.lvLogOQC.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lvLogOQC.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lvLogDB.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.lvLogDB.AllowColumnReorder = true;
+            this.lvLogDB.AutoSizeTable = false;
+            this.lvLogDB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.lvLogDB.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lvLogDB.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader5,
             this.columnHeader6});
-            this.lvLogOQC.Depth = 0;
-            this.lvLogOQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvLogOQC.FullRowSelect = true;
-            this.lvLogOQC.HideSelection = false;
-            this.lvLogOQC.HotTracking = true;
-            this.lvLogOQC.HoverSelection = true;
-            this.lvLogOQC.Location = new System.Drawing.Point(3, 18);
-            this.lvLogOQC.Margin = new System.Windows.Forms.Padding(0);
-            this.lvLogOQC.MinimumSize = new System.Drawing.Size(200, 100);
-            this.lvLogOQC.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.lvLogOQC.MouseState = MaterialSkin.MouseState.OUT;
-            this.lvLogOQC.Name = "lvLogOQC";
-            this.lvLogOQC.OwnerDraw = true;
-            this.lvLogOQC.Size = new System.Drawing.Size(206, 140);
-            this.lvLogOQC.TabIndex = 11;
-            this.lvLogOQC.UseCompatibleStateImageBehavior = false;
-            this.lvLogOQC.View = System.Windows.Forms.View.Details;
+            this.lvLogDB.Depth = 0;
+            this.lvLogDB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvLogDB.FullRowSelect = true;
+            this.lvLogDB.HideSelection = false;
+            this.lvLogDB.HotTracking = true;
+            this.lvLogDB.HoverSelection = true;
+            this.lvLogDB.Location = new System.Drawing.Point(3, 18);
+            this.lvLogDB.Margin = new System.Windows.Forms.Padding(0);
+            this.lvLogDB.MinimumSize = new System.Drawing.Size(200, 100);
+            this.lvLogDB.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.lvLogDB.MouseState = MaterialSkin.MouseState.OUT;
+            this.lvLogDB.Name = "lvLogDB";
+            this.lvLogDB.OwnerDraw = true;
+            this.lvLogDB.Size = new System.Drawing.Size(206, 140);
+            this.lvLogDB.TabIndex = 11;
+            this.lvLogDB.UseCompatibleStateImageBehavior = false;
+            this.lvLogDB.View = System.Windows.Forms.View.Details;
             // 
             // columnHeader5
             // 
@@ -608,90 +668,57 @@
             this.columnHeader6.Text = "Info";
             this.columnHeader6.Width = 1200;
             // 
-            // tableLayoutPanel8
+            // lbIQCflushed
             // 
-            this.tableLayoutPanel8.ColumnCount = 1;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.Controls.Add(this.chartOQC, 0, 0);
-            this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel9, 0, 1);
-            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 18);
-            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
-            this.tableLayoutPanel8.RowCount = 2;
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 76.49484F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 23.50516F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(194, 485);
-            this.tableLayoutPanel8.TabIndex = 0;
+            this.lbIQCflushed.AutoSize = true;
+            this.lbIQCflushed.BackColor = System.Drawing.Color.White;
+            this.lbIQCflushed.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbIQCflushed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbIQCflushed.Location = new System.Drawing.Point(3, 0);
+            this.lbIQCflushed.Name = "lbIQCflushed";
+            this.lbIQCflushed.Size = new System.Drawing.Size(74, 26);
+            this.lbIQCflushed.TabIndex = 0;
+            this.lbIQCflushed.Text = "IQC flushed";
+            this.lbIQCflushed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // chartOQC
+            // lbOQCflushed
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chartOQC.ChartAreas.Add(chartArea1);
-            this.chartOQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Name = "Legend1";
-            this.chartOQC.Legends.Add(legend1);
-            this.chartOQC.Location = new System.Drawing.Point(3, 3);
-            this.chartOQC.Name = "chartOQC";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chartOQC.Series.Add(series1);
-            this.chartOQC.Size = new System.Drawing.Size(188, 365);
-            this.chartOQC.TabIndex = 0;
-            this.chartOQC.Text = "chart1";
+            this.lbOQCflushed.AutoSize = true;
+            this.lbOQCflushed.BackColor = System.Drawing.Color.White;
+            this.lbOQCflushed.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbOQCflushed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbOQCflushed.Location = new System.Drawing.Point(3, 26);
+            this.lbOQCflushed.Name = "lbOQCflushed";
+            this.lbOQCflushed.Size = new System.Drawing.Size(74, 26);
+            this.lbOQCflushed.TabIndex = 1;
+            this.lbOQCflushed.Text = "OQC flushed";
+            this.lbOQCflushed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // tableLayoutPanel9
+            // lbIQCbuffer
             // 
-            this.tableLayoutPanel9.ColumnCount = 1;
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Controls.Add(this.lbOQC_Total, 0, 2);
-            this.tableLayoutPanel9.Controls.Add(this.lbOQC_NG, 0, 1);
-            this.tableLayoutPanel9.Controls.Add(this.lbOQC_OK, 0, 0);
-            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 374);
-            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
-            this.tableLayoutPanel9.RowCount = 3;
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.34F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(188, 108);
-            this.tableLayoutPanel9.TabIndex = 1;
+            this.lbIQCbuffer.AutoSize = true;
+            this.lbIQCbuffer.BackColor = System.Drawing.Color.White;
+            this.lbIQCbuffer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbIQCbuffer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbIQCbuffer.Location = new System.Drawing.Point(3, 78);
+            this.lbIQCbuffer.Name = "lbIQCbuffer";
+            this.lbIQCbuffer.Size = new System.Drawing.Size(74, 26);
+            this.lbIQCbuffer.TabIndex = 3;
+            this.lbIQCbuffer.Text = "IQC buffer";
+            this.lbIQCbuffer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // lbOQC_OK
+            // lbOQCbuffer
             // 
-            this.lbOQC_OK.AutoSize = true;
-            this.lbOQC_OK.BackColor = System.Drawing.Color.Lime;
-            this.lbOQC_OK.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbOQC_OK.Location = new System.Drawing.Point(3, 0);
-            this.lbOQC_OK.Name = "lbOQC_OK";
-            this.lbOQC_OK.Size = new System.Drawing.Size(182, 35);
-            this.lbOQC_OK.TabIndex = 1;
-            this.lbOQC_OK.Text = "OK";
-            this.lbOQC_OK.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbOQC_NG
-            // 
-            this.lbOQC_NG.AutoSize = true;
-            this.lbOQC_NG.BackColor = System.Drawing.Color.Red;
-            this.lbOQC_NG.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbOQC_NG.Location = new System.Drawing.Point(3, 35);
-            this.lbOQC_NG.Name = "lbOQC_NG";
-            this.lbOQC_NG.Size = new System.Drawing.Size(182, 35);
-            this.lbOQC_NG.TabIndex = 2;
-            this.lbOQC_NG.Text = "NG";
-            this.lbOQC_NG.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbOQC_Total
-            // 
-            this.lbOQC_Total.AutoSize = true;
-            this.lbOQC_Total.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.lbOQC_Total.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbOQC_Total.Location = new System.Drawing.Point(3, 70);
-            this.lbOQC_Total.Name = "lbOQC_Total";
-            this.lbOQC_Total.Size = new System.Drawing.Size(182, 38);
-            this.lbOQC_Total.TabIndex = 3;
-            this.lbOQC_Total.Text = "Total";
-            this.lbOQC_Total.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbOQCbuffer.AutoSize = true;
+            this.lbOQCbuffer.BackColor = System.Drawing.Color.White;
+            this.lbOQCbuffer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbOQCbuffer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbOQCbuffer.Location = new System.Drawing.Point(3, 104);
+            this.lbOQCbuffer.Name = "lbOQCbuffer";
+            this.lbOQCbuffer.Size = new System.Drawing.Size(74, 29);
+            this.lbOQCbuffer.TabIndex = 4;
+            this.lbOQCbuffer.Text = "OQC buffer";
+            this.lbOQCbuffer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // FormAuto
             // 
@@ -705,10 +732,14 @@
             this.Text = "FormAuto";
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
+            this.groupDB_UI.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
             this.groupBoxOQChart.ResumeLayout(false);
+            this.tableLayoutPanel8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chartOQC)).EndInit();
+            this.tableLayoutPanel9.ResumeLayout(false);
+            this.tableLayoutPanel9.PerformLayout();
             this.groupBoxChartIQC.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chartIQC)).EndInit();
@@ -719,23 +750,18 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.groupBoxOQC.ResumeLayout(false);
             this.groupBoxIQC.ResumeLayout(false);
-            this.groupBoxLogIQC.ResumeLayout(false);
-            this.groupBoxLogOQC.ResumeLayout(false);
-            this.tableLayoutPanel8.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chartOQC)).EndInit();
-            this.tableLayoutPanel9.ResumeLayout(false);
-            this.tableLayoutPanel9.PerformLayout();
+            this.groupBoxLogIQC_OQC.ResumeLayout(false);
+            this.groupBoxLogDB.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private MaterialSkin.Controls.MaterialButton btnViewChart;
         private MaterialSkin.Controls.MaterialButton btnStop;
         private MaterialSkin.Controls.MaterialButton btnReset;
         private MaterialSkin.Controls.MaterialButton btnStart;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupDB_UI;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.GroupBox groupBoxOQChart;
         public System.Windows.Forms.GroupBox groupBoxChartIQC;
@@ -750,15 +776,14 @@
         public MaterialSkin.Controls.MaterialListView lvIQC;
         private System.Windows.Forms.ColumnHeader columnHeaderTime;
         private System.Windows.Forms.ColumnHeader columnHeaderLog;
-        public System.Windows.Forms.GroupBox groupBoxLogIQC;
-        public MaterialSkin.Controls.MaterialListView lvLogIQC;
+        public System.Windows.Forms.GroupBox groupBoxLogIQC_OQC;
+        public MaterialSkin.Controls.MaterialListView lvLogIQC_OQC;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
-        public System.Windows.Forms.GroupBox groupBoxLogOQC;
-        public MaterialSkin.Controls.MaterialListView lvLogOQC;
+        public System.Windows.Forms.GroupBox groupBoxLogDB;
+        public MaterialSkin.Controls.MaterialListView lvLogDB;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ColumnHeader columnHeader6;
-        private MaterialWinforms.Controls.MaterialDropDownDatePicker mtDatePicker;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartIQC;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
@@ -771,5 +796,9 @@
         private System.Windows.Forms.Label lbOQC_Total;
         private System.Windows.Forms.Label lbOQC_NG;
         private System.Windows.Forms.Label lbOQC_OK;
+        private System.Windows.Forms.Label lbIQCflushed;
+        private System.Windows.Forms.Label lbOQCbuffer;
+        private System.Windows.Forms.Label lbIQCbuffer;
+        private System.Windows.Forms.Label lbOQCflushed;
     }
 }

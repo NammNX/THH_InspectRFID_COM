@@ -173,16 +173,24 @@ namespace TanHungHa
                 Application.Exit();
             }
         }
-
+         //if (e.CloseReason == CloseReason.UserClosing)
+         //   {
+         //       if ((MyParam.commonParam.myComportIQC.GetQueueCount() > 0) || (MyParam.commonParam.myComportOQC.GetQueueCount() > 0)
+         //           || (MongoDBService.GetIqcBufferCount() > 0) || (MongoDBService.GetOqcBufferCount() > 0))
+         //       {
+         //           MyLib.showDlgInfo("Quá trình ghi dữ liệu vào data base chưa hoàn tất, vui lòng đợi trong giây lát");
+         //           e.Cancel = true; // Hủy sự kiện đóng
+         //           return;
+         //       }
+         //   }
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             if(e.CloseReason == CloseReason.UserClosing)
             {
                 return;
             }
-
             //Close program
-            if(MyParam.runParam.ProgramStatus == ePRGSTATUS.Started)
+            if (MyParam.runParam.ProgramStatus == ePRGSTATUS.Started)
             {
                 MyParam.autoForm.StopProgram();
             }

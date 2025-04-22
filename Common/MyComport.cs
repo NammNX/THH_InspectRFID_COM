@@ -168,6 +168,13 @@ namespace TanHungHa.Common
             return new SerialData(); // Trả về object rỗng nếu không có dữ liệu
         }
 
+        public int GetQueueCount()
+        {
+            lock (lockQueue)
+            {
+                return queueData.Count;
+            }
+        }
 
 
         //public string GetDataCom()
@@ -200,7 +207,7 @@ namespace TanHungHa.Common
                 dataComport = serialPort.ReadLine();
                 if (string.IsNullOrEmpty(dataComport))
                     return;
-                if (dataComport.Replace("\r", "").Replace("\n", "").Trim().Length == 1)
+                if (dataComport.Replace("\r", "").Replace("\n", "").Trim().Length <= MyParam.commonParam.devParam.LengthNG)
                 {
                     SendData("NG");  
                 }

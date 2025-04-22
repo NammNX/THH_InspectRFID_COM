@@ -11,6 +11,7 @@ namespace TanHungHa.Common.TaskCustomize
     {
         ConnectCOMIQC,
         ConnectCOMOQC,
+        ConnectMongoDB,
         HEATBEAT
     }
     static class THHTask
@@ -31,7 +32,10 @@ namespace TanHungHa.Common.TaskCustomize
                     MyParam.commonParam.myComportOQC.portName = MyParam.runParam.COM_OQC;
                     bResult = MyParam.commonParam.myComportOQC.Connect();
                     break;
-                
+                case eTaskToDo.ConnectMongoDB:
+                    bResult = MongoDBService.ConnectMongoDb($"{MyParam.runParam.MongoClient}?connectTimeoutMS={MyParam.runParam.ConnectTimeOut}&socketTimeoutMS=10000&serverSelectionTimeoutMS=5000",$"{MyParam.runParam.DataBaseName}");
+                    break;
+
                 case eTaskToDo.HEATBEAT:
                     bResult = MainProcess.RunLoopHeartBeat();
                     break;

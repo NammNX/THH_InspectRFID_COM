@@ -11,7 +11,7 @@ namespace TanHungHa.Common
     public class MyDefine
     {
         //public static DateTime expried_time = new DateTime(2024, 8, 13, 9, 0, 0);
-        public const string VERSION = @"Ver 1.0.0.200823";
+        public const string VERSION = @"Ver 1.0.0.220425";
         
         public const int HEIGHT_OF_ROW = 50;
         
@@ -24,8 +24,8 @@ namespace TanHungHa.Common
        
 
 
-        public static readonly string title = "Logistics App";
-        public static readonly string version = "Version 0.1.0 \r\n 03/10/2022";
+        public static readonly string title = "RFID Inspection";
+        public static readonly string version = "Version 0.1.0 \r\n 22/04/2025";
 
         public const string treenodeRunParam = "Run Param";
         public const string treenodeRS232 = "RS232";
@@ -38,7 +38,7 @@ namespace TanHungHa.Common
 
         public const int NUM_FAIL_HEART_BEAR = 5;
         public const int NUM_THREAD = 7;
-        public const int MAX_QUEUE_DATA = 10;
+        public const int MAX_QUEUE_DATA = 30;
         public const int NUM_DEVICES = 2;
 
         public static int[] baudrates = new int[] { 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200 } ;

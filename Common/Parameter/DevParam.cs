@@ -31,6 +31,9 @@ namespace TanHungHa.Common
 
         //--------------------Variable------------------
 
+        [Category("Validation"), DescriptionAttribute("Độ dài tối đa của chuỗi NG")]
+        public int LengthNG { get; set; }
+
         [Category("Layout"), DescriptionAttribute("Layout size when zoom out")]
         public Size LayoutMax { get; set; }
         [Category("Layout"), DescriptionAttribute("Layout size when zoom in")]
@@ -56,7 +59,7 @@ namespace TanHungHa.Common
         //--------------------------------------------
         DevParam()
         {
-           
+            LengthNG = 5;
             LayoutMax = new Size(100, 1500);
             LayoutMin = new Size(400, 1050);
            

@@ -18,7 +18,9 @@ namespace TanHungHa.Common
         Task_HEATBEAT,
         Task_RS232_IQC,
         Task_RS232_OQC,
-        Task_RS232_Manual
+        Task_RS232_Manual,
+        Task_FlushBuffersIQC,
+        Task_FlushBuffersOQC
     }
 
 
