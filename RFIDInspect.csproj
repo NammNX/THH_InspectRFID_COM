@@ -312,6 +312,12 @@
     <Compile Include="Tabs\FormLog.Designer.cs">
       <DependentUpon>FormLog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\FormLogDB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\FormLogDB.Designer.cs">
+      <DependentUpon>FormLogDB.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\FormManager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -364,6 +370,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\FormLog.resx">
       <DependentUpon>FormLog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\FormLogDB.resx">
+      <DependentUpon>FormLogDB.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\FormManager.resx">
       <DependentUpon>FormManager.cs</DependentUpon>

@@ -59,6 +59,8 @@ namespace TanHungHa.Tabs
             EnableBtn(btnStop, false);
             ChangeColor(groupBoxIQC, false);
             ChangeColor(groupBoxOQC, false);
+            ChangeColor(groupBoxChartIQC, false);
+            ChangeColor(groupBoxOQChart, false);
 
             if (MyParam.runParam.ProgramStatus == ePRGSTATUS.Started)
             {
@@ -108,9 +110,18 @@ namespace TanHungHa.Tabs
                 EnableBtn(btnStop, true);
                 ChangeColor(groupBoxIQC, true);
                 ChangeColor(groupBoxOQC, true);
+                ChangeColor(groupBoxOQChart, true);
+                ChangeColor(groupBoxChartIQC, true);
                 MainProcess.RunLoopCOM();
-                MongoDBService.RunFlushLoop(); 
-
+                if (!MyParam.commonParam.devParam.ignoreDataBase)
+                {
+                    swFlushDB.Checked = true;
+                    MongoDBService.RunFlushLoop();
+                }
+                else
+                {
+                   swFlushDB.Checked = false;
+                }
                 MainProcess.MainIQC_StepCtrl.SetStep(eProcessing.ReceiveData);
                 MainProcess.MainOQC_StepCtrl.SetStep(eProcessing.ReceiveData);
             }
@@ -405,7 +416,7 @@ namespace TanHungHa.Tabs
         {
             if (InvokeRequired)
             {
-                Invoke(new Action(UpdateLabelIQC));  // Gọi lại chính hàm này nhưng trên UI thread
+                Invoke(new Action(UpdateLabelIQC));  
                 return;
             }
             lbIQC_OK.Text = ($"OK: {countOK_IQC.ToString()}");

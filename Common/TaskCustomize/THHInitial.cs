@@ -18,7 +18,7 @@ namespace TanHungHa.Common.TaskCustomize
             var task1 = THHTask.RunTask(eTaskToDo.ConnectCOMIQC);
             var task2 = THHTask.RunTask(eTaskToDo.ConnectCOMOQC);
             var task3 = THHTask.RunTask(eTaskToDo.ConnectMongoDB);
-            var task4 = THHTask.RunTask(eTaskToDo.HEATBEAT);
+          //  var task4 = THHTask.RunTask(eTaskToDo.HEATBEAT);
             await task1;
             bool bInitConnectCOMIQC = task1.Result;
             MainProcess.AddLogAuto($"Connect COM IQC = {bInitConnectCOMIQC}", eIndex.Index_IQC_OQC_Log);

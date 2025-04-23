@@ -110,12 +110,13 @@ namespace TanHungHa.Common
         //}
 
 
-        public static void AddToBuffer(string data, DateTime timestamp, string collectionName)
+        public static void AddToBuffer(string data, DateTime timestamp,string type, string collectionName)
         {
             var doc = new BsonDocument
         {
             { "Timestamp", BsonDateTime.Create(timestamp) },
-            { "Data", data }
+            { "Data", data },
+            {"Type",type }
         };
 
             if (collectionName == "IQC")
@@ -123,6 +124,7 @@ namespace TanHungHa.Common
                 lock (iqcLock)
                 {
                     iqcBuffer.Add(doc);
+                    File.AppendAllText("iqc_temp.json", doc.ToJson() + Environment.NewLine);
                 }
             }
             else if (collectionName == "OQC")
@@ -130,6 +132,7 @@ namespace TanHungHa.Common
                 lock (oqcLock)
                 {
                     oqcBuffer.Add(doc);
+                    File.AppendAllText("oqc_temp.json", doc.ToJson() + Environment.NewLine);
                 }
             }
         }
@@ -144,12 +147,15 @@ namespace TanHungHa.Common
                         iqcCollection.InsertMany(iqcBuffer);
                         totalIqcFlushed += iqcBuffer.Count;
                         iqcBuffer.Clear();
+                        File.WriteAllText("iqc_temp.json", string.Empty);
+                        MainProcess.AddLogAuto("IQC buffer đã flush lên MongoDB", eIndex.Index_MongoDB_Log);
                         Console.WriteLine($"IQC buffer đã flush lên MongoDB.Tổng: {totalIqcFlushed}");
                     }
                 }
             }
             catch (Exception ex)
             {
+
                 Console.WriteLine("Flush lỗi: " + ex.Message);
                 MyLib.showDlgError("Flush lỗi: " + ex.Message);
                // ????
@@ -166,6 +172,8 @@ namespace TanHungHa.Common
                         oqcCollection.InsertMany(oqcBuffer);
                         totalOqcFlushed += oqcBuffer.Count;
                         oqcBuffer.Clear();
+                        File.WriteAllText("oqc_temp.json", string.Empty);
+                        MainProcess.AddLogAuto("OQC buffer đã flush lên MongoDB", eIndex.Index_MongoDB_Log);
                         Console.WriteLine($"OQC buffer đã flush lên MongoDB. Tổng: {totalOqcFlushed}");
                     }
                 }
@@ -251,6 +259,41 @@ namespace TanHungHa.Common
             });
             isFlushLoop = true;
         }
+
+        // Query data by date range
+        public static List<BsonDocument> QueryByDateRange(string collectionName, DateTime start, DateTime end)
+        {
+            var filter = Builders<BsonDocument>.Filter.And(
+                Builders<BsonDocument>.Filter.Gte("Timestamp", start),
+                Builders<BsonDocument>.Filter.Lte("Timestamp", end)
+            );
+
+            var collection = collectionName == "IQC" ? iqcCollection : oqcCollection;
+            return collection.Find(filter).ToList();
+        }
+
+        // Query data by type
+        public static List<BsonDocument> QueryByType(string collectionName, string type)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("Type", type);
+            var collection = collectionName == "IQC" ? iqcCollection : oqcCollection;
+            return collection.Find(filter).ToList();
+        }
+        // Query data by type and date range
+        public static List<BsonDocument> QueryByTypeAndDateRange(string collectionName, string type, DateTime start, DateTime end)
+        {
+            var filter = Builders<BsonDocument>.Filter.And(
+                Builders<BsonDocument>.Filter.Eq("Type", type),
+                Builders<BsonDocument>.Filter.Gte("Timestamp", start),
+                Builders<BsonDocument>.Filter.Lte("Timestamp", end)
+            );
+
+            var collection = collectionName == "IQC" ? iqcCollection : oqcCollection;
+            return collection.Find(filter).ToList();
+        }
+
+
+
     }
 
 
@@ -322,17 +365,17 @@ namespace TanHungHa.Common
                     {
                         if (MyParam.autoForm.swFlushDB.Checked)
                         {
-                            MongoDBService.AddToBuffer(dataComIQC.Data, dataComIQC.Timestamp, "IQC");
+                            MongoDBService.AddToBuffer(dataComIQC.Data, dataComIQC.Timestamp,dataComIQC.Type, "IQC");
                         }
                         MainIQC_StepCtrl.SetStep(eProcessing.UpdateLog);
                         break;
                     }    
                 case eProcessing.UpdateLog:
-                    AddLogAuto(dataComIQC.Data,dataComIQC.Timestamp, eIndex.Index_IQC_Data);
+                    AddLogAuto(dataComIQC.Data,dataComIQC.Timestamp, dataComIQC.Type,eIndex.Index_IQC_Data);
                     MainIQC_StepCtrl.SetStep(eProcessing.UpdateChart);
                     break;
                 case eProcessing.UpdateChart:
-                    if (dataComIQC.Data.Replace("\r", "").Replace("\n", "").Trim().Length <= MyParam.commonParam.devParam.LengthNG)
+                    if (dataComIQC.Type == "NG")
                     {
                         MyParam.autoForm.UpdateChartIQC_NG();
                     }
@@ -370,17 +413,17 @@ namespace TanHungHa.Common
                     {
                         if (MyParam.autoForm.swFlushDB.Checked)
                         {
-                            MongoDBService.AddToBuffer(dataComOQC.Data, dataComOQC.Timestamp, "OQC");
+                            MongoDBService.AddToBuffer(dataComOQC.Data, dataComOQC.Timestamp,dataComOQC.Type, "OQC");
                         }
                         MainOQC_StepCtrl.SetStep(eProcessing.UpdateLog);
                         break;
                     }
                 case eProcessing.UpdateLog:
-                    AddLogAuto(dataComOQC.Data, dataComOQC.Timestamp, eIndex.Index_OQC_Data);
+                    AddLogAuto(dataComOQC.Data, dataComOQC.Timestamp, dataComOQC.Type, eIndex.Index_OQC_Data);
                     MainOQC_StepCtrl.SetStep(eProcessing.UpdateChart);
                     break;
                 case eProcessing.UpdateChart:
-                    if (dataComOQC.Data.Replace("\r", "").Replace("\n", "").Trim().Length <= MyParam.commonParam.devParam.LengthNG)
+                    if (dataComOQC.Type == "NG")
                     {
                         MyParam.autoForm.UpdateChartOQC_NG();
                     }
@@ -397,17 +440,17 @@ namespace TanHungHa.Common
 
    
 
-        public static void AddLogAuto(string message,DateTime dateTime, eIndex index = eIndex.Index_IQC_Data)
+        public static void AddLogAuto(string message,DateTime dateTime,string dataType, eIndex index = eIndex.Index_IQC_Data)
         {
             //if (!MyParam.autoForm.IsHandleCreated) return;
             switch (index)
             {
                 case eIndex.Index_IQC_Data:
-                    MyLib.ShowLogListview(MyParam.autoForm.lvIQC, dateTime, message);
+                    MyLib.ShowLogListview(MyParam.autoForm.lvIQC, dateTime, message,dataType);
                     break;
 
                 case eIndex.Index_OQC_Data:
-                    MyLib.ShowLogListview(MyParam.autoForm.lvOQC, dateTime, message);
+                    MyLib.ShowLogListview(MyParam.autoForm.lvOQC, dateTime, message, dataType);
                     break;
                 default:
                     break;
@@ -532,8 +575,8 @@ namespace TanHungHa.Common
                 if (queueSize > 0)
                 {
                     SerialData dataFromCom = MyParam.commonParam.myComport.GetDataCom();
-                    MyParam.tabRS232.setText(dataFromCom.Data);
-                }
+                    MyParam.tabRS232.setText(dataFromCom.Timestamp.ToString());
+            }
         }
         #endregion End RS232 manual
 

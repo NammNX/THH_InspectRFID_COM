@@ -38,8 +38,8 @@ namespace TanHungHa.Common.Parameter
         {
             timeDelay = new TimeDelay();
             myComport = new MyComport();
-            myComportIQC = new MyComport();
-            myComportOQC = new MyComport();
+            myComportIQC = new MyComport { tempFileName = "Com_iqc_temp.json" };
+            myComportOQC = new MyComport { tempFileName = "Com_oqc_temp.json" };
             devParam = DevParam.GetInstance();
             queueData = new Queue<string>(MyDefine.MAX_QUEUE_DATA);
             queueLock = new object();

@@ -55,8 +55,7 @@ namespace TanHungHa
             //this.DoubleBuffered = true;
             //Load parameter
             MyLib.LoadParameter();
-            
-            //var x = THHInitial.RunHeatbeat();
+            var x = THHInitial.RunHeatbeat();
             //sttVersion.Text = MyDefine.VERSION;
         }
 
@@ -69,44 +68,44 @@ namespace TanHungHa
 
             MyParam.autoForm.TopLevel = false;
             MyParam.infoForm.TopLevel = false;
-            MyParam.logForm.TopLevel = false;
+            MyParam.logFormDB.TopLevel = false;
             MyParam.managerForm.TopLevel = false;
             MyParam.manualForm.TopLevel = false;
             
             MyParam.autoForm.FormBorderStyle = FormBorderStyle.None;
             MyParam.infoForm.FormBorderStyle = FormBorderStyle.None;
-            MyParam.logForm.FormBorderStyle = FormBorderStyle.None;
+            MyParam.logFormDB.FormBorderStyle = FormBorderStyle.None;
             MyParam.managerForm.FormBorderStyle = FormBorderStyle.None;
             MyParam.manualForm.FormBorderStyle = FormBorderStyle.None;
             
             MyParam.autoForm.Dock = DockStyle.Fill;
             MyParam.infoForm.Dock = DockStyle.Fill;
-            MyParam.logForm.Dock = DockStyle.Fill;
+            MyParam.logFormDB.Dock = DockStyle.Fill;
             MyParam.managerForm.Dock = DockStyle.Fill;
             MyParam.manualForm.Dock = DockStyle.Fill;
 
             panelAuto.Controls.Add(MyParam.autoForm);
             panelInfo.Controls.Add(MyParam.infoForm);
-            panelLog.Controls.Add(MyParam.logForm);
+            panelLog.Controls.Add(MyParam.logFormDB);
             panelManager.Controls.Add(MyParam.managerForm);
             panelManual.Controls.Add(MyParam.manualForm);
             
             panelAuto.Tag = (MyParam.autoForm);
             panelInfo.Tag = (MyParam.infoForm);
-            panelLog.Tag = (MyParam.logForm);
+            panelLog.Tag = (MyParam.logFormDB);
             panelManager.Tag = (MyParam.managerForm);
             panelManual.Tag = (MyParam.manualForm);
 
 
             MyParam.autoForm.BringToFront();
             MyParam.infoForm.BringToFront();
-            MyParam.logForm.BringToFront();
+            MyParam.logFormDB.BringToFront();
             MyParam.managerForm.BringToFront();
             MyParam.manualForm.BringToFront();
             
             MyParam.autoForm.Show();
             MyParam.infoForm.Show();
-            MyParam.logForm.Show();
+            MyParam.logFormDB.Show();
             MyParam.managerForm.Show();
             MyParam.manualForm.Show();
 
@@ -199,5 +198,14 @@ namespace TanHungHa
             MyLib.SaveParamter();
         }
 
+        private void materialTabControl1_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (MyParam.runParam.ProgramStatus == ePRGSTATUS.Started)
+            {
+                e.Cancel = true;
+                MyLib.showDlgWarning("Chương trình đang chạy, Bấm Stop trước khi chuyển Tab ");
+                return;
+            }
+        }
     }
 }

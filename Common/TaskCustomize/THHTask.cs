@@ -33,8 +33,14 @@ namespace TanHungHa.Common.TaskCustomize
                     bResult = MyParam.commonParam.myComportOQC.Connect();
                     break;
                 case eTaskToDo.ConnectMongoDB:
-                    bResult = MongoDBService.ConnectMongoDb($"{MyParam.runParam.MongoClient}?connectTimeoutMS={MyParam.runParam.ConnectTimeOut}&socketTimeoutMS=10000&serverSelectionTimeoutMS=5000", $"{MyParam.runParam.DataBaseName}");
-
+                    if (!MyParam.commonParam.devParam.ignoreDataBase)
+                    {
+                        bResult = MongoDBService.ConnectMongoDb($"{MyParam.runParam.MongoClient}?connectTimeoutMS={MyParam.runParam.ConnectTimeOut}&socketTimeoutMS=10000&serverSelectionTimeoutMS=5000", $"{MyParam.runParam.DataBaseName}");
+                    }
+                    else
+                    {
+                        bResult = true;
+                    }    
                      break;
 
                 case eTaskToDo.HEATBEAT:

@@ -427,7 +427,7 @@ namespace TanHungHa.Common
 
 
 
-        public static void ShowLogListview(MaterialListView listview,DateTime dateTime, string message)
+        public static void ShowLogListview(MaterialListView listview,DateTime dateTime, string message,string typeData)
         {
             string timeStr = dateTime.ToString("HH:mm:ss.fff");
             if (listview.InvokeRequired)
@@ -440,7 +440,7 @@ namespace TanHungHa.Common
                     }
 
                     listview.Items.Insert(0,
-                        new ListViewItem(new string[] { $"{timeStr}", $"{message}" }));
+                        new ListViewItem(new string[] { $"{timeStr}", $"{message}",$"{ typeData}"}));
                 }));
             }
             else
@@ -451,7 +451,7 @@ namespace TanHungHa.Common
                 }
 
                 listview.Items.Insert(0,
-                         new ListViewItem(new string[] { $"{dateTime}", $"{message}" }));
+                         new ListViewItem(new string[] { $"{dateTime}", $"{message}", $"{typeData}"}));
             }
         }
 

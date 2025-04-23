@@ -97,7 +97,7 @@ namespace TanHungHa.Common
 
         public static FormAuto autoForm = null;
         public static FormInfo infoForm = null;
-        public static FormLog logForm = null;
+        public static FormLogDB logFormDB = null;
         public static FormManager managerForm = null;
         public static FormManual manualForm = null;
         public static FormMain mainForm = null;
@@ -138,7 +138,7 @@ namespace TanHungHa.Common
 
             autoForm = FormAuto.GetInstance();
             infoForm = FormInfo.GetInstance();
-            logForm = FormLog.GetInstance();
+            logFormDB = FormLogDB.GetInstance();
             managerForm = FormManager.GetInstance();
             manualForm = FormManual.GetInstance();
             mainForm = FormMain.GetInstance();

@@ -6,6 +6,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace TanHungHa.Common
 {
@@ -15,6 +16,7 @@ namespace TanHungHa.Common
         {
             public string Data { get; set; }
             public DateTime Timestamp { get; set; }
+            public string Type { get; set; }
         }
 
         public string prefix { get; set; }
@@ -32,6 +34,8 @@ namespace TanHungHa.Common
 
         [Browsable(false)]
         public string dataComport { get; set; }
+        public string typeData { get; set; }
+        public string tempFileName { get; set; } = "com_temp.json";
 
 
         [JsonIgnore]
@@ -133,19 +137,58 @@ namespace TanHungHa.Common
 
             }
         }
-        public void CollectDataCom(string str)
+        public void CollectDataCom(string str,string type)
         {
             lock (lockQueue)
             {
                 var item = new SerialData
                 {
                     Data = str,
-                    Timestamp = DateTime.Now
+                    Timestamp = DateTime.Now,
+                    Type = type
                 };
 
                 queueData.Enqueue(item);
+                //try
+                //{
+                //    string json = JsonConvert.SerializeObject(item);
+                //    File.AppendAllText(tempFileName, json + Environment.NewLine);
+                //}
+                //catch (Exception ex)
+                //{
+                //    MyLib.showDlgError("Error writing to temp file: " + ex.Message);
+                //}
             }
         }
+        public void RestoreQueueFromFile()
+        {
+            lock (lockQueue)
+            {
+                if (!File.Exists(tempFileName))
+                    return;
+
+                try
+                {
+                    var lines = File.ReadAllLines(tempFileName);
+                    foreach (var line in lines)
+                    {
+                        if (!string.IsNullOrWhiteSpace(line))
+                        {
+                            var item = JsonConvert.DeserializeObject<SerialData>(line);
+                            queueData.Enqueue(item);
+                        }
+                    }
+
+                   
+                    File.Delete(tempFileName);
+                }
+                catch (Exception ex)
+                {
+                    MyLib.showDlgError("Error restoring queue: " + ex.Message);
+                }
+            }
+        }
+
 
         //public void CollectDataCom(string str)
         //{
@@ -209,16 +252,20 @@ namespace TanHungHa.Common
                     return;
                 if (dataComport.Replace("\r", "").Replace("\n", "").Trim().Length <= MyParam.commonParam.devParam.LengthNG)
                 {
-                    SendData("NG");  
+                     typeData = "NG";
                 }
+                else
+                {
+                    typeData = "OK";
+                }
+
                 if (MyParam.commonParam.queueData.Count >= MyDefine.MAX_QUEUE_DATA)
                 {
                     MyLib.showDlgError("Please stop comport and wait a second!");
                 }
                 else
                 {
-                    CollectDataCom(dataComport);
-
+                    CollectDataCom(dataComport, typeData);
                 }
 
             }
