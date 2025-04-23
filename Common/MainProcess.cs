@@ -124,7 +124,7 @@ namespace TanHungHa.Common
                 lock (iqcLock)
                 {
                     iqcBuffer.Add(doc);
-                    File.AppendAllText("iqc_temp.json", doc.ToJson() + Environment.NewLine);
+                  //  File.AppendAllText("iqc_temp.json", doc.ToJson() + Environment.NewLine);
                 }
             }
             else if (collectionName == "OQC")
@@ -132,7 +132,7 @@ namespace TanHungHa.Common
                 lock (oqcLock)
                 {
                     oqcBuffer.Add(doc);
-                    File.AppendAllText("oqc_temp.json", doc.ToJson() + Environment.NewLine);
+                //    File.AppendAllText("oqc_temp.json", doc.ToJson() + Environment.NewLine);
                 }
             }
         }
@@ -147,7 +147,7 @@ namespace TanHungHa.Common
                         iqcCollection.InsertMany(iqcBuffer);
                         totalIqcFlushed += iqcBuffer.Count;
                         iqcBuffer.Clear();
-                        File.WriteAllText("iqc_temp.json", string.Empty);
+                      //  File.WriteAllText("iqc_temp.json", string.Empty);
                         MainProcess.AddLogAuto("IQC buffer đã flush lên MongoDB", eIndex.Index_MongoDB_Log);
                         Console.WriteLine($"IQC buffer đã flush lên MongoDB.Tổng: {totalIqcFlushed}");
                     }
@@ -172,7 +172,7 @@ namespace TanHungHa.Common
                         oqcCollection.InsertMany(oqcBuffer);
                         totalOqcFlushed += oqcBuffer.Count;
                         oqcBuffer.Clear();
-                        File.WriteAllText("oqc_temp.json", string.Empty);
+                     //   File.WriteAllText("oqc_temp.json", string.Empty);
                         MainProcess.AddLogAuto("OQC buffer đã flush lên MongoDB", eIndex.Index_MongoDB_Log);
                         Console.WriteLine($"OQC buffer đã flush lên MongoDB. Tổng: {totalOqcFlushed}");
                     }
@@ -350,16 +350,16 @@ namespace TanHungHa.Common
                 case eProcessing.None:
                     break;
                 case eProcessing.ReceiveData:
-                    dataComIQC = MyParam.commonParam.myComportIQC.GetDataCom();
-                    // -----------------wait signal from RS232--------------
-                    if (string.IsNullOrEmpty(dataComIQC.Data))
+                    int queueSize = MyParam.commonParam.myComportIQC.GetQueueCount();
+                    if (queueSize > 0)
                     {
-                        return;
+
+                        dataComIQC = MyParam.commonParam.myComportIQC.GetDataCom();
+                        //UpdateTextBox(dataCom);
+                        dataComIQC.Data = dataComIQC.Data.TrimEnd(new char[] { '\r', '\n' });
+                        MyParam.commonParam.myComportIQC.ClearDataCom();
+                        MainIQC_StepCtrl.SetStep(eProcessing.FlushDataBase);
                     }
-                    //UpdateTextBox(dataCom);
-                    dataComIQC.Data = dataComIQC.Data.TrimEnd(new char[] { '\r', '\n' });
-                    MyParam.commonParam.myComportIQC.ClearDataCom();
-                    MainIQC_StepCtrl.SetStep(eProcessing.FlushDataBase);
                     break;
                 case eProcessing.FlushDataBase:
                     {
@@ -398,16 +398,15 @@ namespace TanHungHa.Common
                 case eProcessing.None:
                     break;
                 case eProcessing.ReceiveData:
-                    dataComOQC = MyParam.commonParam.myComportOQC.GetDataCom();
-                    // -----------------wait signal from RS232--------------
-                    if (string.IsNullOrEmpty(dataComOQC.Data))
+                    int queueSize = MyParam.commonParam.myComportOQC.GetQueueCount();
+                    if (queueSize > 0)
                     {
-                        return;
+                        dataComOQC = MyParam.commonParam.myComportOQC.GetDataCom();
+                        
+                        dataComOQC.Data = dataComOQC.Data.TrimEnd(new char[] { '\r', '\n' });
+                        MyParam.commonParam.myComportOQC.ClearDataCom();
+                        MainOQC_StepCtrl.SetStep(eProcessing.FlushDataBase);
                     }
-                    //UpdateTextBox(dataCom);
-                    dataComOQC.Data = dataComOQC.Data.TrimEnd(new char[] { '\r', '\n' });
-                    MyParam.commonParam.myComportOQC.ClearDataCom();
-                    MainOQC_StepCtrl.SetStep(eProcessing.FlushDataBase);
                     break;
                 case eProcessing.FlushDataBase:
                     {
@@ -575,7 +574,7 @@ namespace TanHungHa.Common
                 if (queueSize > 0)
                 {
                     SerialData dataFromCom = MyParam.commonParam.myComport.GetDataCom();
-                    MyParam.tabRS232.setText(dataFromCom.Timestamp.ToString());
+                    MyParam.tabRS232.setText(dataFromCom.Data);
             }
         }
         #endregion End RS232 manual

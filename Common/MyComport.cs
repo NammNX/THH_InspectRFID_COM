@@ -48,7 +48,7 @@ namespace TanHungHa.Common
             prefix = "";
             suffix = "";
             portName = "COM6";
-            baudRate = 9600;
+            baudRate = 38400;
             parity = Parity.None;
             dataBits = 8;
             stopBits = StopBits.One;

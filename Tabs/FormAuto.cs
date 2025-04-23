@@ -124,13 +124,14 @@ namespace TanHungHa.Tabs
                 }
                 MainProcess.MainIQC_StepCtrl.SetStep(eProcessing.ReceiveData);
                 MainProcess.MainOQC_StepCtrl.SetStep(eProcessing.ReceiveData);
+                MyParam.runParam.ProgramStatus = ePRGSTATUS.Started;
             }
             else
             {
                 EnableBtn(btnReset, false);
                 EnableBtn(btnStop, false);
             }
-            MyParam.runParam.ProgramStatus = ePRGSTATUS.Started;
+           
             this.Cursor = Cursors.Default;
         }
 
