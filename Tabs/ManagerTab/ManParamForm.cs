@@ -47,13 +47,14 @@ namespace TanHungHa.Tabs.ManualTab
             treeView.BeginUpdate();
             TreeNode treeNodeRunParam = new TreeNode(Text = MyDefine.treenodeRunParam);
             TreeNode treeNodeTime = new TreeNode(Text = MyDefine.treenodeTime);
-            TreeNode treeNodeRS232 = new TreeNode(Text = MyDefine.treenodeRS232);
+            //TreeNode treeNodeRS232 = new TreeNode(Text = MyDefine.treenodeRS232);
             TreeNode treeNodeTheme = new TreeNode(Text = MyDefine.treenodeTheme);
             TreeNode treeNodeDev = new TreeNode(Text = MyDefine.treenodeDev);
 
             treeView.Nodes.Add(treeNodeRunParam);
             treeView.Nodes.Add(treeNodeDev);
             treeView.Nodes.Add(treeNodeTime);
+           // treeView.Nodes.Add(treeNodeRS232);
             treeView.EndUpdate();
             treeView.SelectedNode = treeNodeRunParam;
         }
@@ -102,6 +103,7 @@ namespace TanHungHa.Tabs.ManualTab
         private void btnSaveParam_Click(object sender, EventArgs e)
         {
             MyLib.SaveParamter();
+            MyLib.showDlgInfo("Save parameter success");
         }
 
         private void propertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)

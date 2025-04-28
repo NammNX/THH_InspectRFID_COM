@@ -20,7 +20,9 @@ namespace TanHungHa.Common
         Task_RS232_OQC,
         Task_RS232_Manual,
         Task_FlushBuffersIQC,
-        Task_FlushBuffersOQC
+        Task_FlushBuffersOQC,
+        Task_LoopLogIQC,
+        Task_LoopLogOQC
     }
 
 

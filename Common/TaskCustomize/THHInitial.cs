@@ -38,7 +38,7 @@ namespace TanHungHa.Common.TaskCustomize
             MyLib.showDlgInfo($"IQC = {bInitConnectCOMIQC}, OQC = {bInitConnectCOMOQC}, DataBase = {bInitConnectMongoDB}");
             return bInitConnectCOMIQC && bInitConnectCOMOQC && bInitConnectMongoDB;
         }
-        
+
         public static async Task<bool> RunHeatbeat()
         {
             Stopwatch watch = new Stopwatch();

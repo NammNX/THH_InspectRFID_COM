@@ -7,16 +7,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Collections.Concurrent;
+using System.Threading;
 
 namespace TanHungHa.Common
 {
     public class MyComport
     {
+        public enum eSerialDataType
+        {
+            OK,
+            NG,
+            Unknown
+        }
+
         public class SerialData
         {
             public string Data { get; set; }
             public DateTime Timestamp { get; set; }
-            public string Type { get; set; }
+            public eSerialDataType Type { get; set; }
         }
 
         public string prefix { get; set; }
@@ -34,7 +43,8 @@ namespace TanHungHa.Common
 
         [Browsable(false)]
         public string dataComport { get; set; }
-        public string typeData { get; set; }
+        [JsonIgnore]
+        public eSerialDataType typeData { get; set; } = eSerialDataType.Unknown;
         public string tempFileName { get; set; } = "com_temp.json";
 
 
@@ -48,7 +58,7 @@ namespace TanHungHa.Common
             prefix = "";
             suffix = "";
             portName = "COM6";
-            baudRate = 38400;
+            baudRate = 9600;
             parity = Parity.None;
             dataBits = 8;
             stopBits = StopBits.One;
@@ -58,6 +68,7 @@ namespace TanHungHa.Common
             isRTS = false;
             serialPort = null;
             readTimeout = writeTimeout = 5000;
+            isReading = false;
         }
 
         public MyComport Clone()
@@ -102,9 +113,14 @@ namespace TanHungHa.Common
                     serialPort.ReadTimeout = readTimeout;
                     serialPort.WriteTimeout = writeTimeout;
 
+                    //serialPort.ErrorReceived += SerialPort_ErrorReceived;
+                    //serialPort.DataReceived += SerialPort_DataReceived;
+
                     serialPort.Open();
-                    serialPort.ErrorReceived += SerialPort_ErrorReceived;
-                    serialPort.DataReceived += SerialPort_DataReceived;
+                    // Bắt đầu thread đọc dữ liệu
+                    isReading = true;
+                    readThread = new Thread(ReadDataThread);
+                    readThread.Start();
                 }
             }
             catch (Exception ex)
@@ -112,41 +128,94 @@ namespace TanHungHa.Common
 
                 MyLib.showDlgError(ex.Message);
 
+
             }
             return serialPort.IsOpen;
         }
+        private void ReadDataThread()
+        {
+            try
+            {
+                while (isReading)
+                {
+                    if (serialPort.IsOpen)
+                    {
+                        // Kiểm tra xem có dữ liệu trong buffer không
+                        if (serialPort.BytesToRead > 0)
+                        {
+                            try
+                            {
+                                // Đọc dữ liệu từ cổng COM
+                                string dataComport = serialPort.ReadLine();
+
+                                // Nếu có dữ liệu và không rỗng
+                                if (!string.IsNullOrEmpty(dataComport))
+                                {
+                                    eSerialDataType typeData;
+                                    // Kiểm tra nếu dữ liệu có lỗi (NG) hay không
+                                    if (dataComport.Replace("\r", "").Replace("\n", "").Trim().Length <= MyParam.commonParam.devParam.LengthNG)
+                                    {
+                                        typeData = eSerialDataType.NG;
+                                    }
+                                    else
+                                    {
+                                        typeData = eSerialDataType.OK;
+                                    }
+
+                                    // Đóng gói dữ liệu và đưa vào queue
+                                    CollectDataCom(dataComport, typeData);
+                                }
+                            }
+                            catch (TimeoutException)
+                            {
+                                // Xử lý trường hợp timeout
+                                Console.WriteLine("Timeout occurred while reading from serial port.");
+                            }
+                        }
+
+                        // Đảm bảo vòng lặp không chiếm dụng quá nhiều CPU
+                        Thread.Sleep(10);  // Bạn có thể điều chỉnh thời gian này tùy vào yêu cầu tốc độ xử lý
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MyLib.showDlgError("Error in ReadDataThread: " + ex.Message);
+            }
+        }
+
+
 
         private void SerialPort_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
         {
             MyLib.showDlgError(e.EventType.ToString());
+            Console.WriteLine("SerialPort_ErrorReceived" + e.EventType.ToString());
         }
 
-      //  public Queue<string> queueData = new Queue<string>(MyDefine.MAX_QUEUE_DATA);
-        public Queue<SerialData> queueData = new Queue<SerialData>(MyDefine.MAX_QUEUE_DATA);
+        //  public Queue<string> queueData = new Queue<string>(MyDefine.MAX_QUEUE_DATA);
+        public ConcurrentQueue<SerialData> queueData = new ConcurrentQueue<SerialData>();
+        private Thread readThread;  // Khởi tạo một thread đọc dữ liệu từ COM
+        private bool isReading;  // Cờ để kiểm soát vòng lặp đọc dữ liệu
+
 
 
         public object lockQueue = new object();
         public void ClearDataRev()
         {
-            lock (lockQueue)
-            {
-                if (queueData.Count > 0)
-                {
-                    queueData.Clear();
-                }
-
-            }
+           while (queueData.TryDequeue(out _)) ;
         }
-        public void CollectDataCom(string str,string type)
+        public void CollectDataCom(string str, eSerialDataType type)
         {
-            lock (lockQueue)
-            {
                 var item = new SerialData
                 {
                     Data = str,
                     Timestamp = DateTime.Now,
                     Type = type
                 };
+            //if(queueData.Count > MyDefine.MAX_QUEUE_DATA)
+            {
+                Console.WriteLine("-------------@@@@@@@@@@@@@@@@@@@@------------------" + queueData.Count + "---"+ str);
+            }    
 
                 queueData.Enqueue(item);
                 //try
@@ -158,12 +227,9 @@ namespace TanHungHa.Common
                 //{
                 //    MyLib.showDlgError("Error writing to temp file: " + ex.Message);
                 //}
-            }
         }
         public void RestoreQueueFromFile()
         {
-            lock (lockQueue)
-            {
                 if (!File.Exists(tempFileName))
                     return;
 
@@ -179,14 +245,13 @@ namespace TanHungHa.Common
                         }
                     }
 
-                   
+
                     File.Delete(tempFileName);
                 }
                 catch (Exception ex)
                 {
                     MyLib.showDlgError("Error restoring queue: " + ex.Message);
                 }
-            }
         }
 
 
@@ -201,22 +266,14 @@ namespace TanHungHa.Common
         string data = "";
         public SerialData GetDataCom()
         {
-            lock (lockQueue)
-            {
-                if (queueData.Count > 0)
-                {
-                    return queueData.Dequeue();
-                }
-            }
-            return new SerialData(); // Trả về object rỗng nếu không có dữ liệu
+            SerialData temp = new SerialData();
+            queueData.TryDequeue(out temp);
+            return temp;
         }
 
         public int GetQueueCount()
         {
-            lock (lockQueue)
-            {
-                return queueData.Count;
-            }
+            return queueData.Count;
         }
 
 
@@ -248,30 +305,26 @@ namespace TanHungHa.Common
             try
             {
                 dataComport = serialPort.ReadLine();
+                //Console.WriteLine(dataComport);
+
                 if (string.IsNullOrEmpty(dataComport))
                     return;
                 if (dataComport.Replace("\r", "").Replace("\n", "").Trim().Length <= MyParam.commonParam.devParam.LengthNG)
                 {
-                     typeData = "NG";
+                    typeData = eSerialDataType.NG;
+
                 }
                 else
                 {
-                    typeData = "OK";
+                    typeData = eSerialDataType.OK;
                 }
 
-                if (MyParam.commonParam.queueData.Count >= MyDefine.MAX_QUEUE_DATA)
-                {
-                    MyLib.showDlgError("Please stop comport and wait a second!");
-                }
-                else
-                {
-                    CollectDataCom(dataComport, typeData);
-                }
-
+                CollectDataCom(dataComport, typeData);
             }
             catch (Exception ex)
             {
                 MyLib.showDlgError(ex.Message);
+                Console.WriteLine("----------" + ex.Message);
 
             }
         }
@@ -283,16 +336,22 @@ namespace TanHungHa.Common
 
             try
             {
-                serialPort.DataReceived -= SerialPort_DataReceived;
+                isReading = false;
+                if (readThread != null && readThread.IsAlive)
+                {
+                    readThread.Join();  // Đợi thread kết thúc trước khi tiếp tục
+                }
                 serialPort.Close();
-                serialPort.ErrorReceived -= SerialPort_ErrorReceived;
+
+                //serialPort.DataReceived -= SerialPort_DataReceived;
+                //serialPort.ErrorReceived -= SerialPort_ErrorReceived;
             }
             catch (Exception ex)
             {
                 MyLib.showDlgError(ex.Message);
             }
 
-            return serialPort.IsOpen;
+            return !serialPort.IsOpen;
         }
 
         public bool SendData(string data)

@@ -12,6 +12,9 @@ using System.IO;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
+using HslCommunication.Profinet.OpenProtocol;
+using System.Linq;
 
 
 namespace TanHungHa.Common
@@ -23,6 +26,14 @@ namespace TanHungHa.Common
         Index_IQC_OQC_Log,
         Index_MongoDB_Log
     }
+    public class LogItem
+    {
+        public DateTime Timestamp { get; set; }
+        public string Message { get; set; }
+        public eSerialDataType DataType { get; set; }
+    }
+
+
     public class MongoDBService
     {
         private static MongoClient _client;
@@ -110,7 +121,7 @@ namespace TanHungHa.Common
         //}
 
 
-        public static void AddToBuffer(string data, DateTime timestamp,string type, string collectionName)
+        public static void AddToBuffer(string data, DateTime timestamp, string type, string collectionName)
         {
             var doc = new BsonDocument
         {
@@ -124,7 +135,7 @@ namespace TanHungHa.Common
                 lock (iqcLock)
                 {
                     iqcBuffer.Add(doc);
-                  //  File.AppendAllText("iqc_temp.json", doc.ToJson() + Environment.NewLine);
+                    //  File.AppendAllText("iqc_temp.json", doc.ToJson() + Environment.NewLine);
                 }
             }
             else if (collectionName == "OQC")
@@ -132,7 +143,7 @@ namespace TanHungHa.Common
                 lock (oqcLock)
                 {
                     oqcBuffer.Add(doc);
-                //    File.AppendAllText("oqc_temp.json", doc.ToJson() + Environment.NewLine);
+                    //    File.AppendAllText("oqc_temp.json", doc.ToJson() + Environment.NewLine);
                 }
             }
         }
@@ -147,7 +158,7 @@ namespace TanHungHa.Common
                         iqcCollection.InsertMany(iqcBuffer);
                         totalIqcFlushed += iqcBuffer.Count;
                         iqcBuffer.Clear();
-                      //  File.WriteAllText("iqc_temp.json", string.Empty);
+                        //  File.WriteAllText("iqc_temp.json", string.Empty);
                         MainProcess.AddLogAuto("IQC buffer đã flush lên MongoDB", eIndex.Index_MongoDB_Log);
                         Console.WriteLine($"IQC buffer đã flush lên MongoDB.Tổng: {totalIqcFlushed}");
                     }
@@ -158,7 +169,7 @@ namespace TanHungHa.Common
 
                 Console.WriteLine("Flush lỗi: " + ex.Message);
                 MyLib.showDlgError("Flush lỗi: " + ex.Message);
-               // ????
+                // ????
             }
         }
         public static void FlushBuffersOQC()
@@ -172,7 +183,7 @@ namespace TanHungHa.Common
                         oqcCollection.InsertMany(oqcBuffer);
                         totalOqcFlushed += oqcBuffer.Count;
                         oqcBuffer.Clear();
-                     //   File.WriteAllText("oqc_temp.json", string.Empty);
+                        //   File.WriteAllText("oqc_temp.json", string.Empty);
                         MainProcess.AddLogAuto("OQC buffer đã flush lên MongoDB", eIndex.Index_MongoDB_Log);
                         Console.WriteLine($"OQC buffer đã flush lên MongoDB. Tổng: {totalOqcFlushed}");
                     }
@@ -182,7 +193,7 @@ namespace TanHungHa.Common
             {
                 Console.WriteLine("Flush lỗi: " + ex.Message);
                 MyLib.showDlgError("Flush lỗi: " + ex.Message);
-              //  StopFlushLoop();
+                //  StopFlushLoop();
             }
         }
 
@@ -291,23 +302,36 @@ namespace TanHungHa.Common
             var collection = collectionName == "IQC" ? iqcCollection : oqcCollection;
             return collection.Find(filter).ToList();
         }
-
-
-
     }
 
 
     public class MainProcess
     {
-       
+
         public static StepControl MainIQC_StepCtrl = new StepControl();
         public static StepControl MainOQC_StepCtrl = new StepControl();
         public string TAG = null;
+        public static List<LogItem> logIQCList = new List<LogItem>();
+        public static List<LogItem> logOQCList = new List<LogItem>();
+
+        static ConcurrentQueue<LogItem> logBufferIQC = new ConcurrentQueue<LogItem>();
+        static ConcurrentQueue<LogItem> logBufferOQC = new ConcurrentQueue<LogItem>();
+        private static ConcurrentQueue<eSerialDataType> chartIQCUpdateQueue = new ConcurrentQueue<eSerialDataType>();
+        private static ConcurrentQueue<eSerialDataType> chartOQCUpdateQueue = new ConcurrentQueue<eSerialDataType>();
+
+        private static List<eSerialDataType> batchChartIQC = new List<eSerialDataType>();
+        private static List<eSerialDataType> batchChartOQC = new List<eSerialDataType>();
+
+
+
+        static object logLockUIIQC = new object();
+        static object logLockUIOQC = new object();
+
         public MainProcess()
         {
             MainIQC_StepCtrl.Cur_Processing = eProcessing.None;
             MainOQC_StepCtrl.Cur_Processing = eProcessing.None;
-          
+
         }
 
 
@@ -327,120 +351,235 @@ namespace TanHungHa.Common
                 return;
             }
             //IQC
-            MyParam.taskLoops[(int)eTaskLoop.Task_RS232_IQC].ResetToken();
-            MyParam.taskLoops[(int)eTaskLoop.Task_RS232_IQC].RunLoop(MyParam.commonParam.timeDelay.timeLoop, LoopProcessIQC).ContinueWith((a) =>
+            if (!MyParam.commonParam.devParam.ignoreIQC)
             {
-                MyLib.log($"Done task COM IQC!");
-            });
+                MyParam.taskLoops[(int)eTaskLoop.Task_RS232_IQC].ResetToken();
+                MyParam.taskLoops[(int)eTaskLoop.Task_RS232_IQC].RunLoop(MyParam.commonParam.timeDelay.timeLoopCOM, LoopProcessIQC).ContinueWith((a) =>
+                {
+                    MyLib.log($"Done task COM IQC!");
+                });
+            }
             //OQC
-            MyParam.taskLoops[(int)eTaskLoop.Task_RS232_OQC].ResetToken();
-            MyParam.taskLoops[(int)eTaskLoop.Task_RS232_OQC].RunLoop(MyParam.commonParam.timeDelay.timeLoop, LoopProcessOQC).ContinueWith((a) =>
+            if (!MyParam.commonParam.devParam.ignoreOQC)
             {
-                MyLib.log($"Done task COM OQC!");
-            });
+                MyParam.taskLoops[(int)eTaskLoop.Task_RS232_OQC].ResetToken();
+                MyParam.taskLoops[(int)eTaskLoop.Task_RS232_OQC].RunLoop(MyParam.commonParam.timeDelay.timeLoopCOM, LoopProcessOQC).ContinueWith((a) =>
+                {
+                    MyLib.log($"Done task COM OQC!");
+                });
+            }
             isRunLoopCOM = true;
         }
 
-
-        static SerialData dataComIQC = new SerialData();
-        public static void LoopProcessIQC()
+        public static bool isChartUpdateRunning = false;
+        public static void StopLoopChartUpdate()
         {
-            switch (MainIQC_StepCtrl.Cur_Processing)
-            {
-                case eProcessing.None:
-                    break;
-                case eProcessing.ReceiveData:
-                    int queueSize = MyParam.commonParam.myComportIQC.GetQueueCount();
-                    if (queueSize > 0)
-                    {
+            MyParam.taskLoops[(int)eTaskLoop.Task_LoopLogIQC].StopLoop();
+            MyParam.taskLoops[(int)eTaskLoop.Task_LoopLogOQC].StopLoop();
 
-                        dataComIQC = MyParam.commonParam.myComportIQC.GetDataCom();
-                        //UpdateTextBox(dataCom);
-                        dataComIQC.Data = dataComIQC.Data.TrimEnd(new char[] { '\r', '\n' });
-                        MyParam.commonParam.myComportIQC.ClearDataCom();
-                        MainIQC_StepCtrl.SetStep(eProcessing.FlushDataBase);
-                    }
-                    break;
-                case eProcessing.FlushDataBase:
+            isChartUpdateRunning = false;
+        }
+        public static void RunLoopChartUpdate()
+        {
+            if (isChartUpdateRunning)
+            {
+                MyLib.showDlgInfo("Loop Log UI is running!");
+                return;
+            }
+            //IQC
+            MyParam.taskLoops[(int)eTaskLoop.Task_LoopLogIQC].ResetToken();
+            MyParam.taskLoops[(int)eTaskLoop.Task_LoopLogIQC].RunLoop(MyParam.commonParam.timeDelay.timeLoopChart, LoopProcessLoopChartUpdateIQC).ContinueWith((a) =>
+            {
+                MyLib.log($"Done task RunLoopLogUI!");
+            });
+            //OQC
+            MyParam.taskLoops[(int)eTaskLoop.Task_LoopLogOQC].ResetToken();
+            MyParam.taskLoops[(int)eTaskLoop.Task_LoopLogOQC].RunLoop(MyParam.commonParam.timeDelay.timeLoopChart, LoopProcessLoopChartUpdateOQC).ContinueWith((a) =>
+            {
+                MyLib.log($"Done task RunLoopLogUI!");
+            });
+            isChartUpdateRunning = true;
+        }
+
+        public static void LoopProcessLoopChartUpdateIQC()
+        {
+            while (chartIQCUpdateQueue.TryDequeue(out eSerialDataType dataType))
+            {
+                batchChartIQC.Add(dataType);
+            }
+
+            if (batchChartIQC.Count > 0)
+            {
+                int countOK = batchChartIQC.Count(d => d == eSerialDataType.OK);
+                int countNG = batchChartIQC.Count(d => d == eSerialDataType.NG);
+
+                try
+                {
+                    if (MyParam.autoForm.InvokeRequired)
                     {
-                        if (MyParam.autoForm.swFlushDB.Checked)
+                        MyParam.autoForm.Invoke(new Action(() =>
                         {
-                            MongoDBService.AddToBuffer(dataComIQC.Data, dataComIQC.Timestamp,dataComIQC.Type, "IQC");
-                        }
-                        MainIQC_StepCtrl.SetStep(eProcessing.UpdateLog);
-                        break;
-                    }    
-                case eProcessing.UpdateLog:
-                    AddLogAuto(dataComIQC.Data,dataComIQC.Timestamp, dataComIQC.Type,eIndex.Index_IQC_Data);
-                    MainIQC_StepCtrl.SetStep(eProcessing.UpdateChart);
-                    break;
-                case eProcessing.UpdateChart:
-                    if (dataComIQC.Type == "NG")
-                    {
-                        MyParam.autoForm.UpdateChartIQC_NG();
+                            for (int i = 0; i < countOK; i++)
+                                MyParam.autoForm.UpdateChartIQC_OK();
+                            for (int i = 0; i < countNG; i++)
+                                MyParam.autoForm.UpdateChartIQC_NG();
+                        }));
                     }
                     else
                     {
-                        MyParam.autoForm.UpdateChartIQC_OK();
+                        for (int i = 0; i < countOK; i++)
+                            MyParam.autoForm.UpdateChartIQC_OK();
+                        for (int i = 0; i < countNG; i++)
+                            MyParam.autoForm.UpdateChartIQC_NG();
                     }
-                    MainIQC_StepCtrl.SetStep(eProcessing.ReceiveData);
-                    break;
 
+                    Console.WriteLine($"[IQC] Chart Updated - OK: {countOK}, NG: {countNG}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[IQC] Update Chart Exception: {ex.Message}");
+                }
+
+                batchChartIQC.Clear();
             }
         }
 
-        static SerialData dataComOQC = new SerialData();
+        public static void LoopProcessLoopChartUpdateOQC()
+        {
+            while (chartOQCUpdateQueue.TryDequeue(out eSerialDataType dataType))
+            {
+                batchChartOQC.Add(dataType);
+            }
+
+            if (batchChartOQC.Count > 0)
+            {
+                int countOK = batchChartOQC.Count(d => d == eSerialDataType.OK);
+                int countNG = batchChartOQC.Count(d => d == eSerialDataType.NG);
+
+                try
+                {
+                    if (MyParam.autoForm.InvokeRequired)
+                    {
+                        MyParam.autoForm.Invoke(new Action(() =>
+                        {
+                            for (int i = 0; i < countOK; i++)
+                                MyParam.autoForm.UpdateChartOQC_OK();
+                            for (int i = 0; i < countNG; i++)
+                                MyParam.autoForm.UpdateChartOQC_NG();
+                        }));
+                    }
+                    else
+                    {
+                        for (int i = 0; i < countOK; i++)
+                            MyParam.autoForm.UpdateChartOQC_OK();
+                        for (int i = 0; i < countNG; i++)
+                            MyParam.autoForm.UpdateChartOQC_NG();
+                    }
+
+                    Console.WriteLine($"[OQC] Chart Updated - OK: {countOK}, NG: {countNG}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[OQC] Update Chart Exception: {ex.Message}");
+                }
+
+                batchChartOQC.Clear();
+            }
+        }
+
+      //  static SerialData dataComIQC = new SerialData();
+
+        public static void LoopProcessIQC()
+        {
+            // Lặp và xử lý dữ liệu trong queue IQC cho đến khi queue trống
+            while (MyParam.commonParam.myComportIQC.GetQueueCount() > 0)
+            {
+                var dataComIQC = MyParam.commonParam.myComportIQC.GetDataCom();
+                if (dataComIQC != null)
+                {
+                    dataComIQC.Data = dataComIQC.Data.TrimEnd(new char[] { '\r', '\n' });
+
+                    // Ghi log
+                    AddLogAuto(dataComIQC.Data, dataComIQC.Timestamp, dataComIQC.Type, eIndex.Index_IQC_Data);
+
+                    // Lưu vào MongoDB 
+                    if (MyParam.autoForm.swFlushDB.Checked)
+                    {
+                        MongoDBService.AddToBuffer(dataComIQC.Data, dataComIQC.Timestamp, dataComIQC.Type.ToString(), "IQC");
+                    }
+
+                    // Update chart
+                    chartIQCUpdateQueue.Enqueue(dataComIQC.Type);
+                }
+            }
+
+
+            //int queueSize = MyParam.commonParam.myComportIQC.GetQueueCount();
+            //if (queueSize > 0)
+            //{
+            //    List<SerialData> listDataCom = new List<SerialData>();
+            //    for (int i = 0; i < queueSize; i++)
+            //    {
+            //       var dataComIQC = MyParam.commonParam.myComportIQC.GetDataCom();
+            //        if (dataComIQC != null)
+            //        {
+            //            dataComIQC.Data = dataComIQC.Data.TrimEnd(new char[] { '\r', '\n' });
+            //            listDataCom.Add(dataComIQC);
+            //        }
+            //    }
+
+            //    foreach (var dataCom in listDataCom)
+            //    {
+            //        AddLogAuto(dataCom.Data, dataCom.Timestamp, dataCom.Type, eIndex.Index_IQC_Data);
+
+            //        if (MyParam.autoForm.swFlushDB.Checked)
+            //        {
+            //            MongoDBService.AddToBuffer(dataCom.Data, dataCom.Timestamp, dataCom.Type.ToString(), "IQC");
+            //        }
+
+            //        chartIQCUpdateQueue.Enqueue(dataCom.Type);
+            //    }
+        }
+        
+        
+
+    
+    
+
+
+
+
 
         public static void LoopProcessOQC()
         {
-            switch (MainOQC_StepCtrl.Cur_Processing)
+            // Lặp và xử lý dữ liệu trong queue IQC cho đến khi queue trống
+            while (MyParam.commonParam.myComportOQC.GetQueueCount() > 0)
             {
-                case eProcessing.None:
-                    break;
-                case eProcessing.ReceiveData:
-                    int queueSize = MyParam.commonParam.myComportOQC.GetQueueCount();
-                    if (queueSize > 0)
-                    {
-                        dataComOQC = MyParam.commonParam.myComportOQC.GetDataCom();
-                        
-                        dataComOQC.Data = dataComOQC.Data.TrimEnd(new char[] { '\r', '\n' });
-                        MyParam.commonParam.myComportOQC.ClearDataCom();
-                        MainOQC_StepCtrl.SetStep(eProcessing.FlushDataBase);
-                    }
-                    break;
-                case eProcessing.FlushDataBase:
-                    {
-                        if (MyParam.autoForm.swFlushDB.Checked)
-                        {
-                            MongoDBService.AddToBuffer(dataComOQC.Data, dataComOQC.Timestamp,dataComOQC.Type, "OQC");
-                        }
-                        MainOQC_StepCtrl.SetStep(eProcessing.UpdateLog);
-                        break;
-                    }
-                case eProcessing.UpdateLog:
-                    AddLogAuto(dataComOQC.Data, dataComOQC.Timestamp, dataComOQC.Type, eIndex.Index_OQC_Data);
-                    MainOQC_StepCtrl.SetStep(eProcessing.UpdateChart);
-                    break;
-                case eProcessing.UpdateChart:
-                    if (dataComOQC.Type == "NG")
-                    {
-                        MyParam.autoForm.UpdateChartOQC_NG();
-                    }
-                    else
-                    {
-                        MyParam.autoForm.UpdateChartOQC_OK();
-                    }
-                    MainOQC_StepCtrl.SetStep(eProcessing.ReceiveData);
-                    break;
+                var dataComOQC = MyParam.commonParam.myComportOQC.GetDataCom();
+                if (dataComOQC != null)
+                {
+                    dataComOQC.Data = dataComOQC.Data.TrimEnd(new char[] { '\r', '\n' });
 
+                    // Ghi log
+                    AddLogAuto(dataComOQC.Data, dataComOQC.Timestamp, dataComOQC.Type, eIndex.Index_OQC_Data);
+
+                    // Lưu vào MongoDB 
+                    if (MyParam.autoForm.swFlushDB.Checked)
+                    {
+                        MongoDBService.AddToBuffer(dataComOQC.Data, dataComOQC.Timestamp, dataComOQC.Type.ToString(), "OQC");
+                    }
+
+                    // Update chart
+                    chartOQCUpdateQueue.Enqueue(dataComOQC.Type);
+                }
             }
         }
 
 
-   
 
-        public static void AddLogAuto(string message,DateTime dateTime,string dataType, eIndex index = eIndex.Index_IQC_Data)
-        {
+
+        public static void AddLogAuto(string message,DateTime dateTime,eSerialDataType dataType, eIndex index = eIndex.Index_IQC_Data)
+            {
             //if (!MyParam.autoForm.IsHandleCreated) return;
             switch (index)
             {
@@ -525,9 +664,11 @@ namespace TanHungHa.Common
         }
 
         public static int iCountFailHeartBear = 0;
+        
         public static void LoopProcessHEARTBEAT()
         {
             MyParam.autoForm.UpdateLabelDataBase();
+           
             //RAM
             string RamInfo = "";
             if (curpcp != null)
@@ -536,6 +677,7 @@ namespace TanHungHa.Common
             }
             string IQC = $"(IQC:{MyParam.runParam.COM_IQC},{MyParam.commonParam.myComportIQC.isConnected()})";
             string OQC = $"(OQC:{MyParam.runParam.COM_OQC},{MyParam.commonParam.myComportOQC.isConnected()})";
+
             if (!MyParam.mainForm.IsHandleCreated)
                 return;
             if (MyParam.mainForm.statusStrip1.InvokeRequired)
@@ -545,7 +687,8 @@ namespace TanHungHa.Common
                     MyParam.mainForm.sttRAM.Text = $"(RAM: {RamInfo})";
                     MyParam.mainForm.sttIQC.Text = IQC;
                     MyParam.mainForm.sttOQC.Text = OQC;
-                  
+                   
+
 
                 }));
 
@@ -562,7 +705,7 @@ namespace TanHungHa.Common
         public static void RunLoopRS232_Manual()
         {
             MyParam.taskLoops[(int)eTaskLoop.Task_RS232_Manual].ResetToken();
-            MyParam.taskLoops[(int)eTaskLoop.Task_RS232_Manual].RunLoop(MyParam.commonParam.timeDelay.timeLoop, LoopProcessRS232_Manual).ContinueWith((a) =>
+            MyParam.taskLoops[(int)eTaskLoop.Task_RS232_Manual].RunLoop(MyParam.commonParam.timeDelay.timeLoopCOM, LoopProcessRS232_Manual).ContinueWith((a) =>
             {
                 MyLib.showDlgInfo($"Done task RS232 Manual");
             });

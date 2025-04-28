@@ -24,13 +24,29 @@ namespace TanHungHa.Common.TaskCustomize
             switch (taskToDo)
             {
                 case eTaskToDo.ConnectCOMIQC:
-                    MyParam.commonParam.myComportIQC.portName = MyParam.runParam.COM_IQC;
-                    bResult = MyParam.commonParam.myComportIQC.Connect();
+                    if (!MyParam.commonParam.devParam.ignoreIQC)
+                    {
+                        MyParam.commonParam.myComportIQC.portName = MyParam.runParam.COM_IQC;
+                        MyParam.commonParam.myComportIQC.baudRate = MyParam.runParam.Baudrate;
+                        bResult = MyParam.commonParam.myComportIQC.Connect();
+                    }
+                    else
+                    {
+                        bResult = true;
+                    }
                     break;
                 
                 case eTaskToDo.ConnectCOMOQC:
-                    MyParam.commonParam.myComportOQC.portName = MyParam.runParam.COM_OQC;
-                    bResult = MyParam.commonParam.myComportOQC.Connect();
+                    if (!MyParam.commonParam.devParam.ignoreOQC)
+                    {
+                        MyParam.commonParam.myComportOQC.portName = MyParam.runParam.COM_OQC;
+                        MyParam.commonParam.myComportOQC.baudRate = MyParam.runParam.Baudrate;
+                        bResult = MyParam.commonParam.myComportOQC.Connect();
+                    }
+                    else
+                    {
+                        bResult = true;
+                    }
                     break;
                 case eTaskToDo.ConnectMongoDB:
                     if (!MyParam.commonParam.devParam.ignoreDataBase)

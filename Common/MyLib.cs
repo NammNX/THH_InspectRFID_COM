@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using TanHungHa.Common.Parameter;
+using static TanHungHa.Common.MyComport;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 
@@ -425,11 +426,55 @@ namespace TanHungHa.Common
             }
         }
 
-
-
-        public static void ShowLogListview(MaterialListView listview,DateTime dateTime, string message,string typeData)
+        public static void ShowLogListview(ListView listview, DateTime dateTime, string message, eSerialDataType typeData)
         {
-            string timeStr = dateTime.ToString("HH:mm:ss.fff");
+            string timeStr = dateTime.ToString("HH:mm:ss");
+            if (listview.InvokeRequired)
+            {
+                listview.BeginInvoke(new Action(() =>
+                {
+                    if (listview.Items.Count >= MyParam.commonParam.devParam.maxLine)
+                    {
+                        listview.Items.Clear();
+                    }
+
+                    
+                    ListViewItem newItem = new ListViewItem(new string[] { $"{timeStr}", $"{message}", $"{typeData.ToString()}" });
+
+                   
+                    if (typeData == eSerialDataType.NG)
+                    {
+                        newItem.BackColor = Color.Red;
+                        newItem.ForeColor = Color.White; // Bạn có thể tùy chỉnh màu chữ nếu cần
+                    }
+
+                   
+                    listview.Items.Insert(0, newItem);
+                }));
+            }
+            else
+            {
+                if (listview.Items.Count >= MyParam.commonParam.devParam.maxLine)
+                {
+                    listview.Items.Clear();
+                }
+
+                
+                ListViewItem newItem = new ListViewItem(new string[] { $"{timeStr}", $"{message}", $"{typeData.ToString()}" });
+
+                if (typeData == eSerialDataType.NG)
+                {
+                    newItem.BackColor = Color.Red;
+                    newItem.ForeColor = Color.White;
+                }
+                listview.Items.Insert(0, newItem);
+            }
+        }
+
+
+        public static void ShowLogListview2(ListView listview,DateTime dateTime, string message,eSerialDataType typeData)
+        {
+            string timeStr = dateTime.ToString("HH:mm:ss");
             if (listview.InvokeRequired)
             {
                 listview.BeginInvoke(new Action(() =>
@@ -440,7 +485,7 @@ namespace TanHungHa.Common
                     }
 
                     listview.Items.Insert(0,
-                        new ListViewItem(new string[] { $"{timeStr}", $"{message}",$"{ typeData}"}));
+                        new ListViewItem(new string[] { $"{timeStr}", $"{message}",$"{ typeData.ToString()}"}));
                 }));
             }
             else
@@ -451,11 +496,11 @@ namespace TanHungHa.Common
                 }
 
                 listview.Items.Insert(0,
-                         new ListViewItem(new string[] { $"{dateTime}", $"{message}", $"{typeData}"}));
+                         new ListViewItem(new string[] { $"{timeStr}", $"{message}", $"{typeData.ToString()}"}));
             }
         }
 
-        public static void ShowLogListview(MaterialListView listview, string message)
+        public static void ShowLogListview(ListView listview, string message)
         {
             if (listview.InvokeRequired)
             {

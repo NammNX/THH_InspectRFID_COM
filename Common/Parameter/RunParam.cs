@@ -45,6 +45,12 @@ namespace TanHungHa.Common
         public string COM_IQC { get; set; }
         [Category("Device"), DescriptionAttribute("COM OQC")]
         public string COM_OQC { get; set; }
+        [Category("Device"), DescriptionAttribute("Baudrate")]
+        public int Baudrate  { get; set; }
+
+       
+
+
         [Category("DataBase"), DescriptionAttribute("client")]
         public string MongoClient { get; set; }
         [Category("DataBase"), DescriptionAttribute("DataBase name")]
@@ -125,6 +131,7 @@ namespace TanHungHa.Common
         {
             COM_IQC = "COM1";
             COM_OQC = "COM2";
+            Baudrate = 9600;
             MongoClient = "mongodb://localhost:27017";
             DataBaseName = "RFID_DataBase";
             ConnectTimeOut = 5000;

@@ -43,6 +43,7 @@ namespace TanHungHa.Tabs
             if ((MyParam.commonParam.myComportIQC.GetQueueCount() > 0) || (MyParam.commonParam.myComportOQC.GetQueueCount() > 0)
                 || (MongoDBService.GetIqcBufferCount() > 0) || (MongoDBService.GetOqcBufferCount() > 0))
             {
+                Console.WriteLine($"{MyParam.commonParam.myComportIQC.GetQueueCount()},{MongoDBService.GetIqcBufferCount()}");
                 MyLib.showDlgInfo("Quá trình ghi dữ liệu vào data base chưa hoàn tất, vui lòng đợi trong giây lát");
                 return;
             }
@@ -68,7 +69,9 @@ namespace TanHungHa.Tabs
                 MainProcess.AddLogAuto($"Disconnect COM OQC", eIndex.Index_IQC_OQC_Log);
             }
             MainProcess.isRunLoopCOM = false;
+            MainProcess.isChartUpdateRunning = false;
             MongoDBService.isFlushLoop = false;
+
             MyParam.runParam.ProgramStatus = ePRGSTATUS.Stoped;
             this.Cursor = Cursors.Default;
         }
@@ -85,19 +88,6 @@ namespace TanHungHa.Tabs
 
         public async void StartProgram()
         {
-            // bool bEnableInit = false;
-            //if(MyParam.runParam.ProgramStatus == ePRGSTATUS.Start_Up ||
-            //    MyParam.runParam.ProgramStatus == ePRGSTATUS.Stoped)
-            //{
-            //    bEnableInit = true;
-            //}
-
-            //if(!bEnableInit)
-            //{
-            //    MyLib.showDlgWarning("Please RESET program and try again!");
-            //    return;
-            //}
-
             this.Cursor = Cursors.WaitCursor;
             var x = THHInitial.InitDevice();
             await x;
@@ -112,6 +102,12 @@ namespace TanHungHa.Tabs
                 ChangeColor(groupBoxOQC, true);
                 ChangeColor(groupBoxOQChart, true);
                 ChangeColor(groupBoxChartIQC, true);
+
+                MyParam.commonParam.myComportIQC.ClearDataRev();
+                MyParam.commonParam.myComportOQC.ClearDataRev();
+
+                MainProcess.RunLoopChartUpdate();
+
                 MainProcess.RunLoopCOM();
                 if (!MyParam.commonParam.devParam.ignoreDataBase)
                 {
@@ -438,6 +434,31 @@ namespace TanHungHa.Tabs
             lbOQCbuffer.Text = ($"OQC Buffer: {MongoDBService.GetOqcBufferCount()}");
         }
 
-      
+        private void clearLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            lvIQC.Items.Clear();
+            UpdateChart(chartIQC, 0, 0);
+            //reset label IQCOQC
+            countOK_IQC = 0;
+            countNG_IQC = 0;
+           
+            UpdateLabelIQC();
+            MongoDBService.ClearDBFlushed();
+        }
+
+        private void clearLogToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            lvOQC.Items.Clear();
+            UpdateChart(chartOQC, 0, 0);
+            //reset label IQCOQC
+          
+            countOK_OQC = 0;
+            countNG_OQC = 0;
+            UpdateLabelOQC();
+            MongoDBService.ClearDBFlushed();
+
+        }
+
+        
     }
 }

@@ -37,8 +37,8 @@ namespace TanHungHa.Common
      
 
         public const int NUM_FAIL_HEART_BEAR = 5;
-        public const int NUM_THREAD = 7;
-        public const int MAX_QUEUE_DATA = 30;
+        public const int NUM_THREAD = 8;
+        public const int MAX_QUEUE_DATA = 2;
         public const int NUM_DEVICES = 2;
 
         public static int[] baudrates = new int[] { 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200 } ;
