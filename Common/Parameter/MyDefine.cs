@@ -33,8 +33,8 @@ namespace TanHungHa.Common
         public const string treenodeTheme = "Theme";
         public const string treenodeDev = "Developer";
 
-      
-     
+        public const string ResetIO_RFID = "r";
+
 
         public const int NUM_FAIL_HEART_BEAR = 5;
         public const int NUM_THREAD = 8;

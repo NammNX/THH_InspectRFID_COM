@@ -1,1 +1,1 @@
-{"COM_IQC":"COM9","COM_OQC":"COM3","Baudrate":115200,"MongoClient":"mongodb://localhost:27017","DataBaseName":"RFID_DataBase","ConnectTimeOut":5000,"mongoFlushIntervalMs":3000}
+{"COM_IQC":"COM9","COM_OQC":"COM3","Baudrate":115200,"getTID":true,"MongoClient":"mongodb://localhost:27017","DataBaseName":"RFID_DataBase","ConnectTimeOut":5000,"mongoFlushIntervalMs":3000}

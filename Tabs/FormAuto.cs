@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using TanHungHa.Common.Parameter;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Security.Cryptography;
 
 namespace TanHungHa.Tabs
 {
@@ -146,29 +147,42 @@ namespace TanHungHa.Tabs
 
                 this.Cursor = Cursors.WaitCursor;
                 // reset listview
-                lvIQC.Items.Clear();
-                lvOQC.Items.Clear();
                 lvLogIQC_OQC.Items.Clear();
                 lvLogDB.Items.Clear();
-                // reset chart
-                UpdateChart(chartIQC, 0, 0);
-                UpdateChart(chartOQC, 0, 0);
                 // reset labelDataBase
                 MongoDBService.ClearDBFlushed();
                 //reset label IQCOQC
-                countOK_IQC = 0;
-                countNG_IQC = 0;
-                countOK_OQC = 0;
-                countNG_OQC = 0;
-                UpdateLabelOQC();
-                UpdateLabelIQC();
-
+                resetIQC();
+                resetOQC();
                 StopProgram();
                 EnableBtn(btnReset, false);
                 MyParam.runParam.ProgramStatus = ePRGSTATUS.Reset;
                 this.Cursor = Cursors.Default;
             }
         }
+
+        void resetIQC()
+        {
+            lvIQC.Items.Clear();
+            UpdateChart(chartIQC, 0, 0);
+            countOK_IQC = 0;
+            countNG_IQC = 0;
+            UpdateLabelIQC();
+            MyParam.commonParam.myComportIQC.SendData(MyDefine.ResetIO_RFID);
+        }
+        void resetOQC()
+        {
+            lvOQC.Items.Clear();
+            UpdateChart(chartOQC, 0, 0);
+            countOK_OQC = 0;
+            countNG_OQC = 0;
+            UpdateLabelOQC();
+            MyParam.commonParam.myComportOQC.SendData(MyDefine.ResetIO_RFID);
+        }
+
+        
+       
+     
 
         void EnableBtn(MaterialButton btn, bool bEnable)
         {
@@ -436,29 +450,22 @@ namespace TanHungHa.Tabs
 
         private void clearLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            lvIQC.Items.Clear();
-            UpdateChart(chartIQC, 0, 0);
-            //reset label IQCOQC
-            countOK_IQC = 0;
-            countNG_IQC = 0;
-           
-            UpdateLabelIQC();
+            resetIQC();
             MongoDBService.ClearDBFlushed();
+           // MyParam.commonParam.myComportIQC.SendData(MyDefine.ResetIO_RFID);
         }
 
         private void clearLogToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            lvOQC.Items.Clear();
-            UpdateChart(chartOQC, 0, 0);
-            //reset label IQCOQC
-          
-            countOK_OQC = 0;
-            countNG_OQC = 0;
-            UpdateLabelOQC();
+            resetOQC();
             MongoDBService.ClearDBFlushed();
+          //  MyParam.commonParam.myComportIQC.SendData(MyDefine.ResetIO_RFID);
 
         }
 
-        
+        private void tableLayoutPanel4_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

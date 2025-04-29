@@ -147,6 +147,8 @@ namespace TanHungHa
                 
                 case "tabPageLog":
                     MyParam.curMainView = eMainView.LOGGING_VIEW;
+                    MyParam.logFormDB.mtDatePicker1.Date = DateTime.Now;
+                    MyParam.logFormDB.mtDatePicker2.Date = DateTime.Now;
                     break;
                 
                 case "tabPageInfo":

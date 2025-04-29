@@ -174,7 +174,7 @@ namespace TanHungHa.Common
                         }
 
                         // Đảm bảo vòng lặp không chiếm dụng quá nhiều CPU
-                        Thread.Sleep(10);  // Bạn có thể điều chỉnh thời gian này tùy vào yêu cầu tốc độ xử lý
+                        Thread.Sleep(10); 
                     }
                 }
             }
@@ -194,8 +194,8 @@ namespace TanHungHa.Common
 
         //  public Queue<string> queueData = new Queue<string>(MyDefine.MAX_QUEUE_DATA);
         public ConcurrentQueue<SerialData> queueData = new ConcurrentQueue<SerialData>();
-        private Thread readThread;  // Khởi tạo một thread đọc dữ liệu từ COM
-        private bool isReading;  // Cờ để kiểm soát vòng lặp đọc dữ liệu
+        private Thread readThread;  
+        private bool isReading;  
 
 
 
@@ -213,9 +213,9 @@ namespace TanHungHa.Common
                     Type = type
                 };
             //if(queueData.Count > MyDefine.MAX_QUEUE_DATA)
-            {
-                Console.WriteLine("-------------@@@@@@@@@@@@@@@@@@@@------------------" + queueData.Count + "---"+ str);
-            }    
+            //{
+            //    Console.WriteLine("-------------@@@@@@@@@@@@@@@@@@@@------------------" + queueData.Count + "---"+ str);
+            //}    
 
                 queueData.Enqueue(item);
                 //try
