@@ -463,9 +463,47 @@ namespace TanHungHa.Tabs
 
         }
 
-        private void tableLayoutPanel4_Paint(object sender, PaintEventArgs e)
+        private void btnNewRoll_Click(object sender, EventArgs e)
         {
+            string result = ShowInputDialog("Tên File", "Tạo tên File cuộn mới");
+            if (!string.IsNullOrWhiteSpace(result))
+            {
+                btnRollName.Text = result;
+                MyParam.runParam.DataBaseName = result;
+            }
+
+
 
         }
+        private string ShowInputDialog(string title, string prompt)
+        {
+            Form inputForm = new Form()
+            {
+                Width = 400,
+                Height = 150,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                Text = title,
+                StartPosition = FormStartPosition.CenterParent,
+                MinimizeBox = false,
+                MaximizeBox = false
+            };
+
+            Label label = new Label() { Left = 10, Top = 20, Text = prompt, Width = 460 };
+            TextBox textBox = new TextBox() { Left = 10, Top = 50, Width = 560 };
+
+            Button btnOK = new Button() { Text = "OK", Left = 220, Width = 70, Top = 80, DialogResult = DialogResult.OK };
+            Button btnCancel = new Button() { Text = "Cancel", Left = 300, Width = 70, Top = 80, DialogResult = DialogResult.Cancel };
+
+            inputForm.Controls.Add(label);
+            inputForm.Controls.Add(textBox);
+            inputForm.Controls.Add(btnOK);
+            inputForm.Controls.Add(btnCancel);
+
+            inputForm.AcceptButton = btnOK;
+            inputForm.CancelButton = btnCancel;
+
+            return inputForm.ShowDialog() == DialogResult.OK ? textBox.Text.Trim() : null;
+        }
+
     }
 }

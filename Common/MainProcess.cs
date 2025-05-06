@@ -79,6 +79,62 @@ namespace TanHungHa.Common
                 return false;
             }
         }
+        public static List<string> GetDatabasesWithLogsOnDate(DateTime selectedDate)
+        {
+            var result = new List<string>();
+
+            var client = _client ?? new MongoClient(); // fallback nếu chưa connect
+            var dbNames = client.ListDatabaseNames().ToList();
+
+            DateTime start = selectedDate.Date;
+            DateTime end = start.AddDays(1);
+
+            foreach (var dbName in dbNames)
+            {
+                try
+                {
+                    var db = client.GetDatabase(dbName);
+
+                    // Kiểm tra IQC
+                    var iqcNames = db.ListCollectionNames().ToList();
+                    if (iqcNames.Contains("iqcData"))
+                    {
+                        var iqcCol = db.GetCollection<BsonDocument>("iqcData");
+                        var count = iqcCol.CountDocuments(Builders<BsonDocument>.Filter.And(
+                            Builders<BsonDocument>.Filter.Gte("Timestamp", start),
+                            Builders<BsonDocument>.Filter.Lt("Timestamp", end)
+                        ));
+
+                        if (count > 0)
+                        {
+                            result.Add(dbName);
+                            continue;
+                        }
+                    }
+
+                    // Kiểm tra OQC nếu IQC không có
+                    if (iqcNames.Contains("oqcData"))
+                    {
+                        var oqcCol = db.GetCollection<BsonDocument>("oqcData");
+                        var count = oqcCol.CountDocuments(Builders<BsonDocument>.Filter.And(
+                            Builders<BsonDocument>.Filter.Gte("Timestamp", start),
+                            Builders<BsonDocument>.Filter.Lt("Timestamp", end)
+                        ));
+
+                        if (count > 0)
+                        {
+                            result.Add(dbName);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"DB {dbName} lỗi khi kiểm tra: {ex.Message}");
+                }
+            }
+
+            return result;
+        }
 
         //public static IMongoDatabase ConnectMongoDb(string connectionString, string databaseName)
         //{
@@ -141,6 +197,7 @@ namespace TanHungHa.Common
                 {
                     iqcBuffer.Add(doc);
                 }
+
             }
             else if (collectionName == "OQC")
             {
@@ -302,16 +359,24 @@ namespace TanHungHa.Common
         }
 
         // Query data by date range
-        public static List<BsonDocument> QueryByDateRange(string collectionName, DateTime start, DateTime end)
+        public static List<BsonDocument> QueryByDateRange(string collectionName, DateTime date)
         {
+            var startOfDay = date.Date;
+            var startOfNextDay = startOfDay.AddDays(1);
             var filter = Builders<BsonDocument>.Filter.And(
-                Builders<BsonDocument>.Filter.Gte("Timestamp", start),
-                Builders<BsonDocument>.Filter.Lte("Timestamp", end)
+                Builders<BsonDocument>.Filter.Gte("Timestamp", startOfDay),
+                Builders<BsonDocument>.Filter.Lt("Timestamp", startOfNextDay)
             );
 
             var collection = collectionName == "IQC" ? iqcCollection : oqcCollection;
             return collection.Find(filter).ToList();
         }
+        public static List<BsonDocument> QueryAllData(string collectionName)
+        {
+            var collection = collectionName == "IQC" ? iqcCollection : oqcCollection;
+            return collection.Find(new BsonDocument()).ToList();
+        }
+
 
         // Query data by type
         public static List<BsonDocument> QueryByType(string collectionName, string type)
@@ -321,12 +386,14 @@ namespace TanHungHa.Common
             return collection.Find(filter).ToList();
         }
         // Query data by type and date range
-        public static List<BsonDocument> QueryByTypeAndDateRange(string collectionName, string type, DateTime start, DateTime end)
+        public static List<BsonDocument> QueryByTypeAndDateRange(string collectionName, string type, DateTime date)
         {
+            var startOfDay = date.Date;
+            var startOfNextDay = startOfDay.AddDays(1);
             var filter = Builders<BsonDocument>.Filter.And(
                 Builders<BsonDocument>.Filter.Eq("Type", type),
-                Builders<BsonDocument>.Filter.Gte("Timestamp", start),
-                Builders<BsonDocument>.Filter.Lte("Timestamp", end)
+                Builders<BsonDocument>.Filter.Gte("Timestamp", startOfDay),
+                Builders<BsonDocument>.Filter.Lt("Timestamp", startOfNextDay)
             );
 
             var collection = collectionName == "IQC" ? iqcCollection : oqcCollection;
@@ -540,7 +607,8 @@ namespace TanHungHa.Common
                     {
                         chartIQCUpdateQueue.Enqueue(dataComIQC.Type);
                         var TID = "";
-                        if (MyParam.autoForm.swFlushDB.Checked) MongoDBService.AddToBuffer(dataComIQC.Data, TID, dataComIQC.Timestamp, dataComIQC.Type.ToString(), "IQC");  // Lưu vào MongoDB 
+                        EPC_IQC_Data = ProcessData(dataComIQC.Data);
+                        if (MyParam.autoForm.swFlushDB.Checked) MongoDBService.AddToBuffer(EPC_IQC_Data, TID, dataComIQC.Timestamp, dataComIQC.Type.ToString(), "IQC");  // Lưu vào MongoDB 
                     }
                     else
                     {
@@ -552,7 +620,7 @@ namespace TanHungHa.Common
                         }
                         else if (dataComIQC.Data.StartsWith("X"))
                         {
-                            if (!string.IsNullOrEmpty(EPC_IQC_Data))
+                            if (!string.IsNullOrEmpty(EPC_IQC_Data)) //chưa có data EPC
                             {
                                 var TID_Data = ProcessData(dataComIQC.Data);
                                 var DataType = eSerialDataType.NG;
@@ -564,7 +632,7 @@ namespace TanHungHa.Common
                                 Console.WriteLine("------------------TID");
                                 return;
                             }
-                            else
+                            else // đã có data EPC
                             {
                                 EPC_IQC_Data = ProcessData(dataComIQC.Data);
                                 EPC_IQC_Type = eSerialDataType.NG;
