@@ -29,6 +29,7 @@ namespace TanHungHa.Common.Parameter
         public MyComport myComportIQC { get; set; }
         public MyComport myComportOQC { get; set; }
         public DevParam devParam { get; set; }
+        public MongoDBService mongoDBService { get; set; }
         public TimeDelay timeDelay { get; set; }
         [JsonIgnore]
         public Queue<string> queueData;
@@ -41,6 +42,7 @@ namespace TanHungHa.Common.Parameter
             myComportIQC = new MyComport();
             myComportOQC = new MyComport();
             devParam = DevParam.GetInstance();
+            mongoDBService = MongoDBService.GetInstance();
             queueData = new Queue<string>(MyDefine.MAX_QUEUE_DATA);
             queueLock = new object();
         }

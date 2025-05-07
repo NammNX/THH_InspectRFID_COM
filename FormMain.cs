@@ -63,6 +63,21 @@ namespace TanHungHa
         void InitGUI()
         {
             this.Text = MyDefine.title;
+            if (MyParam.runParam.DataBaseName != String.Empty)
+            {
+                MyParam.autoForm.btnRollName.Visible = true;
+                MyParam.autoForm.btnRollName.Text = "Name: " + MyParam.runParam.DataBaseName;
+            }
+            else
+            {
+                MyParam.autoForm.btnRollName.Visible = false;
+            }
+            if(MyParam.runParam.Mode != eMode.Noon);
+            {
+                MyParam.autoForm.UpdateModeUI();
+            }
+         //   MyParam.autoForm.UpdateModeUI();
+
             materialTabControl1.SelectedTab = tabPageAuto;
 
 
@@ -135,7 +150,16 @@ namespace TanHungHa
             switch(e.TabPage.Name)
             {
                 case "tabPageAuto":
-                    MyParam.curMainView = eMainView.AUTO_VIEW;  
+                    MyParam.curMainView = eMainView.AUTO_VIEW;
+                    if (MyParam.runParam.DataBaseName != String.Empty)
+                    {
+                        MyParam.autoForm.btnRollName.Visible = true;
+                        MyParam.autoForm.btnRollName.Text = "Name: " + MyParam.runParam.DataBaseName;
+                    }
+                    else
+                    {
+                        MyParam.autoForm.btnRollName.Visible = false;
+                    }
                     break;
                 
                 case "tabPageManual":
@@ -147,6 +171,7 @@ namespace TanHungHa
                 
                 case "tabPageLog":
                     MyParam.curMainView = eMainView.LOGGING_VIEW;
+                    MyParam.commonParam.mongoDBService.ConnectMongoDb($"{MyParam.runParam.MongoClient}?connectTimeoutMS={MyParam.runParam.ConnectTimeOut}&socketTimeoutMS=10000&serverSelectionTimeoutMS=5000");
                     MyParam.logFormDB.mtDatePicker1.Date = DateTime.Now;
                     //MyParam.logFormDB.mtDatePicker2.Date = DateTime.Now;
                     break;

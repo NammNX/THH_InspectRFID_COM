@@ -47,8 +47,10 @@ namespace TanHungHa.Common
         public string COM_OQC { get; set; }
         [Category("Device"), DescriptionAttribute("Baudrate")]
         public int Baudrate  { get; set; }
-        [Category("Device"), DescriptionAttribute("Use TID Data")]
-        public bool getTID { get; set; }
+        [Category("Device"), DescriptionAttribute("Mode")]
+        public eMode Mode { get; set; }
+        //[Category("Device"), DescriptionAttribute("Use TID Data")]
+        //public bool getTID { get; set; }
 
 
 
@@ -135,9 +137,10 @@ namespace TanHungHa.Common
             COM_IQC = "COM1";
             COM_OQC = "COM2";
             Baudrate = 9600;
-            getTID = false;
+            Mode = eMode.Noon;
+            //getTID = false;
             MongoClient = "mongodb://localhost:27017";
-            DataBaseName = "RFID_DataBase";
+            DataBaseName = "Empty";
             ConnectTimeOut = 5000;
             mongoFlushIntervalMs = 3000;
             //Path = "C:\\Users\\Windows 11\\Desktop";

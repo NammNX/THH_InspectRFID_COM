@@ -295,6 +295,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\DataBase\MongoDBService.cs" />
     <Compile Include="Common\Parameter\CommonParam.cs" />
     <Compile Include="Common\Parameter\DevParam.cs" />
     <Compile Include="Common\Logging\LogData.cs" />

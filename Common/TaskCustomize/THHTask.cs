@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
+
 namespace TanHungHa.Common.TaskCustomize
 {
     public enum eTaskToDo
@@ -51,7 +52,7 @@ namespace TanHungHa.Common.TaskCustomize
                 case eTaskToDo.ConnectMongoDB:
                     if (!MyParam.commonParam.devParam.ignoreDataBase)
                     {
-                        bResult = MongoDBService.ConnectMongoDb($"{MyParam.runParam.MongoClient}?connectTimeoutMS={MyParam.runParam.ConnectTimeOut}&socketTimeoutMS=10000&serverSelectionTimeoutMS=5000", $"{MyParam.runParam.DataBaseName}");
+                        bResult = MyParam.commonParam.mongoDBService.ConnectMongoDb($"{MyParam.runParam.MongoClient}?connectTimeoutMS={MyParam.runParam.ConnectTimeOut}&socketTimeoutMS=10000&serverSelectionTimeoutMS=5000", $"{MyParam.runParam.DataBaseName}");
                     }
                     else
                     {

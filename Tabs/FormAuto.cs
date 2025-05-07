@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using TanHungHa.Common.Parameter;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Linq;
 using System.Security.Cryptography;
 
 namespace TanHungHa.Tabs
@@ -35,16 +36,36 @@ namespace TanHungHa.Tabs
         public FormAuto()
         {
             InitializeComponent();
+           // UpdateModeUI();
             SetupChart(chartIQC);
             SetupChart(chartOQC);
         }
 
+        public void UpdateModeUI()
+        {
+            var mode = MyParam.runParam.Mode;
+            switch (mode)
+            {
+                case eMode.eEPC_TID:
+                    SetModeAndHighlight(eMode.eEPC_TID, btnEPCTID);
+                    break;
+                case eMode.eOnlyEPC:
+                    SetModeAndHighlight(eMode.eOnlyEPC, btnOnlyEPC);
+                    break;
+                case eMode.eOnlyTID:
+                    SetModeAndHighlight(eMode.eOnlyTID, btnOnlyTID);
+                    break;
+                case eMode.Noon:
+                    SetModeAndHighlight(eMode.Noon); // reset, không nút nào sáng
+                    break;
+            }
+        }
         public void StopProgram()
         {
             if ((MyParam.commonParam.myComportIQC.GetQueueCount() > 0) || (MyParam.commonParam.myComportOQC.GetQueueCount() > 0)
-                || (MongoDBService.GetIqcBufferCount() > 0) || (MongoDBService.GetOqcBufferCount() > 0))
+                || (MyParam.commonParam.mongoDBService.GetIqcBufferCount() > 0) || (MyParam.commonParam.mongoDBService.GetOqcBufferCount() > 0))
             {
-                Console.WriteLine($"{MyParam.commonParam.myComportIQC.GetQueueCount()},{MongoDBService.GetIqcBufferCount()}");
+                Console.WriteLine($"{MyParam.commonParam.myComportIQC.GetQueueCount()},{MyParam.commonParam.mongoDBService.GetIqcBufferCount()}");
                 MyLib.showDlgInfo("Quá trình ghi dữ liệu vào data base chưa hoàn tất, vui lòng đợi trong giây lát");
                 return;
             }
@@ -89,47 +110,68 @@ namespace TanHungHa.Tabs
 
         public async void StartProgram()
         {
-            this.Cursor = Cursors.WaitCursor;
-            var x = THHInitial.InitDevice();
-            await x;
-            Console.WriteLine("-------------btnInitial = " + x.Result);
-
-            if (x.Result)
+            var checkmode =  MainProcess.CheckMode();
+            if(!checkmode)
             {
-                EnableBtn(btnStart, false);
-                EnableBtn(btnReset, false);
-                EnableBtn(btnStop, true);
-                ChangeColor(groupBoxIQC, true);
-                ChangeColor(groupBoxOQC, true);
-                ChangeColor(groupBoxOQChart, true);
-                ChangeColor(groupBoxChartIQC, true);
+                MyLib.showDlgError(" Vui lòng chọn chế độ chạy");
+                return; 
+            }
 
-                MyParam.commonParam.myComportIQC.ClearDataRev();
-                MyParam.commonParam.myComportOQC.ClearDataRev();
+            MaterialDialog materialDialog = 
+                new MaterialDialog(this, "Start", $"Bắt đầu chạy cuộn {MyParam.runParam.DataBaseName}" , "OK", true, "Cancel");
+            DialogResult result = materialDialog.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                this.Cursor = Cursors.WaitCursor;
+                var x = THHInitial.InitDevice();
+                await x;
+                Console.WriteLine("-------------btnInitial = " + x.Result);
 
-                MainProcess.RunLoopChartUpdate();
-
-                MainProcess.RunLoopCOM();
-                if (!MyParam.commonParam.devParam.ignoreDataBase)
+                if (x.Result)
                 {
-                    swFlushDB.Checked = true;
-                    MongoDBService.RunFlushLoop();
+                    EnableBtn(btnEPCTID, false);
+                    EnableBtn(btnOnlyEPC, false);
+                    EnableBtn(btnOnlyTID, false);
+                    EnableBtn(btnNewRoll, false);
+                    EnableBtn(btnStart, false);
+                    EnableBtn(btnReset, false);
+                    EnableBtn(btnStop, true);
+                    ChangeColor(groupBoxIQC, true);
+                    ChangeColor(groupBoxOQC, true);
+                    ChangeColor(groupBoxOQChart, true);
+                    ChangeColor(groupBoxChartIQC, true);
+
+                    MyParam.commonParam.myComportIQC.ClearDataRev();
+                    MyParam.commonParam.myComportOQC.ClearDataRev();
+
+                    MainProcess.RunLoopChartUpdate();
+
+                    MainProcess.RunLoopCOM();
+                    if (!MyParam.commonParam.devParam.ignoreDataBase)
+                    {
+                        swFlushDB.Checked = true;
+                        MyParam.commonParam.mongoDBService.RunFlushLoop();
+                    }
+                    else
+                    {
+                        swFlushDB.Checked = false;
+                    }
+                    MainProcess.MainIQC_StepCtrl.SetStep(eProcessing.ReceiveData);
+                    MainProcess.MainOQC_StepCtrl.SetStep(eProcessing.ReceiveData);
+                    MyParam.runParam.ProgramStatus = ePRGSTATUS.Started;
                 }
                 else
                 {
-                   swFlushDB.Checked = false;
+                    EnableBtn(btnReset, false);
+                    EnableBtn(btnStop, false);
+                    EnableBtn(btnNewRoll, true);
+                    EnableBtn(btnEPCTID, true);
+                    EnableBtn(btnOnlyEPC, true);
+                    EnableBtn(btnOnlyTID, true);
                 }
-                MainProcess.MainIQC_StepCtrl.SetStep(eProcessing.ReceiveData);
-                MainProcess.MainOQC_StepCtrl.SetStep(eProcessing.ReceiveData);
-                MyParam.runParam.ProgramStatus = ePRGSTATUS.Started;
+
+                this.Cursor = Cursors.Default;
             }
-            else
-            {
-                EnableBtn(btnReset, false);
-                EnableBtn(btnStop, false);
-            }
-           
-            this.Cursor = Cursors.Default;
         }
 
 
@@ -156,6 +198,10 @@ namespace TanHungHa.Tabs
                 resetOQC();
                 StopProgram();
                 EnableBtn(btnReset, false);
+                EnableBtn(btnEPCTID, true);
+                EnableBtn(btnOnlyEPC, true);
+                EnableBtn(btnOnlyTID, true);
+                EnableBtn(btnNewRoll, true);
                 MyParam.runParam.ProgramStatus = ePRGSTATUS.Reset;
                 this.Cursor = Cursors.Default;
             }
@@ -185,6 +231,20 @@ namespace TanHungHa.Tabs
      
 
         void EnableBtn(MaterialButton btn, bool bEnable)
+        {
+            if (btn.InvokeRequired)
+            {
+                btn.BeginInvoke(new Action(() =>
+                {
+                    btn.Enabled = bEnable;
+                }));
+            }
+            else
+            {
+                btn.Enabled = bEnable;
+            }
+        }
+        void EnableBtn(Button btn, bool bEnable)
         {
             if (btn.InvokeRequired)
             {
@@ -444,8 +504,8 @@ namespace TanHungHa.Tabs
             }
             lbIQCflushed.Text = ($"IQC Flushed: {MongoDBService.GetTotalIqcFlushed()}");
             lbOQCflushed.Text = ($"OQC Flushed: {MongoDBService.GetTotalOqcFlushed()}");
-            lbIQCbuffer.Text = ($"IQC Buffer: {MongoDBService.GetIqcBufferCount()}");
-            lbOQCbuffer.Text = ($"OQC Buffer: {MongoDBService.GetOqcBufferCount()}");
+            lbIQCbuffer.Text = ($"IQC Buffer: {MyParam.commonParam.mongoDBService.GetIqcBufferCount()}");
+            lbOQCbuffer.Text = ($"OQC Buffer: {MyParam.commonParam.mongoDBService.GetOqcBufferCount()}");
         }
 
         private void clearLogToolStripMenuItem_Click(object sender, EventArgs e)
@@ -468,8 +528,17 @@ namespace TanHungHa.Tabs
             string result = ShowInputDialog("Tên File", "Tạo tên File cuộn mới");
             if (!string.IsNullOrWhiteSpace(result))
             {
+                char[] invalidChars = { '/', '\\', '.', '"', '*', '<', '>', ':', '|', '?', ' ' };
+                if (result.IndexOfAny(invalidChars) >= 0)
+                {
+                    MyLib.showDlgError("Tên cuộn không hợp lệ, Không dùng dấu cách hoặc kí tự đặc biệt để đặt tên");
+                    return;
+                }
                 btnRollName.Text = result;
                 MyParam.runParam.DataBaseName = result;
+                SetModeAndHighlight(eMode.Noon);
+                MyLib.showDlgInfo("Tạo cuộn mới thành công");
+
             }
 
 
@@ -504,6 +573,44 @@ namespace TanHungHa.Tabs
 
             return inputForm.ShowDialog() == DialogResult.OK ? textBox.Text.Trim() : null;
         }
+        private void SetModeAndHighlight(eMode mode, Button selectedButton = null)
+        {
+            MainProcess.SetMode(mode);
+            MainProcess.AddLogAuto($"Chế độ hiện tại: {mode}", eIndex.Index_IQC_OQC_Log);
+            var buttons = new[] { btnEPCTID, btnOnlyEPC, btnOnlyTID };
+            foreach (var btn in buttons)
+            {
+                btn.BackColor = Color.White;
+            }
+            if (selectedButton != null)
+            {
+                selectedButton.BackColor = Color.YellowGreen;
+            }
+        }
+        private void btnEPCTID_Click(object sender, EventArgs e)
+        {
+            SetModeAndHighlight(eMode.eEPC_TID, btnEPCTID);
+        }
 
+        private void btnOnlyEPC_Click(object sender, EventArgs e)
+        {
+            SetModeAndHighlight(eMode.eOnlyEPC, btnOnlyEPC);
+        }
+
+        private void btnOnlyTID_Click(object sender, EventArgs e)
+        {
+            SetModeAndHighlight(eMode.eOnlyTID, btnOnlyTID);
+        }
+
+        private void clearAllLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            resetIQC();
+            MongoDBService.ClearDBFlushed();
+            resetIQC();
+            MongoDBService.ClearDBFlushed();
+            lvLogIQC_OQC.Items.Clear();
+            lvLogDB.Items.Clear();
+
+        }
     }
 }

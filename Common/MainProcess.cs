@@ -19,6 +19,7 @@ using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 
 
+
 namespace TanHungHa.Common
 {
     public enum eIndex
@@ -28,6 +29,13 @@ namespace TanHungHa.Common
         Index_IQC_OQC_Log,
         Index_MongoDB_Log
     }
+    public enum eMode
+    {
+        Noon,
+        eOnlyTID,
+        eOnlyEPC,
+        eEPC_TID
+    }
     public class LogItem
     {
         public DateTime Timestamp { get; set; }
@@ -36,370 +44,385 @@ namespace TanHungHa.Common
     }
 
 
-    public class MongoDBService
-    {
-        private static MongoClient _client;
-        private static IMongoDatabase _database;
-        private static IMongoCollection<BsonDocument> iqcCollection;
-        private static IMongoCollection<BsonDocument> oqcCollection;
+    //public class MongoDBService
+    //{
+    //    private static MongoClient _client;
+    //    private static IMongoDatabase _database;
+    //    private static IMongoCollection<BsonDocument> iqcCollection;
+    //    private static IMongoCollection<BsonDocument> oqcCollection;
 
-        private static readonly List<BsonDocument> iqcBuffer = new List<BsonDocument>();
-        private static readonly List<BsonDocument> oqcBuffer = new List<BsonDocument>();
+    //    private static readonly List<BsonDocument> iqcBuffer = new List<BsonDocument>();
+    //    private static readonly List<BsonDocument> oqcBuffer = new List<BsonDocument>();
 
-        private static readonly object iqcLock = new object();
-        private static readonly object oqcLock = new object();
-        private static int totalIqcFlushed = 0;
-        private static int totalOqcFlushed = 0;
+    //    private static readonly object iqcLock = new object();
+    //    private static readonly object oqcLock = new object();
+    //    private static int totalIqcFlushed = 0;
+    //    private static int totalOqcFlushed = 0;
 
-        private static CancellationTokenSource _cancellationTokenSource;
+    //    private static CancellationTokenSource _cancellationTokenSource;
 
-        public static bool ConnectMongoDb(string connectionString, string databaseName)
-        {
-            try
-            {
-                if (_client == null)
-                {
-                    _client = new MongoClient(connectionString);
-                }
+    //    public static bool ConnectMongoDb(string connectionString, string databaseName)
+    //    {
+    //        try
+    //        {
+    //            if (_client == null)
+    //            {
+    //                _client = new MongoClient(connectionString);
+    //            }
 
-                _database = _client.GetDatabase(databaseName);
+    //            _database = _client.GetDatabase(databaseName);
 
-                var ping = _database.RunCommandAsync((Command<BsonDocument>)"{ping:1}").Result;
-                Console.WriteLine($"Connected to MongoDB: {databaseName}");
+    //            var ping = _database.RunCommandAsync((Command<BsonDocument>)"{ping:1}").Result;
+    //            Console.WriteLine($"Connected to MongoDB: {databaseName}");
 
-                iqcCollection = _database.GetCollection<BsonDocument>("iqcData");
-                oqcCollection = _database.GetCollection<BsonDocument>("oqcData");
+    //            iqcCollection = _database.GetCollection<BsonDocument>("iqcData");
+    //            oqcCollection = _database.GetCollection<BsonDocument>("oqcData");
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("MongoDB connection error: " + ex.Message);
-                MyLib.showDlgError("MongoDB connection error: " + ex.Message + "\r\n" + "Kiểm tra lại kết nối MongoDB");
-                return false;
-            }
-        }
-        public static List<string> GetDatabasesWithLogsOnDate(DateTime selectedDate)
-        {
-            var result = new List<string>();
+    //            return true;
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Console.WriteLine("MongoDB connection error: " + ex.Message);
+    //            MyLib.showDlgError("MongoDB connection error: " + ex.Message + "\r\n" + "Kiểm tra lại kết nối MongoDB");
+    //            return false;
+    //        }
+    //    }
+    //    public static List<string> GetDatabasesWithLogsOnDate(DateTime selectedDate)
+    //    {
+    //        var result = new List<string>();
 
-            var client = _client ?? new MongoClient(); // fallback nếu chưa connect
-            var dbNames = client.ListDatabaseNames().ToList();
+    //        var client = _client ?? new MongoClient( ); // fallback nếu chưa connect
+    //        var dbNames = client.ListDatabaseNames().ToList();
 
-            DateTime start = selectedDate.Date;
-            DateTime end = start.AddDays(1);
+    //        DateTime start = selectedDate.Date;
+    //        DateTime end = start.AddDays(1);
 
-            foreach (var dbName in dbNames)
-            {
-                try
-                {
-                    var db = client.GetDatabase(dbName);
+    //        foreach (var dbName in dbNames)
+    //        {
+    //            try
+    //            {
+    //                var db = client.GetDatabase(dbName);
 
-                    // Kiểm tra IQC
-                    var iqcNames = db.ListCollectionNames().ToList();
-                    if (iqcNames.Contains("iqcData"))
-                    {
-                        var iqcCol = db.GetCollection<BsonDocument>("iqcData");
-                        var count = iqcCol.CountDocuments(Builders<BsonDocument>.Filter.And(
-                            Builders<BsonDocument>.Filter.Gte("Timestamp", start),
-                            Builders<BsonDocument>.Filter.Lt("Timestamp", end)
-                        ));
+    //                // Kiểm tra IQC
+    //                var iqcNames = db.ListCollectionNames().ToList();
+    //                if (iqcNames.Contains("iqcData"))
+    //                {
+    //                    var iqcCol = db.GetCollection<BsonDocument>("iqcData");
+    //                    var count = iqcCol.CountDocuments(Builders<BsonDocument>.Filter.And(
+    //                        Builders<BsonDocument>.Filter.Gte("Timestamp", start),
+    //                        Builders<BsonDocument>.Filter.Lt("Timestamp", end)
+    //                    ));
 
-                        if (count > 0)
-                        {
-                            result.Add(dbName);
-                            continue;
-                        }
-                    }
+    //                    if (count > 0)
+    //                    {
+    //                        result.Add(dbName);
+    //                        continue;
+    //                    }
+    //                }
 
-                    // Kiểm tra OQC nếu IQC không có
-                    if (iqcNames.Contains("oqcData"))
-                    {
-                        var oqcCol = db.GetCollection<BsonDocument>("oqcData");
-                        var count = oqcCol.CountDocuments(Builders<BsonDocument>.Filter.And(
-                            Builders<BsonDocument>.Filter.Gte("Timestamp", start),
-                            Builders<BsonDocument>.Filter.Lt("Timestamp", end)
-                        ));
+    //                // Kiểm tra OQC nếu IQC không có
+    //                if (iqcNames.Contains("oqcData"))
+    //                {
+    //                    var oqcCol = db.GetCollection<BsonDocument>("oqcData");
+    //                    var count = oqcCol.CountDocuments(Builders<BsonDocument>.Filter.And(
+    //                        Builders<BsonDocument>.Filter.Gte("Timestamp", start),
+    //                        Builders<BsonDocument>.Filter.Lt("Timestamp", end)
+    //                    ));
 
-                        if (count > 0)
-                        {
-                            result.Add(dbName);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"DB {dbName} lỗi khi kiểm tra: {ex.Message}");
-                }
-            }
+    //                    if (count > 0)
+    //                    {
+    //                        result.Add(dbName);
+    //                    }
+    //                }
+    //            }
+    //            catch (Exception ex)
+    //            {
+    //                Console.WriteLine($"DB {dbName} lỗi khi kiểm tra: {ex.Message}");
+    //            }
+    //        }
 
-            return result;
-        }
+    //        return result;
+    //    }
+    //    public static List<string> SearchDatabaseNamesByKeyword(string keyword)
+    //    {
+    //        var client = _client ?? new MongoClient(); // fallback nếu chưa connect
 
-        //public static IMongoDatabase ConnectMongoDb(string connectionString, string databaseName)
-        //{
-        //    try
-        //    {
-        //        if (_client == null)
-        //        {
-        //            _client = new MongoClient(connectionString);
-        //        }
-
-        //        _database = _client.GetDatabase(databaseName);
-
-        //        // Kiểm tra kết nối
-        //        var ping = _database.RunCommandAsync((Command<BsonDocument>)"{ping:1}").Result;
-        //        Console.WriteLine($"Connected to MongoDB: {databaseName}");
-
-        //        iqcCollection = _database.GetCollection<BsonDocument>("iqcData");
-        //        oqcCollection = _database.GetCollection<BsonDocument>("oqcData");
-
-        //        return _database;
-        //    }
-        //    catch (MongoConnectionException ex)
-        //    {
-        //        // Lỗi kết nối MongoDB
-        //        Console.WriteLine("MongoDB connection failed: " + ex.Message);
-        //        MyLib.showDlgError("MongoDB connection failed: " + ex.Message);
-        //    }
-        //    catch (TimeoutException ex)
-        //    {
-        //        // Lỗi timeout kết nối
-        //        Console.WriteLine("MongoDB connection timeout: " + ex.Message);
-        //        MyLib.showDlgError("Lỗi timeout kết nối MongoDB: " + ex.Message);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Lỗi chung
-        //        Console.WriteLine("An error occurred: " + ex.Message);
-        //        MyLib.showDlgError("MongoDB connection failed: " + ex.Message);
-        //    }
-
-        //    return false; // Trả về null nếu không thể kết nối
-        //}
-
-        public static void AddToBuffer(string epc, string tid, DateTime timestamp, string type, string collectionName)
-        {
+    //        var allDatabaseNames = client.ListDatabaseNames().ToList();
+    //        var matchedNames = allDatabaseNames
+    //            .Where(name => name.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
+    //            .ToList();
+    //        if (matchedNames.Count == 0)
+    //        {
+    //            MyLib.showDlgInfo("Không tìm thấy database nào chứa từ khóa: " + keyword);
+    //        }
+    //        return matchedNames;
+    //    }
 
 
-            var doc = new BsonDocument
-    {
-        { "Timestamp", BsonDateTime.Create(timestamp) },
-        { "EPC", epc },
-        { "TID", tid }, // Có thể là null nếu TID bị disable
-        { "Type", type }
-    };
+    //    //public static IMongoDatabase ConnectMongoDb(string connectionString, string databaseName)
+    //    //{
+    //    //    try
+    //    //    {
+    //    //        if (_client == null)
+    //    //        {
+    //    //            _client = new MongoClient(connectionString);
+    //    //        }
 
-            // Lưu vào buffer tùy theo collection name
-            if (collectionName == "IQC")
-            {
-                lock (iqcLock)
-                {
-                    iqcBuffer.Add(doc);
-                }
+    //    //        _database = _client.GetDatabase(databaseName);
 
-            }
-            else if (collectionName == "OQC")
-            {
-                lock (oqcLock)
-                {
-                    oqcBuffer.Add(doc);
-                }
-            }
-        }
+    //    //        // Kiểm tra kết nối
+    //    //        var ping = _database.RunCommandAsync((Command<BsonDocument>)"{ping:1}").Result;
+    //    //        Console.WriteLine($"Connected to MongoDB: {databaseName}");
 
-        public static void AddToBuffer2(string data, DateTime timestamp, string type, string collectionName)
-        {
-            var doc = new BsonDocument
-        {
-            { "Timestamp", BsonDateTime.Create(timestamp) },
-            { "Data", data },
-            {"Type",type }
-        };
+    //    //        iqcCollection = _database.GetCollection<BsonDocument>("iqcData");
+    //    //        oqcCollection = _database.GetCollection<BsonDocument>("oqcData");
 
-            if (collectionName == "IQC")
-            {
-                lock (iqcLock)
-                {
-                    iqcBuffer.Add(doc);
-                    //  File.AppendAllText("iqc_temp.json", doc.ToJson() + Environment.NewLine);
-                }
-            }
-            else if (collectionName == "OQC")
-            {
-                lock (oqcLock)
-                {
-                    oqcBuffer.Add(doc);
-                    //    File.AppendAllText("oqc_temp.json", doc.ToJson() + Environment.NewLine);
-                }
-            }
-        }
-        public static void FlushBuffersIQC()
-        {
-            try
-            {
-                lock (iqcLock)
-                {
-                    if (iqcBuffer.Count > 0)
-                    {
-                        iqcCollection.InsertMany(iqcBuffer);
-                        totalIqcFlushed += iqcBuffer.Count;
-                        iqcBuffer.Clear();
-                        //  File.WriteAllText("iqc_temp.json", string.Empty);
-                        MainProcess.AddLogAuto("IQC buffer đã flush lên MongoDB", eIndex.Index_MongoDB_Log);
-                        Console.WriteLine($"IQC buffer đã flush lên MongoDB.Tổng: {totalIqcFlushed}");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
+    //    //        return _database;
+    //    //    }
+    //    //    catch (MongoConnectionException ex)
+    //    //    {
+    //    //        // Lỗi kết nối MongoDB
+    //    //        Console.WriteLine("MongoDB connection failed: " + ex.Message);
+    //    //        MyLib.showDlgError("MongoDB connection failed: " + ex.Message);
+    //    //    }
+    //    //    catch (TimeoutException ex)
+    //    //    {
+    //    //        // Lỗi timeout kết nối
+    //    //        Console.WriteLine("MongoDB connection timeout: " + ex.Message);
+    //    //        MyLib.showDlgError("Lỗi timeout kết nối MongoDB: " + ex.Message);
+    //    //    }
+    //    //    catch (Exception ex)
+    //    //    {
+    //    //        // Lỗi chung
+    //    //        Console.WriteLine("An error occurred: " + ex.Message);
+    //    //        MyLib.showDlgError("MongoDB connection failed: " + ex.Message);
+    //    //    }
 
-                Console.WriteLine("Flush lỗi: " + ex.Message);
-                MyLib.showDlgError("Flush lỗi: " + ex.Message);
-                // ????
-            }
-        }
-        public static void FlushBuffersOQC()
-        {
-            try
-            {
-                lock (oqcLock)
-                {
-                    if (oqcBuffer.Count > 0)
-                    {
-                        oqcCollection.InsertMany(oqcBuffer);
-                        totalOqcFlushed += oqcBuffer.Count;
-                        oqcBuffer.Clear();
-                        //   File.WriteAllText("oqc_temp.json", string.Empty);
-                        MainProcess.AddLogAuto("OQC buffer đã flush lên MongoDB", eIndex.Index_MongoDB_Log);
-                        Console.WriteLine($"OQC buffer đã flush lên MongoDB. Tổng: {totalOqcFlushed}");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Flush lỗi: " + ex.Message);
-                MyLib.showDlgError("Flush lỗi: " + ex.Message);
-                //  StopFlushLoop();
-            }
-        }
+    //    //    return false; // Trả về null nếu không thể kết nối
+    //    //}
 
-        //public static void StartFlushLoop()
-        //{
-        //    _cancellationTokenSource = new CancellationTokenSource();
-        //    Task.Run(async () =>
-        //    {
-        //        while (!_cancellationTokenSource.Token.IsCancellationRequested)
-        //        {
-        //            FlushBuffers();
-        //            await Task.Delay(3000);
-        //        }
-        //    });
-        //}
-
-        //public static void StopFlushLoop()
-        //{
-        //    _cancellationTokenSource?.Cancel();
-        //}
-        public static int GetIqcBufferCount()
-        {
-            lock (iqcLock)
-            {
-                return iqcBuffer.Count;
-            }
-        }
-
-        public static int GetOqcBufferCount()
-        {
-            lock (oqcLock)
-            {
-                return oqcBuffer.Count;
-            }
-        }
-        public static bool IsFlushingCompleted()
-        {
-            return GetIqcBufferCount() == 0 && GetOqcBufferCount() == 0;
-        }
-
-        public static int GetTotalIqcFlushed() => totalIqcFlushed;
-        public static int GetTotalOqcFlushed() => totalOqcFlushed;
-        public static void ClearDBFlushed()
-        {
-            totalIqcFlushed = 0;
-            totalOqcFlushed = 0;
-        }
-        public static bool isFlushLoop = false;
-        public static void StopFlushLoop()
-        {
-            MyParam.taskLoops[(int)eTaskLoop.Task_FlushBuffersIQC].StopLoop();
-            MyParam.taskLoops[(int)eTaskLoop.Task_FlushBuffersOQC].StopLoop();
-
-            isFlushLoop = false;
-        }
-        public static void RunFlushLoop()
-        {
-            if (isFlushLoop)
-            {
-                MyLib.showDlgInfo("Loop Flush Mongo is running!");
-                return;
-            }
-            //IQC
-            MyParam.taskLoops[(int)eTaskLoop.Task_FlushBuffersIQC].ResetToken();
-            MyParam.taskLoops[(int)eTaskLoop.Task_FlushBuffersIQC].RunLoop(MyParam.runParam.mongoFlushIntervalMs, FlushBuffersIQC).ContinueWith((a) =>
-            {
-                MyLib.log($"Done task FlushBuffersIQC!");
-            });
-            //OQC
-            MyParam.taskLoops[(int)eTaskLoop.Task_FlushBuffersOQC].ResetToken();
-            MyParam.taskLoops[(int)eTaskLoop.Task_FlushBuffersOQC].RunLoop(MyParam.runParam.mongoFlushIntervalMs, FlushBuffersOQC).ContinueWith((a) =>
-            {
-                MyLib.log($"Done task FlushBuffersOQC!");
-            });
-            isFlushLoop = true;
-        }
-
-        // Query data by date range
-        public static List<BsonDocument> QueryByDateRange(string collectionName, DateTime date)
-        {
-            var startOfDay = date.Date;
-            var startOfNextDay = startOfDay.AddDays(1);
-            var filter = Builders<BsonDocument>.Filter.And(
-                Builders<BsonDocument>.Filter.Gte("Timestamp", startOfDay),
-                Builders<BsonDocument>.Filter.Lt("Timestamp", startOfNextDay)
-            );
-
-            var collection = collectionName == "IQC" ? iqcCollection : oqcCollection;
-            return collection.Find(filter).ToList();
-        }
-        public static List<BsonDocument> QueryAllData(string collectionName)
-        {
-            var collection = collectionName == "IQC" ? iqcCollection : oqcCollection;
-            return collection.Find(new BsonDocument()).ToList();
-        }
+    //    public static void AddToBuffer(string epc, string tid, DateTime timestamp, string type, string collectionName)
+    //    {
 
 
-        // Query data by type
-        public static List<BsonDocument> QueryByType(string collectionName, string type)
-        {
-            var filter = Builders<BsonDocument>.Filter.Eq("Type", type);
-            var collection = collectionName == "IQC" ? iqcCollection : oqcCollection;
-            return collection.Find(filter).ToList();
-        }
-        // Query data by type and date range
-        public static List<BsonDocument> QueryByTypeAndDateRange(string collectionName, string type, DateTime date)
-        {
-            var startOfDay = date.Date;
-            var startOfNextDay = startOfDay.AddDays(1);
-            var filter = Builders<BsonDocument>.Filter.And(
-                Builders<BsonDocument>.Filter.Eq("Type", type),
-                Builders<BsonDocument>.Filter.Gte("Timestamp", startOfDay),
-                Builders<BsonDocument>.Filter.Lt("Timestamp", startOfNextDay)
-            );
+    //        var doc = new BsonDocument
+    //{
+    //    { "Timestamp", BsonDateTime.Create(timestamp) },
+    //    { "EPC", epc },
+    //    { "TID", tid }, // Có thể là null nếu TID bị disable
+    //    { "Type", type }
+    //};
 
-            var collection = collectionName == "IQC" ? iqcCollection : oqcCollection;
-            return collection.Find(filter).ToList();
-        }
-    }
+    //        // Lưu vào buffer tùy theo collection name
+    //        if (collectionName == "IQC")
+    //        {
+    //            lock (iqcLock)
+    //            {
+    //                iqcBuffer.Add(doc);
+    //            }
+
+    //        }
+    //        else if (collectionName == "OQC")
+    //        {
+    //            lock (oqcLock)
+    //            {
+    //                oqcBuffer.Add(doc);
+    //            }
+    //        }
+    //    }
+
+    //    public static void AddToBuffer2(string data, DateTime timestamp, string type, string collectionName)
+    //    {
+    //        var doc = new BsonDocument
+    //    {
+    //        { "Timestamp", BsonDateTime.Create(timestamp) },
+    //        { "Data", data },
+    //        {"Type",type }
+    //    };
+
+    //        if (collectionName == "IQC")
+    //        {
+    //            lock (iqcLock)
+    //            {
+    //                iqcBuffer.Add(doc);
+    //                //  File.AppendAllText("iqc_temp.json", doc.ToJson() + Environment.NewLine);
+    //            }
+    //        }
+    //        else if (collectionName == "OQC")
+    //        {
+    //            lock (oqcLock)
+    //            {
+    //                oqcBuffer.Add(doc);
+    //                //    File.AppendAllText("oqc_temp.json", doc.ToJson() + Environment.NewLine);
+    //            }
+    //        }
+    //    }
+    //    public static void FlushBuffersIQC()
+    //    {
+    //        try
+    //        {
+    //            lock (iqcLock)
+    //            {
+    //                if (iqcBuffer.Count > 0)
+    //                {
+    //                    iqcCollection.InsertMany(iqcBuffer);
+    //                    totalIqcFlushed += iqcBuffer.Count;
+    //                    iqcBuffer.Clear();
+    //                    //  File.WriteAllText("iqc_temp.json", string.Empty);
+    //                    MainProcess.AddLogAuto("IQC buffer đã flush lên MongoDB", eIndex.Index_MongoDB_Log);
+    //                    Console.WriteLine($"IQC buffer đã flush lên MongoDB.Tổng: {totalIqcFlushed}");
+    //                }
+    //            }
+    //        }
+    //        catch (Exception ex)
+    //        {
+
+    //            Console.WriteLine("Flush lỗi: " + ex.Message);
+    //            MyLib.showDlgError("Flush lỗi: " + ex.Message);
+    //            // ????
+    //        }
+    //    }
+    //    public static void FlushBuffersOQC()
+    //    {
+    //        try
+    //        {
+    //            lock (oqcLock)
+    //            {
+    //                if (oqcBuffer.Count > 0)
+    //                {
+    //                    oqcCollection.InsertMany(oqcBuffer);
+    //                    totalOqcFlushed += oqcBuffer.Count;
+    //                    oqcBuffer.Clear();
+    //                    //   File.WriteAllText("oqc_temp.json", string.Empty);
+    //                    MainProcess.AddLogAuto("OQC buffer đã flush lên MongoDB", eIndex.Index_MongoDB_Log);
+    //                    Console.WriteLine($"OQC buffer đã flush lên MongoDB. Tổng: {totalOqcFlushed}");
+    //                }
+    //            }
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Console.WriteLine("Flush lỗi: " + ex.Message);
+    //            MyLib.showDlgError("Flush lỗi: " + ex.Message);
+    //            //  StopFlushLoop();
+    //        }
+    //    }
+
+    //    //public static void StartFlushLoop()
+    //    //{
+    //    //    _cancellationTokenSource = new CancellationTokenSource();
+    //    //    Task.Run(async () =>
+    //    //    {
+    //    //        while (!_cancellationTokenSource.Token.IsCancellationRequested)
+    //    //        {
+    //    //            FlushBuffers();
+    //    //            await Task.Delay(3000);
+    //    //        }
+    //    //    });
+    //    //}
+
+    //    //public static void StopFlushLoop()
+    //    //{
+    //    //    _cancellationTokenSource?.Cancel();
+    //    //}
+    //    public static int GetIqcBufferCount()
+    //    {
+    //        lock (iqcLock)
+    //        {
+    //            return iqcBuffer.Count;
+    //        }
+    //    }
+
+    //    public static int GetOqcBufferCount()
+    //    {
+    //        lock (oqcLock)
+    //        {
+    //            return oqcBuffer.Count;
+    //        }
+    //    }
+    //    public static bool IsFlushingCompleted()
+    //    {
+    //        return GetIqcBufferCount() == 0 && GetOqcBufferCount() == 0;
+    //    }
+
+    //    public static int GetTotalIqcFlushed() => totalIqcFlushed;
+    //    public static int GetTotalOqcFlushed() => totalOqcFlushed;
+    //    public static void ClearDBFlushed()
+    //    {
+    //        totalIqcFlushed = 0;
+    //        totalOqcFlushed = 0;
+    //    }
+    //    public static bool isFlushLoop = false;
+    //    public static void StopFlushLoop()
+    //    {
+    //        MyParam.taskLoops[(int)eTaskLoop.Task_FlushBuffersIQC].StopLoop();
+    //        MyParam.taskLoops[(int)eTaskLoop.Task_FlushBuffersOQC].StopLoop();
+
+    //        isFlushLoop = false;
+    //    }
+    //    public static void RunFlushLoop()
+    //    {
+    //        if (isFlushLoop)
+    //        {
+    //            MyLib.showDlgInfo("Loop Flush Mongo is running!");
+    //            return;
+    //        }
+    //        //IQC
+    //        MyParam.taskLoops[(int)eTaskLoop.Task_FlushBuffersIQC].ResetToken();
+    //        MyParam.taskLoops[(int)eTaskLoop.Task_FlushBuffersIQC].RunLoop(MyParam.runParam.mongoFlushIntervalMs, FlushBuffersIQC).ContinueWith((a) =>
+    //        {
+    //            MyLib.log($"Done task FlushBuffersIQC!");
+    //        });
+    //        //OQC
+    //        MyParam.taskLoops[(int)eTaskLoop.Task_FlushBuffersOQC].ResetToken();
+    //        MyParam.taskLoops[(int)eTaskLoop.Task_FlushBuffersOQC].RunLoop(MyParam.runParam.mongoFlushIntervalMs, FlushBuffersOQC).ContinueWith((a) =>
+    //        {
+    //            MyLib.log($"Done task FlushBuffersOQC!");
+    //        });
+    //        isFlushLoop = true;
+    //    }
+
+    //    // Query data by date range
+    //    public static List<BsonDocument> QueryByDateRange(string collectionName, DateTime date)
+    //    {
+    //        var startOfDay = date.Date;
+    //        var startOfNextDay = startOfDay.AddDays(1);
+    //        var filter = Builders<BsonDocument>.Filter.And(
+    //            Builders<BsonDocument>.Filter.Gte("Timestamp", startOfDay),
+    //            Builders<BsonDocument>.Filter.Lt("Timestamp", startOfNextDay)
+    //        );
+
+    //        var collection = collectionName == "IQC" ? iqcCollection : oqcCollection;
+    //        return collection.Find(filter).ToList();
+    //    }
+    //    public static List<BsonDocument> QueryAllData(string collectionName)
+    //    {
+    //        var collection = collectionName == "IQC" ? iqcCollection : oqcCollection;
+    //        return collection.Find(new BsonDocument()).ToList();
+    //    }
+
+
+    //    // Query data by type
+    //    public static List<BsonDocument> QueryByType(string collectionName, string type)
+    //    {
+    //        var filter = Builders<BsonDocument>.Filter.Eq("Type", type);
+    //        var collection = collectionName == "IQC" ? iqcCollection : oqcCollection;
+    //        return collection.Find(filter).ToList();
+    //    }
+    //    // Query data by type and date range
+    //    public static List<BsonDocument> QueryByTypeAndDateRange(string collectionName, string type, DateTime date)
+    //    {
+    //        var startOfDay = date.Date;
+    //        var startOfNextDay = startOfDay.AddDays(1);
+    //        var filter = Builders<BsonDocument>.Filter.And(
+    //            Builders<BsonDocument>.Filter.Eq("Type", type),
+    //            Builders<BsonDocument>.Filter.Gte("Timestamp", startOfDay),
+    //            Builders<BsonDocument>.Filter.Lt("Timestamp", startOfNextDay)
+    //        );
+
+    //        var collection = collectionName == "IQC" ? iqcCollection : oqcCollection;
+    //        return collection.Find(filter).ToList();
+    //    }
+    //}
 
 
     public class MainProcess
@@ -586,10 +609,31 @@ namespace TanHungHa.Common
 
         //  static SerialData dataComIQC = new SerialData();
         private static string EPC_IQC_Data = null;
+        private static string TID_IQC_Data = null;
         private static eSerialDataType EPC_IQC_Type = eSerialDataType.Unknown;
+
         private static string EPC_OQC_Data = null;
+        private static string TID_OQC_Data = null;
         private static eSerialDataType EPC_OQC_Type = eSerialDataType.Unknown;
-        
+
+        private static string lastEPC_IQC = null;
+        private static string lastEPC_OQC = null;
+
+        //private static eMode currentMode = MyParam.runParam.Mode;
+        public static bool CheckMode()
+        {
+            if (MyParam.runParam.Mode == eMode.Noon)
+            {
+                return false;
+            }
+            return true;
+        }
+        public static void SetMode(eMode mode)
+        {
+            MyParam.runParam.Mode = mode;
+            //AddLogAuto($"Chế độ hiện tại: {mode}", eIndex.Index_IQC_OQC_Log);
+        }
+
         public static void LoopProcessIQC()
         {
             // Lặp và xử lý dữ liệu trong queue IQC cho đến khi queue trống
@@ -599,75 +643,120 @@ namespace TanHungHa.Common
                 if (dataComIQC != null)
                 {
                     dataComIQC.Data = dataComIQC.Data.TrimEnd(new char[] { '\r', '\n' });
-                    // dataComIQC.Data = ProcessData(dataComIQC.Data);
-                    // Ghi log
+                    // Ghi log UI
                     AddLogAuto(dataComIQC.Data, dataComIQC.Timestamp, dataComIQC.Type, eIndex.Index_IQC_Data);
 
-                    if (!MyParam.runParam.getTID) //not use TID
+                    switch(MyParam.runParam.Mode)
                     {
-                        chartIQCUpdateQueue.Enqueue(dataComIQC.Type);
-                        var TID = "";
-                        EPC_IQC_Data = ProcessData(dataComIQC.Data);
-                        if (MyParam.autoForm.swFlushDB.Checked) MongoDBService.AddToBuffer(EPC_IQC_Data, TID, dataComIQC.Timestamp, dataComIQC.Type.ToString(), "IQC");  // Lưu vào MongoDB 
-                    }
-                    else
-                    {
-                        if (dataComIQC.Data.StartsWith("Q")) // EPC
-                        {
+                        case eMode.eOnlyTID:
+                            chartIQCUpdateQueue.Enqueue(dataComIQC.Type);
+                            var EPC = "";
+                            TID_IQC_Data = ProcessData(dataComIQC.Data);
+                            if (MyParam.autoForm.swFlushDB.Checked) MyParam.commonParam.mongoDBService.AddToBuffer(EPC, TID_IQC_Data, dataComIQC.Timestamp, dataComIQC.Type.ToString(), "IQC");  // Lưu vào MongoDB 
+                            break;
+                            
+                        case eMode.eOnlyEPC:
+                            chartIQCUpdateQueue.Enqueue(dataComIQC.Type);
+                            var TID = "";
                             EPC_IQC_Data = ProcessData(dataComIQC.Data);
-                            EPC_IQC_Type = dataComIQC.Type;
-                            Console.WriteLine("------------------EPC");
-                        }
-                        else if (dataComIQC.Data.StartsWith("X"))
-                        {
-                            if (!string.IsNullOrEmpty(EPC_IQC_Data)) //chưa có data EPC
+                            if (MyParam.autoForm.swFlushDB.Checked) MyParam.commonParam.mongoDBService.AddToBuffer(EPC_IQC_Data, TID, dataComIQC.Timestamp, dataComIQC.Type.ToString(), "IQC");  // Lưu vào MongoDB 
+                            break;
+                        case eMode.eEPC_TID:
+                            if (string.IsNullOrEmpty(lastEPC_IQC)) // EPC
                             {
-                                var TID_Data = ProcessData(dataComIQC.Data);
-                                var DataType = eSerialDataType.NG;
-                                chartIQCUpdateQueue.Enqueue(eSerialDataType.NG);
+                                lastEPC_IQC = ProcessData(dataComIQC.Data);
+                                EPC_IQC_Type = dataComIQC.Type;
+                            }
+                            else //TID
+                            {
+                                var TID_IQC = ProcessData(dataComIQC.Data);
+                                var TID_Type = dataComIQC.Type;
+                                var DataType = eSerialDataType.Unknown;
+                                
 
-                                if (MyParam.autoForm.swFlushDB.Checked) MongoDBService.AddToBuffer(EPC_IQC_Data, TID_Data, dataComIQC.Timestamp, DataType.ToString(), "IQC");
-                                EPC_IQC_Data = null; // Reset sau khi dùng
-                                EPC_IQC_Type = eSerialDataType.Unknown; // Reset sau khi dùng
-                                Console.WriteLine("------------------TID");
-                                return;
+                                if ((EPC_IQC_Type == eSerialDataType.OK) && (TID_Type == eSerialDataType.OK)) // Check type EPC & TID 
+                                {
+                                    DataType = eSerialDataType.OK;
+                                }
+                                else
+                                {
+                                    DataType = eSerialDataType.NG;
+                                }
+                                chartIQCUpdateQueue.Enqueue(DataType);
+
+                                if (MyParam.autoForm.swFlushDB.Checked)
+                                    MyParam.commonParam.mongoDBService.AddToBuffer(lastEPC_IQC, TID_IQC, dataComIQC.Timestamp, DataType.ToString(), "IQC");
+
+                                lastEPC_IQC = null; // Reset data EPC
+                                EPC_IQC_Type = eSerialDataType.Unknown; // Reset data 
                             }
-                            else // đã có data EPC
-                            {
-                                EPC_IQC_Data = ProcessData(dataComIQC.Data);
-                                EPC_IQC_Type = eSerialDataType.NG;
-                                Console.WriteLine("------------------EPC");
-                            }
+                            break;
+                    }
+                    //if (currentMode == eMode.eOnlyEPC) // Mode OnlyEPC
+                    //{
+                    //    chartIQCUpdateQueue.Enqueue(dataComIQC.Type);
+                    //    var TID = "";
+                    //    EPC_IQC_Data = ProcessData(dataComIQC.Data);
+                    //    if (MyParam.autoForm.swFlushDB.Checked) MyParam.commonParam.mongoDBService.AddToBuffer(EPC_IQC_Data, TID, dataComIQC.Timestamp, dataComIQC.Type.ToString(), "IQC");  // Lưu vào MongoDB 
+                    //}
+                    //else
+                    //{
+                    //    if (dataComIQC.Data.StartsWith("Q")) // EPC
+                    //    {
+                    //        EPC_IQC_Data = ProcessData(dataComIQC.Data);
+                    //        EPC_IQC_Type = dataComIQC.Type;
+                    //        Console.WriteLine("------------------EPC");
+                    //    }
+                    //    else if (dataComIQC.Data.StartsWith("X"))
+                    //    {
+                    //        if (!string.IsNullOrEmpty(EPC_IQC_Data)) //chưa có data EPC
+                    //        {
+                    //            var TID_Data = ProcessData(dataComIQC.Data);
+                    //            var DataType = eSerialDataType.NG;
+                    //            chartIQCUpdateQueue.Enqueue(eSerialDataType.NG);
+
+                    //            if (MyParam.autoForm.swFlushDB.Checked) MyParam.commonParam.mongoDBService.AddToBuffer(EPC_IQC_Data, TID_Data, dataComIQC.Timestamp, DataType.ToString(), "IQC");
+                    //            EPC_IQC_Data = null; // Reset sau khi dùng
+                    //            EPC_IQC_Type = eSerialDataType.Unknown; // Reset sau khi dùng
+                    //            Console.WriteLine("------------------TID");
+                    //            return;
+                    //        }
+                    //        else // đã có data EPC
+                    //        {
+                    //            EPC_IQC_Data = ProcessData(dataComIQC.Data);
+                    //            EPC_IQC_Type = eSerialDataType.NG;
+                    //            Console.WriteLine("------------------EPC");
+                    //        }
 
                             
-                        }
+                    //    }
 
-                        else if ((dataComIQC.Data.StartsWith("R")) || (dataComIQC.Data.StartsWith("E"))) // TID
-                        {
-                            var TID_Data = ProcessData(dataComIQC.Data);
-                            var TID_Type = dataComIQC.Type;
-                            var DataType = eSerialDataType.Unknown;
-                            if ((EPC_IQC_Type == eSerialDataType.OK) && (TID_Type == eSerialDataType.OK))
-                            {
-                                DataType = eSerialDataType.OK;
-                            }
-                            else
-                            {
-                                DataType = eSerialDataType.NG;
-                            }
+                    //    else if ((dataComIQC.Data.StartsWith("R")) || (dataComIQC.Data.StartsWith("E"))) // TID
+                    //    {
+                    //        var TID_Data = ProcessData(dataComIQC.Data);
+                    //        var TID_Type = dataComIQC.Type;
+                    //        var DataType = eSerialDataType.Unknown;
+                    //        if ((EPC_IQC_Type == eSerialDataType.OK) && (TID_Type == eSerialDataType.OK))
+                    //        {
+                    //            DataType = eSerialDataType.OK;
+                    //        }
+                    //        else
+                    //        {
+                    //            DataType = eSerialDataType.NG;
+                    //        }
 
-                            if (!string.IsNullOrEmpty(EPC_IQC_Data))
-                            {
-                                chartIQCUpdateQueue.Enqueue(DataType);
-                                if (MyParam.autoForm.swFlushDB.Checked) MongoDBService.AddToBuffer(EPC_IQC_Data, TID_Data, dataComIQC.Timestamp, DataType.ToString(), "IQC");
-                                EPC_IQC_Data = null; // Reset sau khi dùng
-                                EPC_IQC_Type = eSerialDataType.Unknown; // Reset sau khi dùng
-                            }
-                            Console.WriteLine("------------------TID");
-                        }
+                    //        if (!string.IsNullOrEmpty(EPC_IQC_Data))
+                    //        {
+                    //            chartIQCUpdateQueue.Enqueue(DataType);
+                    //            if (MyParam.autoForm.swFlushDB.Checked) MyParam.commonParam.mongoDBService.AddToBuffer(EPC_IQC_Data, TID_Data, dataComIQC.Timestamp, DataType.ToString(), "IQC");
+                    //            EPC_IQC_Data = null; // Reset sau khi dùng
+                    //            EPC_IQC_Type = eSerialDataType.Unknown; // Reset sau khi dùng
+                    //        }
+                    //        Console.WriteLine("------------------TID");
+                    //    }
                        
-                        // MongoDBService.AddToBuffer(dataComIQC.Data, dataComIQC.Timestamp, dataComIQC.Type.ToString(), "IQC");
-                    } 
+                    //    // MongoDBService.AddToBuffer(dataComIQC.Data, dataComIQC.Timestamp, dataComIQC.Type.ToString(), "IQC");
+                   // } 
                 }
             }
         }
@@ -731,52 +820,95 @@ namespace TanHungHa.Common
 
                     // Ghi log
                     AddLogAuto(dataComOQC.Data, dataComOQC.Timestamp, dataComOQC.Type, eIndex.Index_OQC_Data);
+                    switch (MyParam.runParam.Mode)
+                    {
+                        case eMode.eOnlyTID:
+                            chartOQCUpdateQueue.Enqueue(dataComOQC.Type);
+                            var EPC = "";
+                            TID_OQC_Data = ProcessData(dataComOQC.Data);
+                            if (MyParam.autoForm.swFlushDB.Checked) MyParam.commonParam.mongoDBService.AddToBuffer(EPC, TID_OQC_Data, dataComOQC.Timestamp, dataComOQC.Type.ToString(), "OQC");  // Lưu vào MongoDB 
+                            break;
 
-                    if (!MyParam.runParam.getTID) //not use TID
-                    {
-                        chartOQCUpdateQueue.Enqueue(dataComOQC.Type);
-                        var TID = "";
-                        if (MyParam.autoForm.swFlushDB.Checked) MongoDBService.AddToBuffer(dataComOQC.Data, TID, dataComOQC.Timestamp, dataComOQC.Type.ToString(), "OQC");  // Lưu vào MongoDB 
-                    }
-                    else
-                    {
-                        if (dataComOQC.Data.StartsWith("Q")) // EPC
-                        {
+                        case eMode.eOnlyEPC:
+                            chartOQCUpdateQueue.Enqueue(dataComOQC.Type);
+                            var TID = "";
                             EPC_OQC_Data = ProcessData(dataComOQC.Data);
-                            EPC_OQC_Type = dataComOQC.Type;
-                        }
-                        else if (dataComOQC.Data.StartsWith("R")) // TID
-                        {
-                            var TID_Data = ProcessData(dataComOQC.Data);
-                            var TID_Type = dataComOQC.Type;
-                            var DataType = eSerialDataType.Unknown;
-                            if ((EPC_OQC_Type == eSerialDataType.OK) && (TID_Type == eSerialDataType.OK))
+                            if (MyParam.autoForm.swFlushDB.Checked) MyParam.commonParam.mongoDBService.AddToBuffer(EPC_OQC_Data, TID, dataComOQC.Timestamp, dataComOQC.Type.ToString(), "OQC");  // Lưu vào MongoDB 
+                            break;
+                        case eMode.eEPC_TID:
+                            if (string.IsNullOrEmpty(lastEPC_OQC)) // EPC
                             {
-                                DataType = eSerialDataType.OK;
+                                lastEPC_OQC = ProcessData(dataComOQC.Data);
+                                EPC_OQC_Type = dataComOQC.Type;
                             }
-                            else
+                            else //TID
                             {
-                                DataType = eSerialDataType.NG;
-                            }
+                                var TID_OQC = ProcessData(dataComOQC.Data);
+                                var TID_Type = dataComOQC.Type;
+                                var DataType = eSerialDataType.Unknown;
 
-                            if (!string.IsNullOrEmpty(EPC_OQC_Data))
-                            {
+
+                                if ((EPC_OQC_Type == eSerialDataType.OK) && (TID_Type == eSerialDataType.OK)) // Check type EPC & TID 
+                                {
+                                    DataType = eSerialDataType.OK;
+                                }
+                                else
+                                {
+                                    DataType = eSerialDataType.NG;
+                                }
                                 chartOQCUpdateQueue.Enqueue(DataType);
-                                if (MyParam.autoForm.swFlushDB.Checked) MongoDBService.AddToBuffer(EPC_OQC_Data, TID_Data, dataComOQC.Timestamp, DataType.ToString(), "OQC");
-                                EPC_OQC_Data = null; // Reset sau khi dùng
-                                EPC_OQC_Type = eSerialDataType.Unknown; // Reset sau khi dùng
+
+                                if (MyParam.autoForm.swFlushDB.Checked)
+                                    MyParam.commonParam.mongoDBService.AddToBuffer(lastEPC_OQC, TID_OQC, dataComOQC.Timestamp, DataType.ToString(), "OQC");
+
+                                lastEPC_OQC = null; // Reset data EPC
+                                EPC_OQC_Type = eSerialDataType.Unknown; // Reset data 
                             }
-                        }
+                            break;
                     }
+
+
+
+                    //if (!MyParam.runParam.getTID) //not use TID
+                    //{
+                    //    chartOQCUpdateQueue.Enqueue(dataComOQC.Type);
+                    //    var TID = "";
+                    //    EPC_OQC_Data = ProcessData(dataComOQC.Data);
+                    //    if (MyParam.autoForm.swFlushDB.Checked) MyParam.commonParam.mongoDBService.AddToBuffer(EPC_OQC_Data, TID, dataComOQC.Timestamp, dataComOQC.Type.ToString(), "OQC");  // Lưu vào MongoDB 
+                    //}
+                    //else
+                    //{
+                    //    if (dataComOQC.Data.StartsWith("Q")) // EPC
+                    //    {
+                    //        EPC_OQC_Data = ProcessData(dataComOQC.Data);
+                    //        EPC_OQC_Type = dataComOQC.Type;
+                    //    }
+                    //    else if (dataComOQC.Data.StartsWith("R")) // TID
+                    //    {
+                    //        var TID_Data = ProcessData(dataComOQC.Data);
+                    //        var TID_Type = dataComOQC.Type;
+                    //        var DataType = eSerialDataType.Unknown;
+                    //        if ((EPC_OQC_Type == eSerialDataType.OK) && (TID_Type == eSerialDataType.OK))
+                    //        {
+                    //            DataType = eSerialDataType.OK;
+                    //        }
+                    //        else
+                    //        {
+                    //            DataType = eSerialDataType.NG;
+                    //        }
+
+                    //        if (!string.IsNullOrEmpty(EPC_OQC_Data))
+                    //        {
+                    //            chartOQCUpdateQueue.Enqueue(DataType);
+                    //            if (MyParam.autoForm.swFlushDB.Checked) MyParam.commonParam.mongoDBService.AddToBuffer(EPC_OQC_Data, TID_Data, dataComOQC.Timestamp, DataType.ToString(), "OQC");
+                    //            EPC_OQC_Data = null; // Reset sau khi dùng
+                    //            EPC_OQC_Type = eSerialDataType.Unknown; // Reset sau khi dùng
+                    //        }
+                    //    }
+                    //}
                 }
             }
         }
-
-
-                
-
-
-
 
         public static void AddLogAuto(string message,DateTime dateTime,eSerialDataType dataType, eIndex index = eIndex.Index_IQC_Data)
             {

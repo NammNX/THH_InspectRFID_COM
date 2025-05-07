@@ -138,16 +138,16 @@ namespace TanHungHa.Tabs
 
             if (cbIQC.Checked)
             {
-                if (cbOK.Checked) dataList.AddRange(MongoDBService.QueryByType("IQC", "OK"));
-                if (cbNG.Checked) dataList.AddRange(MongoDBService.QueryByType("IQC", "NG"));
-                if (!cbOK.Checked && !cbNG.Checked) dataList.AddRange(MongoDBService.QueryAllData("IQC"));
+                if (cbOK.Checked) dataList.AddRange(MyParam.commonParam.mongoDBService.QueryByType("IQC", "OK"));
+                if (cbNG.Checked) dataList.AddRange(MyParam.commonParam.mongoDBService.QueryByType("IQC", "NG"));
+                if (!cbOK.Checked && !cbNG.Checked) dataList.AddRange(MyParam.commonParam.mongoDBService.QueryAllData("IQC"));
             }
 
             if (cbOQC.Checked)
             {
-                if (cbOK.Checked) dataList.AddRange(MongoDBService.QueryByType("OQC", "OK"));
-                if (cbNG.Checked) dataList.AddRange(MongoDBService.QueryByType("OQC", "NG"));
-                if (!cbOK.Checked && !cbNG.Checked) dataList.AddRange(MongoDBService.QueryAllData("OQC"));
+                if (cbOK.Checked) dataList.AddRange(MyParam.commonParam.mongoDBService.QueryByType("OQC", "OK"));
+                if (cbNG.Checked) dataList.AddRange(MyParam.commonParam.mongoDBService.QueryByType("OQC", "NG"));
+                if (!cbOK.Checked && !cbNG.Checked) dataList.AddRange(MyParam.commonParam.mongoDBService.QueryAllData("OQC"));
             }
 
             // Count OK / NG
@@ -182,21 +182,37 @@ namespace TanHungHa.Tabs
 
         private void UpdateGroupBox()
         {
-                if (cbIQC.Checked)
+            if (cbIQC.Checked)
+            {
+                if (isScanRollByDate)
                 {
                     groupGridView.Text = $"{cbbListRoll.Text} IQC";
                     groupBoxChart.Text = $"Chart {cbbListRoll.Text} IQC";
                 }
-                else if (cbOQC.Checked)
+                if (isScanRollByName)
+                {
+                    groupGridView.Text = $"{cbbFindRollByName.Text} IQC";
+                    groupBoxChart.Text = $"Chart {cbbFindRollByName.Text} IQC";
+                }
+            }
+            else if (cbOQC.Checked)
+            {
+                if (isScanRollByDate)
                 {
                     groupGridView.Text = $"{cbbListRoll.Text} OQC";
                     groupBoxChart.Text = $"Chart {cbbListRoll.Text} OQC";
+                }
+                if(isScanRollByName)
+                {
+                    groupGridView.Text = $"{cbbFindRollByName.Text} OQC";
+                    groupBoxChart.Text = $"Chart {cbbFindRollByName.Text} OQC";
+                }
             }
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-           if(cbbListRoll.SelectedIndex == -1)
+           if((cbbListRoll.SelectedIndex == -1)&&(cbbFindRollByName.SelectedIndex == -1))
             {
                 MyLib.showDlgError("Chưa chọn cuộn hàng cần kiểm tra");
                 return;
@@ -206,7 +222,8 @@ namespace TanHungHa.Tabs
                 MyLib.showDlgError("Chưa chọn loại kiểm tra");
                 return;
             }
-            MongoDBService.ConnectMongoDb($"{MyParam.runParam.MongoClient}?connectTimeoutMS={MyParam.runParam.ConnectTimeOut}&socketTimeoutMS=10000&serverSelectionTimeoutMS=5000", $"{cbbListRoll.Text}");
+            if(isScanRollByDate) MyParam.commonParam.mongoDBService.ConnectMongoDb($"{MyParam.runParam.MongoClient}?connectTimeoutMS={MyParam.runParam.ConnectTimeOut}&socketTimeoutMS=10000&serverSelectionTimeoutMS=5000", $"{cbbListRoll.Text}");
+            if(isScanRollByName) MyParam.commonParam.mongoDBService.ConnectMongoDb($"{MyParam.runParam.MongoClient}?connectTimeoutMS={MyParam.runParam.ConnectTimeOut}&socketTimeoutMS=10000&serverSelectionTimeoutMS=5000", $"{cbbFindRollByName.Text}");
             try
             {
                 LoadDataToGrid();
@@ -431,12 +448,16 @@ namespace TanHungHa.Tabs
             ExportToExcel();
         }
 
+
+        public bool isScanRollByDate = false;
+        public bool isScanRollByName = false;
         private void btnScanRoll_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
+           
             DateTime selectedDate = mtDatePicker1.Date.Date;
 
-            var databases = MongoDBService.GetDatabasesWithLogsOnDate(selectedDate);
+            var databases = MyParam.commonParam.mongoDBService.GetDatabasesWithLogsOnDate(selectedDate);
 
             cbbListRoll.Items.Clear();
             cbbListRoll.Items.AddRange(databases.ToArray());
@@ -449,7 +470,46 @@ namespace TanHungHa.Tabs
             {
                 cbbListRoll.SelectedIndex = 0;
             }
+            cbbFindRollByName.DataSource = null;
+            cbbFindRollByName.Items.Clear();
+            txtFindRollByName.Text = "";
+            isScanRollByDate = true;
+            isScanRollByName = false;
+            groupBoxFindRollByDate.BackColor = Color.GreenYellow;
+            groupBoxFindNameByName.BackColor = Color.Silver;
+            groupBoxFindNameByName.Refresh();
+            groupBoxFindRollByDate.Refresh();
             this.Cursor = Cursors.Default;
+        }
+
+        private void btnScanRollByName_Click(object sender, EventArgs e)
+        {
+            this.Cursor = Cursors.WaitCursor;
+         
+            var matchedDbNames = MyParam.commonParam.mongoDBService.SearchDatabaseNamesByKeyword(txtFindRollByName.Text.Trim());
+
+            if (matchedDbNames.Any())
+            {
+                cbbFindRollByName.DataSource = matchedDbNames;
+            }
+            else
+            {
+                cbbFindRollByName.DataSource = null;
+            }
+            isScanRollByDate = false;
+            isScanRollByName = true;
+            groupBoxFindRollByDate.BackColor = Color.Silver;
+            groupBoxFindNameByName.BackColor = Color.GreenYellow;
+            cbbListRoll.DataSource = null;
+            cbbListRoll.Items.Clear();
+            groupBoxFindNameByName.Refresh();
+            groupBoxFindRollByDate.Refresh();
+            this.Cursor = Cursors.Default;
+        }
+
+        private void txtFindRollByName_TrailingIconClick(object sender, EventArgs e)
+        {
+            txtFindRollByName.Text = "";
         }
     }
     }

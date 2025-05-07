@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBoxChart = new System.Windows.Forms.GroupBox();
@@ -43,18 +43,25 @@
             this.groupGridView = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.groupBoxFindNameByName = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnScanRollByName = new MaterialSkin.Controls.MaterialButton();
+            this.cbbFindRollByName = new MaterialSkin.Controls.MaterialComboBox();
+            this.txtFindRollByName = new MaterialSkin.Controls.MaterialTextBox2();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.btnScanRoll = new MaterialSkin.Controls.MaterialButton();
+            this.groupBoxFindRollByDate = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.cbbListRoll = new MaterialSkin.Controls.MaterialComboBox();
+            this.btnScanRoll = new MaterialSkin.Controls.MaterialButton();
             this.cbNG = new MaterialSkin.Controls.MaterialCheckbox();
             this.cbOK = new MaterialSkin.Controls.MaterialCheckbox();
             this.cbOQC = new MaterialSkin.Controls.MaterialCheckbox();
             this.cbIQC = new MaterialSkin.Controls.MaterialCheckbox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.mtDatePicker1 = new MaterialWinforms.Controls.MaterialDropDownDatePicker();
-            this.btnRefresh = new MaterialSkin.Controls.MaterialButton();
-            this.btnExportExcel = new MaterialSkin.Controls.MaterialButton();
             this.cbHex2AciiEPC = new System.Windows.Forms.CheckBox();
+            this.btnExportExcel = new MaterialSkin.Controls.MaterialButton();
+            this.btnRefresh = new MaterialSkin.Controls.MaterialButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.groupBoxChart.SuspendLayout();
@@ -64,7 +71,11 @@
             this.groupGridView.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
+            this.groupBoxFindNameByName.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBoxFindRollByDate.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -129,17 +140,17 @@
             // 
             // chart
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chart.ChartAreas.Add(chartArea3);
+            chartArea7.Name = "ChartArea1";
+            this.chart.ChartAreas.Add(chartArea7);
             this.chart.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend3.Name = "Legend1";
-            this.chart.Legends.Add(legend3);
+            legend7.Name = "Legend1";
+            this.chart.Legends.Add(legend7);
             this.chart.Location = new System.Drawing.Point(3, 3);
             this.chart.Name = "chart";
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.chart.Series.Add(series3);
+            series7.ChartArea = "ChartArea1";
+            series7.Legend = "Legend1";
+            series7.Name = "Series1";
+            this.chart.Series.Add(series7);
             this.chart.Size = new System.Drawing.Size(149, 430);
             this.chart.TabIndex = 0;
             this.chart.Text = "chart1";
@@ -223,68 +234,181 @@
             // 
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.groupBoxFindRollByDate, 0, 2);
             this.tableLayoutPanel2.Controls.Add(this.groupBox3, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.groupBox2, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.btnRefresh, 0, 2);
-            this.tableLayoutPanel2.Controls.Add(this.btnExportExcel, 0, 3);
-            this.tableLayoutPanel2.Controls.Add(this.cbHex2AciiEPC, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.cbHex2AciiEPC, 0, 6);
+            this.tableLayoutPanel2.Controls.Add(this.btnExportExcel, 0, 5);
+            this.tableLayoutPanel2.Controls.Add(this.btnRefresh, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.groupBoxFindNameByName, 0, 3);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 5;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 22.82828F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 47.67677F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 29.51389F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 81F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.RowCount = 7;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(140, 597);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
+            // groupBoxFindNameByName
+            // 
+            this.groupBoxFindNameByName.BackColor = System.Drawing.Color.Silver;
+            this.groupBoxFindNameByName.Controls.Add(this.tableLayoutPanel5);
+            this.groupBoxFindNameByName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxFindNameByName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxFindNameByName.Location = new System.Drawing.Point(3, 300);
+            this.groupBoxFindNameByName.Name = "groupBoxFindNameByName";
+            this.groupBoxFindNameByName.Size = new System.Drawing.Size(134, 173);
+            this.groupBoxFindNameByName.TabIndex = 6;
+            this.groupBoxFindNameByName.TabStop = false;
+            this.groupBoxFindNameByName.Text = "Tìm cuộn theo tên";
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 1;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Controls.Add(this.btnScanRollByName, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.cbbFindRollByName, 0, 2);
+            this.tableLayoutPanel5.Controls.Add(this.txtFindRollByName, 0, 1);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 22);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 3;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.34F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(128, 148);
+            this.tableLayoutPanel5.TabIndex = 0;
+            // 
+            // btnScanRollByName
+            // 
+            this.btnScanRollByName.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnScanRollByName.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnScanRollByName.Depth = 0;
+            this.btnScanRollByName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnScanRollByName.HighEmphasis = true;
+            this.btnScanRollByName.Icon = null;
+            this.btnScanRollByName.Location = new System.Drawing.Point(4, 6);
+            this.btnScanRollByName.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnScanRollByName.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnScanRollByName.Name = "btnScanRollByName";
+            this.btnScanRollByName.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnScanRollByName.Size = new System.Drawing.Size(120, 37);
+            this.btnScanRollByName.TabIndex = 2;
+            this.btnScanRollByName.Text = "Scan";
+            this.btnScanRollByName.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnScanRollByName.UseAccentColor = false;
+            this.btnScanRollByName.UseVisualStyleBackColor = true;
+            this.btnScanRollByName.Click += new System.EventHandler(this.btnScanRollByName_Click);
+            // 
+            // cbbFindRollByName
+            // 
+            this.cbbFindRollByName.AutoResize = false;
+            this.cbbFindRollByName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cbbFindRollByName.Depth = 0;
+            this.cbbFindRollByName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbbFindRollByName.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cbbFindRollByName.DropDownHeight = 174;
+            this.cbbFindRollByName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbbFindRollByName.DropDownWidth = 121;
+            this.cbbFindRollByName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.cbbFindRollByName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cbbFindRollByName.FormattingEnabled = true;
+            this.cbbFindRollByName.IntegralHeight = false;
+            this.cbbFindRollByName.ItemHeight = 43;
+            this.cbbFindRollByName.Location = new System.Drawing.Point(3, 101);
+            this.cbbFindRollByName.MaxDropDownItems = 4;
+            this.cbbFindRollByName.MouseState = MaterialSkin.MouseState.OUT;
+            this.cbbFindRollByName.Name = "cbbFindRollByName";
+            this.cbbFindRollByName.Size = new System.Drawing.Size(122, 49);
+            this.cbbFindRollByName.StartIndex = 0;
+            this.cbbFindRollByName.TabIndex = 1;
+            // 
+            // txtFindRollByName
+            // 
+            this.txtFindRollByName.AnimateReadOnly = false;
+            this.txtFindRollByName.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtFindRollByName.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtFindRollByName.Depth = 0;
+            this.txtFindRollByName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtFindRollByName.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtFindRollByName.HideSelection = true;
+            this.txtFindRollByName.Hint = "Nhập tên cuộn";
+            this.txtFindRollByName.LeadingIcon = null;
+            this.txtFindRollByName.Location = new System.Drawing.Point(3, 52);
+            this.txtFindRollByName.MaxLength = 32767;
+            this.txtFindRollByName.MouseState = MaterialSkin.MouseState.OUT;
+            this.txtFindRollByName.Name = "txtFindRollByName";
+            this.txtFindRollByName.PasswordChar = '\0';
+            this.txtFindRollByName.PrefixSuffixText = null;
+            this.txtFindRollByName.ReadOnly = false;
+            this.txtFindRollByName.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtFindRollByName.SelectedText = "";
+            this.txtFindRollByName.SelectionLength = 0;
+            this.txtFindRollByName.SelectionStart = 0;
+            this.txtFindRollByName.ShortcutsEnabled = true;
+            this.txtFindRollByName.Size = new System.Drawing.Size(122, 48);
+            this.txtFindRollByName.TabIndex = 3;
+            this.txtFindRollByName.TabStop = false;
+            this.txtFindRollByName.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtFindRollByName.TrailingIcon = global::TanHungHa.Properties.Resources.outline_cleaning_services_black_18dp;
+            this.txtFindRollByName.UseSystemPasswordChar = false;
+            this.txtFindRollByName.TrailingIconClick += new System.EventHandler(this.txtFindRollByName_TrailingIconClick);
+            // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.btnScanRoll);
-            this.groupBox3.Controls.Add(this.cbbListRoll);
             this.groupBox3.Controls.Add(this.cbNG);
             this.groupBox3.Controls.Add(this.cbOK);
             this.groupBox3.Controls.Add(this.cbOQC);
             this.groupBox3.Controls.Add(this.cbIQC);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(3, 116);
+            this.groupBox3.Location = new System.Drawing.Point(3, 62);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(134, 230);
+            this.groupBox3.Size = new System.Drawing.Size(134, 113);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Select Log";
             // 
-            // btnScanRoll
+            // groupBoxFindRollByDate
             // 
-            this.btnScanRoll.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnScanRoll.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnScanRoll.Depth = 0;
-            this.btnScanRoll.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnScanRoll.HighEmphasis = true;
-            this.btnScanRoll.Icon = null;
-            this.btnScanRoll.Location = new System.Drawing.Point(3, 142);
-            this.btnScanRoll.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnScanRoll.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnScanRoll.Name = "btnScanRoll";
-            this.btnScanRoll.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnScanRoll.Size = new System.Drawing.Size(128, 36);
-            this.btnScanRoll.TabIndex = 5;
-            this.btnScanRoll.Text = "Scan";
-            this.btnScanRoll.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnScanRoll.UseAccentColor = false;
-            this.btnScanRoll.UseVisualStyleBackColor = true;
-            this.btnScanRoll.Click += new System.EventHandler(this.btnScanRoll_Click);
+            this.groupBoxFindRollByDate.BackColor = System.Drawing.Color.Silver;
+            this.groupBoxFindRollByDate.Controls.Add(this.tableLayoutPanel3);
+            this.groupBoxFindRollByDate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxFindRollByDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxFindRollByDate.Location = new System.Drawing.Point(3, 181);
+            this.groupBoxFindRollByDate.Name = "groupBoxFindRollByDate";
+            this.groupBoxFindRollByDate.Size = new System.Drawing.Size(134, 113);
+            this.groupBoxFindRollByDate.TabIndex = 1;
+            this.groupBoxFindRollByDate.TabStop = false;
+            this.groupBoxFindRollByDate.Text = "Tìm cuộn trong ngày";
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 1;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Controls.Add(this.cbbListRoll, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.btnScanRoll, 0, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 22);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(128, 88);
+            this.tableLayoutPanel3.TabIndex = 0;
             // 
             // cbbListRoll
             // 
             this.cbbListRoll.AutoResize = false;
             this.cbbListRoll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.cbbListRoll.Depth = 0;
-            this.cbbListRoll.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.cbbListRoll.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbbListRoll.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.cbbListRoll.DropDownHeight = 174;
             this.cbbListRoll.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -294,13 +418,34 @@
             this.cbbListRoll.FormattingEnabled = true;
             this.cbbListRoll.IntegralHeight = false;
             this.cbbListRoll.ItemHeight = 43;
-            this.cbbListRoll.Location = new System.Drawing.Point(3, 178);
+            this.cbbListRoll.Location = new System.Drawing.Point(3, 47);
             this.cbbListRoll.MaxDropDownItems = 4;
             this.cbbListRoll.MouseState = MaterialSkin.MouseState.OUT;
             this.cbbListRoll.Name = "cbbListRoll";
-            this.cbbListRoll.Size = new System.Drawing.Size(128, 49);
+            this.cbbListRoll.Size = new System.Drawing.Size(122, 49);
             this.cbbListRoll.StartIndex = 0;
             this.cbbListRoll.TabIndex = 4;
+            // 
+            // btnScanRoll
+            // 
+            this.btnScanRoll.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnScanRoll.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnScanRoll.Depth = 0;
+            this.btnScanRoll.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnScanRoll.HighEmphasis = true;
+            this.btnScanRoll.Icon = null;
+            this.btnScanRoll.Location = new System.Drawing.Point(4, 6);
+            this.btnScanRoll.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnScanRoll.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnScanRoll.Name = "btnScanRoll";
+            this.btnScanRoll.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnScanRoll.Size = new System.Drawing.Size(120, 32);
+            this.btnScanRoll.TabIndex = 5;
+            this.btnScanRoll.Text = "Scan";
+            this.btnScanRoll.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnScanRoll.UseAccentColor = false;
+            this.btnScanRoll.UseVisualStyleBackColor = true;
+            this.btnScanRoll.Click += new System.EventHandler(this.btnScanRoll_Click);
             // 
             // cbNG
             // 
@@ -357,6 +502,8 @@
             // cbIQC
             // 
             this.cbIQC.AutoSize = true;
+            this.cbIQC.Checked = true;
+            this.cbIQC.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbIQC.Depth = 0;
             this.cbIQC.Location = new System.Drawing.Point(9, 16);
             this.cbIQC.Margin = new System.Windows.Forms.Padding(0);
@@ -379,14 +526,14 @@
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(3, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(134, 107);
+            this.groupBox2.Size = new System.Drawing.Size(134, 53);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Select Range";
+            this.groupBox2.Text = "Select Date";
             // 
             // mtDatePicker1
             // 
-            this.mtDatePicker1.AnchorSize = new System.Drawing.Size(128, 88);
+            this.mtDatePicker1.AnchorSize = new System.Drawing.Size(128, 34);
             this.mtDatePicker1.BackColor = System.Drawing.SystemColors.Control;
             this.mtDatePicker1.Date = new System.DateTime(2025, 4, 23, 0, 0, 0, 0);
             this.mtDatePicker1.Depth = 0;
@@ -396,8 +543,42 @@
             this.mtDatePicker1.Margin = new System.Windows.Forms.Padding(2);
             this.mtDatePicker1.MouseState = MaterialWinforms.MouseState.HOVER;
             this.mtDatePicker1.Name = "mtDatePicker1";
-            this.mtDatePicker1.Size = new System.Drawing.Size(128, 88);
+            this.mtDatePicker1.Size = new System.Drawing.Size(128, 34);
             this.mtDatePicker1.TabIndex = 8;
+            // 
+            // cbHex2AciiEPC
+            // 
+            this.cbHex2AciiEPC.AutoSize = true;
+            this.cbHex2AciiEPC.BackColor = System.Drawing.Color.Cyan;
+            this.cbHex2AciiEPC.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbHex2AciiEPC.Location = new System.Drawing.Point(3, 573);
+            this.cbHex2AciiEPC.Name = "cbHex2AciiEPC";
+            this.cbHex2AciiEPC.Size = new System.Drawing.Size(134, 21);
+            this.cbHex2AciiEPC.TabIndex = 5;
+            this.cbHex2AciiEPC.Text = "Hex to Acii EPC";
+            this.cbHex2AciiEPC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cbHex2AciiEPC.UseVisualStyleBackColor = false;
+            // 
+            // btnExportExcel
+            // 
+            this.btnExportExcel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnExportExcel.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnExportExcel.Depth = 0;
+            this.btnExportExcel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnExportExcel.HighEmphasis = true;
+            this.btnExportExcel.Icon = null;
+            this.btnExportExcel.Location = new System.Drawing.Point(4, 529);
+            this.btnExportExcel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnExportExcel.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnExportExcel.Name = "btnExportExcel";
+            this.btnExportExcel.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnExportExcel.Size = new System.Drawing.Size(132, 35);
+            this.btnExportExcel.TabIndex = 4;
+            this.btnExportExcel.Text = "Export Excel";
+            this.btnExportExcel.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnExportExcel.UseAccentColor = false;
+            this.btnExportExcel.UseVisualStyleBackColor = true;
+            this.btnExportExcel.Click += new System.EventHandler(this.btnExportExcel_Click);
             // 
             // btnRefresh
             // 
@@ -408,52 +589,18 @@
             this.btnRefresh.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnRefresh.HighEmphasis = true;
             this.btnRefresh.Icon = null;
-            this.btnRefresh.Location = new System.Drawing.Point(4, 355);
+            this.btnRefresh.Location = new System.Drawing.Point(4, 482);
             this.btnRefresh.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnRefresh.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnRefresh.Size = new System.Drawing.Size(132, 134);
+            this.btnRefresh.Size = new System.Drawing.Size(132, 35);
             this.btnRefresh.TabIndex = 3;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             this.btnRefresh.UseAccentColor = false;
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
-            // btnExportExcel
-            // 
-            this.btnExportExcel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnExportExcel.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnExportExcel.Depth = 0;
-            this.btnExportExcel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnExportExcel.HighEmphasis = true;
-            this.btnExportExcel.Icon = null;
-            this.btnExportExcel.Location = new System.Drawing.Point(4, 501);
-            this.btnExportExcel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnExportExcel.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnExportExcel.Name = "btnExportExcel";
-            this.btnExportExcel.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnExportExcel.Size = new System.Drawing.Size(132, 69);
-            this.btnExportExcel.TabIndex = 4;
-            this.btnExportExcel.Text = "Export Excel";
-            this.btnExportExcel.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnExportExcel.UseAccentColor = false;
-            this.btnExportExcel.UseVisualStyleBackColor = true;
-            this.btnExportExcel.Click += new System.EventHandler(this.btnExportExcel_Click);
-            // 
-            // cbHex2AciiEPC
-            // 
-            this.cbHex2AciiEPC.AutoSize = true;
-            this.cbHex2AciiEPC.BackColor = System.Drawing.Color.Cyan;
-            this.cbHex2AciiEPC.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbHex2AciiEPC.Location = new System.Drawing.Point(3, 579);
-            this.cbHex2AciiEPC.Name = "cbHex2AciiEPC";
-            this.cbHex2AciiEPC.Size = new System.Drawing.Size(134, 15);
-            this.cbHex2AciiEPC.TabIndex = 5;
-            this.cbHex2AciiEPC.Text = "Hex to Acii EPC";
-            this.cbHex2AciiEPC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.cbHex2AciiEPC.UseVisualStyleBackColor = false;
             // 
             // FormLogDB
             // 
@@ -476,8 +623,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            this.groupBoxFindNameByName.ResumeLayout(false);
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel5.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBoxFindRollByDate.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -509,5 +662,12 @@
         private System.Windows.Forms.CheckBox cbHex2AciiEPC;
         private MaterialSkin.Controls.MaterialComboBox cbbListRoll;
         private MaterialSkin.Controls.MaterialButton btnScanRoll;
+        private MaterialSkin.Controls.MaterialComboBox cbbFindRollByName;
+        private System.Windows.Forms.GroupBox groupBoxFindRollByDate;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.GroupBox groupBoxFindNameByName;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+        private MaterialSkin.Controls.MaterialButton btnScanRollByName;
+        private MaterialSkin.Controls.MaterialTextBox2 txtFindRollByName;
     }
 }
