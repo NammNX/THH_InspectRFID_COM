@@ -670,7 +670,8 @@ namespace TanHungHa.Tabs
 
         private void btnRollName_Click(object sender, EventArgs e)
         {
-
+            MyParam.commonParam.myComportIQC.SendData(MyDefine.TriggerAndEnableO8);
+            MyParam.commonParam.myComportOQC.SendData(MyDefine.TriggerAndEnableO8);
         }
     }
 }

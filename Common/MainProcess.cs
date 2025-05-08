@@ -604,16 +604,19 @@ namespace TanHungHa.Common
         }
 
         //  static SerialData dataComIQC = new SerialData();
-        private static string EPC_IQC_Data = null;
-        private static string TID_IQC_Data = null;
-        private static eSerialDataType EPC_IQC_Type = eSerialDataType.Unknown;
+        //  private static string EPC_IQC_Data = null;
+        // private static string TID_IQC_Data = null;
 
-        private static string EPC_OQC_Data = null;
-        private static string TID_OQC_Data = null;
+
+        //  private static string EPC_OQC_Data = null;
+        // private static string TID_OQC_Data = null;
+        private static eSerialDataType EPC_IQC_Type = eSerialDataType.Unknown;
         private static eSerialDataType EPC_OQC_Type = eSerialDataType.Unknown;
 
-        private static string lastEPC_IQC = null;
-        private static string lastEPC_OQC = null;
+        private static string lastEPC_IQCFormat = null;
+        private static string lastEPC_OQCFormat = null;
+        private static string lastEPC_IQCFull = null;
+        private static string lastEPC_OQC_Full = null;
 
         //private static HashSet<string> historyIQCData = new HashSet<string>();
         //private static HashSet<string> historyOQCData = new HashSet<string>();
@@ -643,57 +646,101 @@ namespace TanHungHa.Common
                 if (dataComIQC != null)
                 {
                     dataComIQC.Data = dataComIQC.Data.TrimEnd(new char[] { '\r', '\n' });
-                    if (MyParam.runParam.HistoryIQCData.Contains(dataComIQC.Data))
-                    {
-                        AddLogAuto(dataComIQC.Data, dataComIQC.Timestamp, eSerialDataType.Duplicate, eIndex.Index_IQC_Data);
-                        continue; 
-                    }
-                    // Ghi log UI
-                    AddLogAuto(dataComIQC.Data, dataComIQC.Timestamp, dataComIQC.Type, eIndex.Index_IQC_Data);
-                    MyParam.runParam.HistoryIQCData.Add(dataComIQC.Data);
 
                     switch (MyParam.runParam.Mode)
                     {
                         case eMode.eOnlyTID:
+
+                            var EPCNull = "";
+                            var TIDFull = dataComIQC.Data;
+                            var TIDFormat = ProcessData(dataComIQC.Data);
+
+                            if (dataComIQC.Type == eSerialDataType.OK)
+                            {
+                                // Kiểm tra xem dữ liệu đã tồn tại trong danh sách lịch sử chưa
+                                if (MyParam.runParam.HistoryIQCData.Contains(TIDFormat))
+                                {
+                                    AddLogAutoEPCTID(EPCNull, TIDFull, dataComIQC.Timestamp, eSerialDataType.Duplicate, eIndex.Index_IQC_Data);
+                                    continue;
+                                }
+                                MyParam.runParam.HistoryIQCData.Add(TIDFormat);
+                            }
+
+                            // Ghi log UI
+                            AddLogAutoEPCTID(EPCNull, TIDFull, dataComIQC.Timestamp, dataComIQC.Type, eIndex.Index_IQC_Data);
+
                             chartIQCUpdateQueue.Enqueue(dataComIQC.Type);
-                            var EPC = "";
-                            TID_IQC_Data = ProcessData(dataComIQC.Data);
-                            if (MyParam.autoForm.swFlushDB.Checked) MyParam.commonParam.mongoDBService.AddToBuffer(EPC, TID_IQC_Data, dataComIQC.Timestamp, dataComIQC.Type.ToString(), "IQC");  // Lưu vào MongoDB 
+                            if (MyParam.autoForm.swFlushDB.Checked) MyParam.commonParam.mongoDBService.AddToBuffer(EPCNull, TIDFormat, dataComIQC.Timestamp, dataComIQC.Type.ToString(), "IQC");  // Lưu vào MongoDB 
                             break;
                             
                         case eMode.eOnlyEPC:
-                            chartIQCUpdateQueue.Enqueue(dataComIQC.Type);
-                            var TID = "";
-                            EPC_IQC_Data = ProcessData(dataComIQC.Data);
-                            if (MyParam.autoForm.swFlushDB.Checked) MyParam.commonParam.mongoDBService.AddToBuffer(EPC_IQC_Data, TID, dataComIQC.Timestamp, dataComIQC.Type.ToString(), "IQC");  // Lưu vào MongoDB 
-                            break;
-                        case eMode.eEPC_TID:
-                            if (string.IsNullOrEmpty(lastEPC_IQC)) // EPC
+
+                            var TIDNull = "";
+                            var EPCFull = dataComIQC.Data;
+                            var EPCFormat = ProcessData(dataComIQC.Data);
+
+                            if (dataComIQC.Type == eSerialDataType.OK)
                             {
-                                lastEPC_IQC = ProcessData(dataComIQC.Data);
+                                // Kiểm tra xem dữ liệu đã tồn tại trong danh sách lịch sử chưa
+                                if (MyParam.runParam.HistoryIQCData.Contains(EPCFormat))
+                                {
+                                    AddLogAutoEPCTID(EPCFull,TIDNull, dataComIQC.Timestamp, eSerialDataType.Duplicate, eIndex.Index_IQC_Data);
+                                    continue;
+                                }
+                                MyParam.runParam.HistoryIQCData.Add(EPCFormat);
+                            }
+                            // Ghi log UI
+                            AddLogAutoEPCTID(EPCFull, TIDNull, dataComIQC.Timestamp, dataComIQC.Type, eIndex.Index_IQC_Data);
+                            chartIQCUpdateQueue.Enqueue(dataComIQC.Type);
+                            if (MyParam.autoForm.swFlushDB.Checked) MyParam.commonParam.mongoDBService.AddToBuffer(EPCFormat, TIDNull, dataComIQC.Timestamp, dataComIQC.Type.ToString(), "IQC");  // Lưu vào MongoDB 
+                            break;
+
+                        case eMode.eEPC_TID:
+
+                            if (lastEPC_IQCFormat == null) // EPC
+                            {
+                                lastEPC_IQCFull = dataComIQC.Data;
+                                lastEPC_IQCFormat = ProcessData(dataComIQC.Data);
                                 EPC_IQC_Type = dataComIQC.Type;
                             }
                             else //TID
                             {
-                                var TID_IQC = ProcessData(dataComIQC.Data);
+                                var TID_IQCFull = dataComIQC.Data;
+                                var TID_IQCFormat = ProcessData(dataComIQC.Data);
                                 var TID_Type = dataComIQC.Type;
                                 var DataType = eSerialDataType.Unknown;
                                 
 
                                 if ((EPC_IQC_Type == eSerialDataType.OK) && (TID_Type == eSerialDataType.OK)) // Check type EPC & TID 
                                 {
-                                    DataType = eSerialDataType.OK;
+                                    if (MyParam.runParam.HistoryIQCData.Contains(lastEPC_IQCFormat) ||(MyParam.runParam.HistoryIQCData.Contains(TID_IQCFormat)))
+                                    {
+                                        AddLogAutoEPCTID(lastEPC_IQCFull, TID_IQCFull, dataComIQC.Timestamp, eSerialDataType.Duplicate, eIndex.Index_IQC_Data);
+                                        lastEPC_IQCFormat = null; // Reset data EPC
+                                        lastEPC_IQCFull = null;
+                                        EPC_IQC_Type = eSerialDataType.Unknown; // Reset data 
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        DataType = eSerialDataType.OK;
+                                        MyParam.runParam.HistoryIQCData.Add(lastEPC_IQCFormat);
+                                        MyParam.runParam.HistoryIQCData.Add(TID_IQCFormat);
+                                    }
                                 }
                                 else
                                 {
                                     DataType = eSerialDataType.NG;
                                 }
+
+                                AddLogAutoEPCTID(lastEPC_IQCFull, TID_IQCFull, dataComIQC.Timestamp, DataType, eIndex.Index_IQC_Data);
+
                                 chartIQCUpdateQueue.Enqueue(DataType);
-
                                 if (MyParam.autoForm.swFlushDB.Checked)
-                                    MyParam.commonParam.mongoDBService.AddToBuffer(lastEPC_IQC, TID_IQC, dataComIQC.Timestamp, DataType.ToString(), "IQC");
+                                    MyParam.commonParam.mongoDBService.AddToBuffer(lastEPC_IQCFormat, TID_IQCFormat, dataComIQC.Timestamp, DataType.ToString(), "IQC");
 
-                                lastEPC_IQC = null; // Reset data EPC
+                                lastEPC_IQCFull = null;
+                                lastEPC_IQCFormat = null; // Reset data EPC
                                 EPC_IQC_Type = eSerialDataType.Unknown; // Reset data 
                             }
                             break;
@@ -823,57 +870,96 @@ namespace TanHungHa.Common
                 if (dataComOQC != null)
                 {
                     dataComOQC.Data = dataComOQC.Data.TrimEnd(new char[] { '\r', '\n' });
-                    if (MyParam.runParam.HistoryOQCData.Contains(dataComOQC.Data)) //check duplicate data
-                    {
-                        AddLogAuto(dataComOQC.Data, dataComOQC.Timestamp, eSerialDataType.Duplicate, eIndex.Index_OQC_Data);
-                        continue;
-                    }
-                    // Ghi log
-                    AddLogAuto(dataComOQC.Data, dataComOQC.Timestamp, dataComOQC.Type, eIndex.Index_OQC_Data);
-                    MyParam.runParam.HistoryOQCData.Add(dataComOQC.Data); //add history data
-
+                    
                     switch (MyParam.runParam.Mode)
                     {
                         case eMode.eOnlyTID:
+
+                            var EPCNull = "";
+                            var TIDFull = dataComOQC.Data;
+                            var TIDFormat = ProcessData(dataComOQC.Data);
+                            // Kiểm tra xem dữ liệu đã tồn tại trong danh sách lịch sử chưa
+                            if (dataComOQC.Type == eSerialDataType.OK)
+                            {
+                                if (MyParam.runParam.HistoryOQCData.Contains(TIDFormat)) //check duplicate data
+                                {
+                                    AddLogAutoEPCTID(EPCNull, TIDFull, dataComOQC.Timestamp, eSerialDataType.Duplicate, eIndex.Index_OQC_Data);
+                                   
+                                    continue;
+                                }
+                                MyParam.runParam.HistoryOQCData.Add(TIDFormat); //add history data
+                            }
+                            // Ghi log
+                            AddLogAutoEPCTID(EPCNull, TIDFull, dataComOQC.Timestamp, dataComOQC.Type, eIndex.Index_OQC_Data);
                             chartOQCUpdateQueue.Enqueue(dataComOQC.Type);
-                            var EPC = "";
-                            TID_OQC_Data = ProcessData(dataComOQC.Data);
-                            if (MyParam.autoForm.swFlushDB.Checked) MyParam.commonParam.mongoDBService.AddToBuffer(EPC, TID_OQC_Data, dataComOQC.Timestamp, dataComOQC.Type.ToString(), "OQC");  // Lưu vào MongoDB 
+                            if (MyParam.autoForm.swFlushDB.Checked) MyParam.commonParam.mongoDBService.AddToBuffer(EPCNull, TIDFormat, dataComOQC.Timestamp, dataComOQC.Type.ToString(), "OQC");  // Lưu vào MongoDB 
                             break;
 
                         case eMode.eOnlyEPC:
+
+                            var TIDNull = "";
+                            var EPCFull = dataComOQC.Data;
+                            var EPCFormat = ProcessData(dataComOQC.Data);
+                            // Kiểm tra xem dữ liệu đã tồn tại trong danh sách lịch sử chưa
+                            if (dataComOQC.Type == eSerialDataType.OK)
+                            {
+                                if (MyParam.runParam.HistoryOQCData.Contains(EPCFormat)) //check duplicate data
+                                {
+                                    AddLogAutoEPCTID(EPCFull, TIDNull, dataComOQC.Timestamp, eSerialDataType.Duplicate, eIndex.Index_OQC_Data);
+
+                                    continue;
+                                }
+                                MyParam.runParam.HistoryOQCData.Add(EPCFormat); //add history data
+                            }
+                            // Ghi log
+                            AddLogAutoEPCTID(EPCFull, TIDNull, dataComOQC.Timestamp, dataComOQC.Type, eIndex.Index_OQC_Data);
                             chartOQCUpdateQueue.Enqueue(dataComOQC.Type);
-                            var TID = "";
-                            EPC_OQC_Data = ProcessData(dataComOQC.Data);
-                            if (MyParam.autoForm.swFlushDB.Checked) MyParam.commonParam.mongoDBService.AddToBuffer(EPC_OQC_Data, TID, dataComOQC.Timestamp, dataComOQC.Type.ToString(), "OQC");  // Lưu vào MongoDB 
+                            if (MyParam.autoForm.swFlushDB.Checked) MyParam.commonParam.mongoDBService.AddToBuffer(EPCFormat, TIDNull, dataComOQC.Timestamp, dataComOQC.Type.ToString(), "OQC");  // Lưu vào MongoDB 
                             break;
                         case eMode.eEPC_TID:
-                            if (string.IsNullOrEmpty(lastEPC_OQC)) // EPC
+                            if (lastEPC_OQCFormat == null) // EPC
                             {
-                                lastEPC_OQC = ProcessData(dataComOQC.Data);
+                                lastEPC_OQC_Full = dataComOQC.Data;
+                                lastEPC_OQCFormat = ProcessData(dataComOQC.Data);
                                 EPC_OQC_Type = dataComOQC.Type;
                             }
                             else //TID
                             {
-                                var TID_OQC = ProcessData(dataComOQC.Data);
+                                var TID_OQC_Full = dataComOQC.Data;
+                                var TID_OQCFormat = ProcessData(dataComOQC.Data);
                                 var TID_Type = dataComOQC.Type;
                                 var DataType = eSerialDataType.Unknown;
 
 
                                 if ((EPC_OQC_Type == eSerialDataType.OK) && (TID_Type == eSerialDataType.OK)) // Check type EPC & TID 
                                 {
-                                    DataType = eSerialDataType.OK;
+                                    if (MyParam.runParam.HistoryOQCData.Contains(lastEPC_OQCFormat) || (MyParam.runParam.HistoryOQCData.Contains(TID_OQCFormat))) //check duplicate data
+                                    {
+                                        AddLogAutoEPCTID(lastEPC_OQC_Full, TID_OQC_Full, dataComOQC.Timestamp, eSerialDataType.Duplicate, eIndex.Index_OQC_Data);
+                                        lastEPC_OQC_Full = null; // Reset data EPC
+                                        lastEPC_OQCFormat = null; // Reset data EPC
+                                        EPC_OQC_Type = eSerialDataType.Unknown; // Reset data 
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        DataType = eSerialDataType.OK;
+                                        MyParam.runParam.HistoryOQCData.Add(lastEPC_OQCFormat);
+                                        MyParam.runParam.HistoryOQCData.Add(TID_OQCFormat);
+                                    }
                                 }
                                 else
                                 {
                                     DataType = eSerialDataType.NG;
                                 }
+
+                                AddLogAutoEPCTID(lastEPC_OQC_Full, TID_OQC_Full, dataComOQC.Timestamp, DataType, eIndex.Index_OQC_Data);
                                 chartOQCUpdateQueue.Enqueue(DataType);
 
                                 if (MyParam.autoForm.swFlushDB.Checked)
-                                    MyParam.commonParam.mongoDBService.AddToBuffer(lastEPC_OQC, TID_OQC, dataComOQC.Timestamp, DataType.ToString(), "OQC");
+                                    MyParam.commonParam.mongoDBService.AddToBuffer(lastEPC_OQCFormat, TID_OQCFormat, dataComOQC.Timestamp, DataType.ToString(), "OQC");
 
-                                lastEPC_OQC = null; // Reset data EPC
+                                lastEPC_OQCFormat = null; // Reset data EPC
                                 EPC_OQC_Type = eSerialDataType.Unknown; // Reset data 
                             }
                             break;
@@ -922,22 +1008,39 @@ namespace TanHungHa.Common
             }
         }
 
-        public static void AddLogAuto(string message,DateTime dateTime,eSerialDataType dataType, eIndex index = eIndex.Index_IQC_Data)
-            {
+        //public static void AddLogAuto(string message,DateTime dateTime,eSerialDataType dataType, eIndex index = eIndex.Index_IQC_Data)
+        //    {
+        //    //if (!MyParam.autoForm.IsHandleCreated) return;
+        //    switch (index)
+        //    {
+        //        case eIndex.Index_IQC_Data:
+        //            MyLib.ShowLogListview(MyParam.autoForm.lvIQC, dateTime, message,dataType);
+        //            break;
+
+        //        case eIndex.Index_OQC_Data:
+        //            MyLib.ShowLogListview(MyParam.autoForm.lvOQC, dateTime, message, dataType);
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //    MyLib.log(message, SvLogger.LogType.SEQUENCE);
+        //}
+        public static void AddLogAutoEPCTID(string EPC,string TID, DateTime dateTime, eSerialDataType dataType, eIndex index = eIndex.Index_IQC_Data)
+        {
             //if (!MyParam.autoForm.IsHandleCreated) return;
             switch (index)
             {
                 case eIndex.Index_IQC_Data:
-                    MyLib.ShowLogListview(MyParam.autoForm.lvIQC, dateTime, message,dataType);
+                    MyLib.ShowLogListviewEPCTID(MyParam.autoForm.lvIQC, dateTime, EPC,TID, dataType);
                     break;
 
                 case eIndex.Index_OQC_Data:
-                    MyLib.ShowLogListview(MyParam.autoForm.lvOQC, dateTime, message, dataType);
+                    MyLib.ShowLogListviewEPCTID(MyParam.autoForm.lvOQC, dateTime, EPC,TID, dataType);
                     break;
                 default:
                     break;
             }
-            MyLib.log(message, SvLogger.LogType.SEQUENCE);
+           // MyLib.log(message, SvLogger.LogType.SEQUENCE);
         }
 
         public static void AddLogAuto(string message, eIndex index = eIndex.Index_IQC_OQC_Log)

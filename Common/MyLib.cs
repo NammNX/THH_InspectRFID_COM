@@ -438,8 +438,63 @@ namespace TanHungHa.Common
                         listview.Items.Clear();
                     }
 
-                    
+
                     ListViewItem newItem = new ListViewItem(new string[] { $"{timeStr}", $"{message}", $"{typeData.ToString()}" });
+
+
+                    if (typeData == eSerialDataType.NG)
+                    {
+                        newItem.BackColor = Color.Red;
+                        newItem.ForeColor = Color.White;
+                    }
+                    if (typeData == eSerialDataType.Duplicate)
+                    {
+                        newItem.BackColor = Color.Orange;
+                        newItem.ForeColor = Color.Black;
+                    }
+
+
+                    listview.Items.Insert(0, newItem);
+                }));
+            }
+            else
+            {
+                if (listview.Items.Count >= MyParam.commonParam.devParam.maxLine)
+                {
+                    listview.Items.Clear();
+                }
+
+
+                ListViewItem newItem = new ListViewItem(new string[] { $"{timeStr}", $"{message}", $"{typeData.ToString()}" });
+
+                if (typeData == eSerialDataType.NG)
+                {
+                    newItem.BackColor = Color.Red;
+                    newItem.ForeColor = Color.White;
+                }
+                if (typeData == eSerialDataType.Duplicate)
+                {
+                    newItem.BackColor = Color.Orange;
+                    newItem.ForeColor = Color.Black;
+                }
+                listview.Items.Insert(0, newItem);
+            }
+        }
+
+        public static void ShowLogListviewEPCTID(ListView listview, DateTime dateTime, string EPC, string TID, eSerialDataType typeData)
+        {
+            string timeStr = dateTime.ToString("HH:mm:ss");
+            if (listview.InvokeRequired)
+            {
+                listview.BeginInvoke(new Action(() =>
+                {
+                    if (listview.Items.Count >= MyParam.commonParam.devParam.maxLine)
+                    {
+                        listview.Items.Clear();
+                    }
+
+                    
+                    ListViewItem newItem = new ListViewItem(new string[] { $"{timeStr}", $"{EPC}",$"{TID}", $"{typeData.ToString()}" });
 
                    
                     if (typeData == eSerialDataType.NG)
@@ -464,8 +519,8 @@ namespace TanHungHa.Common
                     listview.Items.Clear();
                 }
 
-                
-                ListViewItem newItem = new ListViewItem(new string[] { $"{timeStr}", $"{message}", $"{typeData.ToString()}" });
+
+                ListViewItem newItem = new ListViewItem(new string[] { $"{timeStr}", $"{EPC}", $"{TID}", $"{typeData.ToString()}" });
 
                 if (typeData == eSerialDataType.NG)
                 {
