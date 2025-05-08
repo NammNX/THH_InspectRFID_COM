@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea9 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend9 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.lbOQCbuffer = new System.Windows.Forms.Label();
             this.lbIQCbuffer = new System.Windows.Forms.Label();
@@ -85,6 +85,7 @@
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.clearLogToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearAllLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxIQC = new System.Windows.Forms.GroupBox();
             this.lvIQC = new System.Windows.Forms.ListView();
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -100,7 +101,7 @@
             this.lvLogDB = new MaterialSkin.Controls.MaterialListView();
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.clearAllLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnInit = new MaterialSkin.Controls.MaterialButton();
             this.tableLayoutPanel5.SuspendLayout();
             this.groupDB_UI.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -147,7 +148,7 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(98, 81);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(98, 84);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // lbOQCbuffer
@@ -158,7 +159,7 @@
             this.lbOQCbuffer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbOQCbuffer.Location = new System.Drawing.Point(3, 64);
             this.lbOQCbuffer.Name = "lbOQCbuffer";
-            this.lbOQCbuffer.Size = new System.Drawing.Size(92, 17);
+            this.lbOQCbuffer.Size = new System.Drawing.Size(92, 20);
             this.lbOQCbuffer.TabIndex = 4;
             this.lbOQCbuffer.Text = "OQC buffer";
             this.lbOQCbuffer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -211,12 +212,12 @@
             this.btnStop.Enabled = false;
             this.btnStop.HighEmphasis = true;
             this.btnStop.Icon = null;
-            this.btnStop.Location = new System.Drawing.Point(4, 57);
+            this.btnStop.Location = new System.Drawing.Point(4, 86);
             this.btnStop.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnStop.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnStop.Name = "btnStop";
             this.btnStop.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnStop.Size = new System.Drawing.Size(98, 39);
+            this.btnStop.Size = new System.Drawing.Size(98, 28);
             this.btnStop.TabIndex = 2;
             this.btnStop.Text = "Stop";
             this.btnStop.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -233,12 +234,12 @@
             this.btnReset.Enabled = false;
             this.btnReset.HighEmphasis = true;
             this.btnReset.Icon = null;
-            this.btnReset.Location = new System.Drawing.Point(4, 108);
+            this.btnReset.Location = new System.Drawing.Point(4, 126);
             this.btnReset.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnReset.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnReset.Name = "btnReset";
             this.btnReset.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnReset.Size = new System.Drawing.Size(98, 39);
+            this.btnReset.Size = new System.Drawing.Size(98, 28);
             this.btnReset.TabIndex = 1;
             this.btnReset.Text = "Reset";
             this.btnReset.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -252,14 +253,15 @@
             this.btnStart.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             this.btnStart.Depth = 0;
             this.btnStart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnStart.Enabled = false;
             this.btnStart.HighEmphasis = true;
             this.btnStart.Icon = null;
-            this.btnStart.Location = new System.Drawing.Point(4, 6);
+            this.btnStart.Location = new System.Drawing.Point(4, 46);
             this.btnStart.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnStart.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnStart.Name = "btnStart";
             this.btnStart.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnStart.Size = new System.Drawing.Size(98, 39);
+            this.btnStart.Size = new System.Drawing.Size(98, 28);
             this.btnStart.TabIndex = 0;
             this.btnStart.Text = "Start";
             this.btnStart.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -273,11 +275,11 @@
             this.groupDB_UI.Controls.Add(this.tableLayoutPanel5);
             this.groupDB_UI.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupDB_UI.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupDB_UI.Location = new System.Drawing.Point(2, 410);
+            this.groupDB_UI.Location = new System.Drawing.Point(2, 407);
             this.groupDB_UI.Margin = new System.Windows.Forms.Padding(2);
             this.groupDB_UI.Name = "groupDB_UI";
             this.groupDB_UI.Padding = new System.Windows.Forms.Padding(2);
-            this.groupDB_UI.Size = new System.Drawing.Size(102, 100);
+            this.groupDB_UI.Size = new System.Drawing.Size(102, 103);
             this.groupDB_UI.TabIndex = 8;
             this.groupDB_UI.TabStop = false;
             this.groupDB_UI.Text = "DB";
@@ -286,35 +288,38 @@
             // 
             this.tableLayoutPanel4.ColumnCount = 1;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Controls.Add(this.btnStart, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.btnStop, 0, 1);
-            this.tableLayoutPanel4.Controls.Add(this.groupDB_UI, 0, 7);
-            this.tableLayoutPanel4.Controls.Add(this.groupBoxFlushDBChecked, 0, 6);
-            this.tableLayoutPanel4.Controls.Add(this.btnReset, 0, 2);
-            this.tableLayoutPanel4.Controls.Add(this.groupboxbypass, 0, 4);
-            this.tableLayoutPanel4.Controls.Add(this.groupBoxDcm, 0, 5);
-            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel13, 0, 3);
+            this.tableLayoutPanel4.Controls.Add(this.groupDB_UI, 0, 8);
+            this.tableLayoutPanel4.Controls.Add(this.groupBoxFlushDBChecked, 0, 7);
+            this.tableLayoutPanel4.Controls.Add(this.groupBoxDcm, 0, 6);
+            this.tableLayoutPanel4.Controls.Add(this.groupboxbypass, 0, 5);
+            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel13, 0, 4);
+            this.tableLayoutPanel4.Controls.Add(this.btnReset, 0, 3);
+            this.tableLayoutPanel4.Controls.Add(this.btnStop, 0, 2);
+            this.tableLayoutPanel4.Controls.Add(this.btnStart, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.btnInit, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(819, 3);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 8;
+            this.tableLayoutPanel4.RowCount = 9;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 18F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(106, 512);
             this.tableLayoutPanel4.TabIndex = 2;
+            this.tableLayoutPanel4.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel4_Paint);
             // 
             // groupBoxFlushDBChecked
             // 
             this.groupBoxFlushDBChecked.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.groupBoxFlushDBChecked.Controls.Add(this.swFlushDB);
             this.groupBoxFlushDBChecked.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxFlushDBChecked.Location = new System.Drawing.Point(3, 360);
+            this.groupBoxFlushDBChecked.Location = new System.Drawing.Point(3, 357);
             this.groupBoxFlushDBChecked.Name = "groupBoxFlushDBChecked";
             this.groupBoxFlushDBChecked.Size = new System.Drawing.Size(100, 45);
             this.groupBoxFlushDBChecked.TabIndex = 9;
@@ -345,7 +350,7 @@
             this.groupboxbypass.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.groupboxbypass.Controls.Add(this.swByPass);
             this.groupboxbypass.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupboxbypass.Location = new System.Drawing.Point(3, 207);
+            this.groupboxbypass.Location = new System.Drawing.Point(3, 214);
             this.groupboxbypass.Name = "groupboxbypass";
             this.groupboxbypass.Size = new System.Drawing.Size(100, 45);
             this.groupboxbypass.TabIndex = 13;
@@ -357,6 +362,7 @@
             this.swByPass.AutoSize = true;
             this.swByPass.Depth = 0;
             this.swByPass.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.swByPass.Enabled = false;
             this.swByPass.Location = new System.Drawing.Point(3, 16);
             this.swByPass.Margin = new System.Windows.Forms.Padding(0);
             this.swByPass.MouseLocation = new System.Drawing.Point(-1, -1);
@@ -366,15 +372,16 @@
             this.swByPass.Size = new System.Drawing.Size(94, 26);
             this.swByPass.TabIndex = 12;
             this.swByPass.UseVisualStyleBackColor = true;
+            this.swByPass.CheckedChanged += new System.EventHandler(this.swByPass_CheckedChanged);
             // 
             // groupBoxDcm
             // 
             this.groupBoxDcm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.groupBoxDcm.Controls.Add(this.tableLayoutPanel10);
             this.groupBoxDcm.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxDcm.Location = new System.Drawing.Point(3, 258);
+            this.groupBoxDcm.Location = new System.Drawing.Point(3, 265);
             this.groupBoxDcm.Name = "groupBoxDcm";
-            this.groupBoxDcm.Size = new System.Drawing.Size(100, 96);
+            this.groupBoxDcm.Size = new System.Drawing.Size(100, 86);
             this.groupBoxDcm.TabIndex = 11;
             this.groupBoxDcm.TabStop = false;
             this.groupBoxDcm.Text = "ModeDCM";
@@ -391,7 +398,7 @@
             this.tableLayoutPanel10.RowCount = 2;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 29.87013F));
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70.12987F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(94, 77);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(94, 67);
             this.tableLayoutPanel10.TabIndex = 0;
             // 
             // swModeDCM
@@ -405,7 +412,7 @@
             this.swModeDCM.MouseState = MaterialSkin.MouseState.HOVER;
             this.swModeDCM.Name = "swModeDCM";
             this.swModeDCM.Ripple = true;
-            this.swModeDCM.Size = new System.Drawing.Size(94, 23);
+            this.swModeDCM.Size = new System.Drawing.Size(94, 20);
             this.swModeDCM.TabIndex = 10;
             this.swModeDCM.UseVisualStyleBackColor = true;
             // 
@@ -418,12 +425,12 @@
             this.btnInputDataSourceDCM.Enabled = false;
             this.btnInputDataSourceDCM.HighEmphasis = true;
             this.btnInputDataSourceDCM.Icon = null;
-            this.btnInputDataSourceDCM.Location = new System.Drawing.Point(4, 29);
+            this.btnInputDataSourceDCM.Location = new System.Drawing.Point(4, 26);
             this.btnInputDataSourceDCM.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnInputDataSourceDCM.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnInputDataSourceDCM.Name = "btnInputDataSourceDCM";
             this.btnInputDataSourceDCM.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnInputDataSourceDCM.Size = new System.Drawing.Size(86, 42);
+            this.btnInputDataSourceDCM.Size = new System.Drawing.Size(86, 35);
             this.btnInputDataSourceDCM.TabIndex = 11;
             this.btnInputDataSourceDCM.Text = "Import File DCM";
             this.btnInputDataSourceDCM.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -440,7 +447,7 @@
             this.tableLayoutPanel13.Controls.Add(this.btnOnlyEPC, 1, 0);
             this.tableLayoutPanel13.Controls.Add(this.btnEPCTID, 0, 0);
             this.tableLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel13.Location = new System.Drawing.Point(3, 156);
+            this.tableLayoutPanel13.Location = new System.Drawing.Point(3, 163);
             this.tableLayoutPanel13.Name = "tableLayoutPanel13";
             this.tableLayoutPanel13.RowCount = 1;
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -450,6 +457,7 @@
             // btnOnlyTID
             // 
             this.btnOnlyTID.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnOnlyTID.Enabled = false;
             this.btnOnlyTID.Location = new System.Drawing.Point(69, 3);
             this.btnOnlyTID.Name = "btnOnlyTID";
             this.btnOnlyTID.Size = new System.Drawing.Size(28, 39);
@@ -461,6 +469,7 @@
             // btnOnlyEPC
             // 
             this.btnOnlyEPC.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnOnlyEPC.Enabled = false;
             this.btnOnlyEPC.Location = new System.Drawing.Point(36, 3);
             this.btnOnlyEPC.Name = "btnOnlyEPC";
             this.btnOnlyEPC.Size = new System.Drawing.Size(27, 39);
@@ -472,6 +481,7 @@
             // btnEPCTID
             // 
             this.btnEPCTID.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnEPCTID.Enabled = false;
             this.btnEPCTID.Location = new System.Drawing.Point(3, 3);
             this.btnEPCTID.Name = "btnEPCTID";
             this.btnEPCTID.Size = new System.Drawing.Size(27, 39);
@@ -510,17 +520,17 @@
             // 
             // chartOQC
             // 
-            chartArea5.Name = "ChartArea1";
-            this.chartOQC.ChartAreas.Add(chartArea5);
+            chartArea9.Name = "ChartArea1";
+            this.chartOQC.ChartAreas.Add(chartArea9);
             this.chartOQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend5.Name = "Legend1";
-            this.chartOQC.Legends.Add(legend5);
+            legend9.Name = "Legend1";
+            this.chartOQC.Legends.Add(legend9);
             this.chartOQC.Location = new System.Drawing.Point(3, 3);
             this.chartOQC.Name = "chartOQC";
-            series5.ChartArea = "ChartArea1";
-            series5.Legend = "Legend1";
-            series5.Name = "Series1";
-            this.chartOQC.Series.Add(series5);
+            series9.ChartArea = "ChartArea1";
+            series9.Legend = "Legend1";
+            series9.Name = "Series1";
+            this.chartOQC.Series.Add(series9);
             this.chartOQC.Size = new System.Drawing.Size(115, 336);
             this.chartOQC.TabIndex = 0;
             this.chartOQC.Text = "chart1";
@@ -609,17 +619,17 @@
             // 
             // chartIQC
             // 
-            chartArea6.Name = "ChartArea1";
-            this.chartIQC.ChartAreas.Add(chartArea6);
+            chartArea10.Name = "ChartArea1";
+            this.chartIQC.ChartAreas.Add(chartArea10);
             this.chartIQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend6.Name = "Legend1";
-            this.chartIQC.Legends.Add(legend6);
+            legend10.Name = "Legend1";
+            this.chartIQC.Legends.Add(legend10);
             this.chartIQC.Location = new System.Drawing.Point(3, 3);
             this.chartIQC.Name = "chartIQC";
-            series6.ChartArea = "ChartArea1";
-            series6.Legend = "Legend1";
-            series6.Name = "Series1";
-            this.chartIQC.Series.Add(series6);
+            series10.ChartArea = "ChartArea1";
+            series10.Legend = "Legend1";
+            series10.Name = "Series1";
+            this.chartIQC.Series.Add(series10);
             this.chartIQC.Size = new System.Drawing.Size(115, 336);
             this.chartIQC.TabIndex = 0;
             this.chartIQC.Text = "chart1";
@@ -741,6 +751,7 @@
             this.btnRollName.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             this.btnRollName.UseAccentColor = false;
             this.btnRollName.UseVisualStyleBackColor = true;
+            this.btnRollName.Click += new System.EventHandler(this.btnRollName_Click);
             // 
             // btnNewRoll
             // 
@@ -848,14 +859,21 @@
             this.clearLogToolStripMenuItem1,
             this.clearAllLogToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(142, 48);
             // 
             // clearLogToolStripMenuItem1
             // 
             this.clearLogToolStripMenuItem1.Name = "clearLogToolStripMenuItem1";
-            this.clearLogToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
+            this.clearLogToolStripMenuItem1.Size = new System.Drawing.Size(141, 22);
             this.clearLogToolStripMenuItem1.Text = "Clear Log";
             this.clearLogToolStripMenuItem1.Click += new System.EventHandler(this.clearLogToolStripMenuItem1_Click);
+            // 
+            // clearAllLogToolStripMenuItem
+            // 
+            this.clearAllLogToolStripMenuItem.Name = "clearAllLogToolStripMenuItem";
+            this.clearAllLogToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.clearAllLogToolStripMenuItem.Text = "Clear All Log";
+            this.clearAllLogToolStripMenuItem.Click += new System.EventHandler(this.clearAllLogToolStripMenuItem_Click);
             // 
             // groupBoxIQC
             // 
@@ -1017,12 +1035,26 @@
             this.columnHeader6.Text = "Info";
             this.columnHeader6.Width = 1200;
             // 
-            // clearAllLogToolStripMenuItem
+            // btnInit
             // 
-            this.clearAllLogToolStripMenuItem.Name = "clearAllLogToolStripMenuItem";
-            this.clearAllLogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.clearAllLogToolStripMenuItem.Text = "Clear All Log";
-            this.clearAllLogToolStripMenuItem.Click += new System.EventHandler(this.clearAllLogToolStripMenuItem_Click);
+            this.btnInit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnInit.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnInit.Depth = 0;
+            this.btnInit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnInit.HighEmphasis = true;
+            this.btnInit.Icon = null;
+            this.btnInit.Location = new System.Drawing.Point(4, 6);
+            this.btnInit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnInit.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnInit.Name = "btnInit";
+            this.btnInit.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnInit.Size = new System.Drawing.Size(98, 28);
+            this.btnInit.TabIndex = 15;
+            this.btnInit.Text = "Init";
+            this.btnInit.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnInit.UseAccentColor = false;
+            this.btnInit.UseVisualStyleBackColor = true;
+            this.btnInit.Click += new System.EventHandler(this.btnProgramAction);
             // 
             // FormAuto
             // 
@@ -1140,5 +1172,6 @@
         private System.Windows.Forms.Button btnEPCTID;
         private System.Windows.Forms.Button btnOnlyTID;
         private System.Windows.Forms.ToolStripMenuItem clearAllLogToolStripMenuItem;
+        private MaterialSkin.Controls.MaterialButton btnInit;
     }
 }

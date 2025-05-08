@@ -72,7 +72,7 @@ namespace TanHungHa
             {
                 MyParam.autoForm.btnRollName.Visible = false;
             }
-            if(MyParam.runParam.Mode != eMode.Noon);
+            if(MyParam.runParam.Mode != eMode.Noon)
             {
                 MyParam.autoForm.UpdateModeUI();
             }
@@ -213,10 +213,29 @@ namespace TanHungHa
         {
             if(e.CloseReason == CloseReason.UserClosing)
             {
-                return;
+                if ((MyParam.commonParam.myComportIQC.GetQueueCount() > 0) || (MyParam.commonParam.myComportOQC.GetQueueCount() > 0)
+                || (MyParam.commonParam.mongoDBService.GetIqcBufferCount() > 0) || (MyParam.commonParam.mongoDBService.GetOqcBufferCount() > 0))
+                {
+                    MaterialDialog materialDialog1 = new MaterialDialog(this, "Exit?", "Quá trình ghi dữ liệu vào data base chưa hoàn tất, tiếp tục đóng ?", "OK", true, "Cancel");
+                    DialogResult result1 = materialDialog1.ShowDialog(this);
+                    if (result1 == DialogResult.Cancel)
+                    {
+                        e.Cancel = true; // Hủy sự kiện đóng
+                        return;
+                    }
+                }
+                //Show dialog confirm exit
+                MaterialDialog materialDialog = new MaterialDialog(this, "Exit?", "Bạn có chắc chắn muốn đóng chương trình?", "OK", true, "Cancel");
+                DialogResult result = materialDialog.ShowDialog(this);
+                if (result == DialogResult.Cancel)
+                {
+                    e.Cancel = true; // Hủy sự kiện đóng
+                    return;
+                }
             }
+           
             //Close program
-            if (MyParam.runParam.ProgramStatus == ePRGSTATUS.Started)
+            if ((MyParam.runParam.ProgramStatus == ePRGSTATUS.Started) || (MyParam.runParam.ProgramStatus == ePRGSTATUS.Initial))
             {
                 MyParam.autoForm.StopProgram();
             }

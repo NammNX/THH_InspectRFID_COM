@@ -66,8 +66,8 @@
             this.materialTabControl1.Controls.Add(this.tabPageAuto);
             this.materialTabControl1.Controls.Add(this.tabPageManual);
             this.materialTabControl1.Controls.Add(this.tabPageManager);
-            this.materialTabControl1.Controls.Add(this.tabPageInfo);
             this.materialTabControl1.Controls.Add(this.tabPageLog);
+            this.materialTabControl1.Controls.Add(this.tabPageInfo);
             this.materialTabControl1.Controls.Add(this.tabPageExit);
             this.materialTabControl1.Depth = 0;
             this.materialTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;

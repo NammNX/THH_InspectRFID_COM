@@ -1,1 +1,1 @@
-{"COM_IQC":"COM9","COM_OQC":"COM3","Baudrate":115200,"Mode":1,"MongoClient":"mongodb://localhost:27017","DataBaseName":"kk","ConnectTimeOut":5000,"mongoFlushIntervalMs":3000}
+{"COM_IQC":"COM9","COM_OQC":"COM3","Baudrate":115200,"Mode":3,"MongoClient":"mongodb://localhost:27017","DataBaseName":"cuon2","ConnectTimeOut":5000,"mongoFlushIntervalMs":3000,"HistoryIQCData":["RTAAAAAAAAAwwwwawwwwwqwAEST","QCHEAAAAAAAAAwwwwwwwAAAAAAAAAAACK1","Q3000KKK"],"HistoryOQCData":["TEST","CHECKaaaaaaaaaaaa1",""]}

@@ -49,6 +49,9 @@ namespace TanHungHa.Common
         public int Baudrate  { get; set; }
         [Category("Device"), DescriptionAttribute("Mode")]
         public eMode Mode { get; set; }
+
+        
+
         //[Category("Device"), DescriptionAttribute("Use TID Data")]
         //public bool getTID { get; set; }
 
@@ -65,73 +68,13 @@ namespace TanHungHa.Common
         [Category("DataBase"), DescriptionAttribute("Time between each flush, in milliseconds")]
         public int mongoFlushIntervalMs { get; set; }
 
+        public HashSet<string> HistoryIQCData { get; set; } = new HashSet<string>();
+        public HashSet<string> HistoryOQCData { get; set; } = new HashSet<string>();
 
-
-        //[Category("Device"), DescriptionAttribute("Path Save File Excel")]
-        //public string Path { get; set; }
-
-        //[Category("Device"), DescriptionAttribute("FileName Excel")]
-        //public string Name { get; set; }
-
-        //private string _iDayResetCheckDuplicate;
-        //[Category("Logging"), DescriptionAttribute("Number of days to reset duplicate check data")]
-        //public string iDayResetCheckDuplicate
-        //{
-        //    get => _iDayResetCheckDuplicate;
-        //    set
-        //    {
-        //        if (int.TryParse(value, out _))
-        //        {
-        //            _iDayResetCheckDuplicate = value;
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("Hãy điền số");
-        //            throw new ArgumentException("Only numeric values are allowed.");
-        //        }
-        //    }
-        //}
-
-        //private string _iMaxRowExcell;
-        //[Category("Logging"), DescriptionAttribute("Number of max Row file Excel")]
-        //public string iMaxRowExcell
-        //{
-        //    get => _iMaxRowExcell;
-        //    set
-        //    {
-        //        if (int.TryParse(value, out _))
-        //        {
-        //            _iMaxRowExcell = value;
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("Hãy điền số");
-        //            throw new ArgumentException("Only numeric values are allowed.");
-        //        }
-        //    }
-        //}
-
-        //private string _SizeFont;
-        //[Category("Logging"), DescriptionAttribute("Size Font List View Data")]
-        //public string SizeFont
-        //{
-        //    get => _SizeFont;
-        //    set
-        //    {
-        //        if (int.TryParse(value, out _))
-        //        {
-        //            _SizeFont = value;
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("Hãy điền số");
-        //            throw new ArgumentException("Only numeric values are allowed.");
-        //        }
-        //    }
-        //}
         [JsonIgnore]
         [Browsable(false)]
         public ePRGSTATUS ProgramStatus = ePRGSTATUS.Start_Up;
+       
         RunParam()
         {
             COM_IQC = "COM1";
@@ -143,12 +86,8 @@ namespace TanHungHa.Common
             DataBaseName = "Empty";
             ConnectTimeOut = 5000;
             mongoFlushIntervalMs = 3000;
-            //Path = "C:\\Users\\Windows 11\\Desktop";
-            //Name = "ABC.xlsx";
-            //iDayResetCheckDuplicate = "7";
-            //iMaxRowExcell = "120";
-            //SizeFont = "16";
-           
+            HistoryIQCData = new HashSet<string>();
+            HistoryOQCData = new HashSet<string>();
         }
     }
 }

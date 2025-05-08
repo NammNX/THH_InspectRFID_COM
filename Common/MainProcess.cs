@@ -434,18 +434,12 @@ namespace TanHungHa.Common
         public static List<LogItem> logIQCList = new List<LogItem>();
         public static List<LogItem> logOQCList = new List<LogItem>();
 
-        static ConcurrentQueue<LogItem> logBufferIQC = new ConcurrentQueue<LogItem>();
-        static ConcurrentQueue<LogItem> logBufferOQC = new ConcurrentQueue<LogItem>();
         private static ConcurrentQueue<eSerialDataType> chartIQCUpdateQueue = new ConcurrentQueue<eSerialDataType>();
         private static ConcurrentQueue<eSerialDataType> chartOQCUpdateQueue = new ConcurrentQueue<eSerialDataType>();
 
         private static List<eSerialDataType> batchChartIQC = new List<eSerialDataType>();
         private static List<eSerialDataType> batchChartOQC = new List<eSerialDataType>();
 
-
-
-        static object logLockUIIQC = new object();
-        static object logLockUIOQC = new object();
 
         public MainProcess()
         {
@@ -523,6 +517,8 @@ namespace TanHungHa.Common
 
         public static void LoopProcessLoopChartUpdateIQC()
         {
+            MyParam.autoForm.UpdateLabelDataBase();
+
             while (chartIQCUpdateQueue.TryDequeue(out eSerialDataType dataType))
             {
                 batchChartIQC.Add(dataType);
@@ -619,6 +615,10 @@ namespace TanHungHa.Common
         private static string lastEPC_IQC = null;
         private static string lastEPC_OQC = null;
 
+        //private static HashSet<string> historyIQCData = new HashSet<string>();
+        //private static HashSet<string> historyOQCData = new HashSet<string>();
+
+
         //private static eMode currentMode = MyParam.runParam.Mode;
         public static bool CheckMode()
         {
@@ -643,10 +643,16 @@ namespace TanHungHa.Common
                 if (dataComIQC != null)
                 {
                     dataComIQC.Data = dataComIQC.Data.TrimEnd(new char[] { '\r', '\n' });
+                    if (MyParam.runParam.HistoryIQCData.Contains(dataComIQC.Data))
+                    {
+                        AddLogAuto(dataComIQC.Data, dataComIQC.Timestamp, eSerialDataType.Duplicate, eIndex.Index_IQC_Data);
+                        continue; 
+                    }
                     // Ghi log UI
                     AddLogAuto(dataComIQC.Data, dataComIQC.Timestamp, dataComIQC.Type, eIndex.Index_IQC_Data);
+                    MyParam.runParam.HistoryIQCData.Add(dataComIQC.Data);
 
-                    switch(MyParam.runParam.Mode)
+                    switch (MyParam.runParam.Mode)
                     {
                         case eMode.eOnlyTID:
                             chartIQCUpdateQueue.Enqueue(dataComIQC.Type);
@@ -817,9 +823,15 @@ namespace TanHungHa.Common
                 if (dataComOQC != null)
                 {
                     dataComOQC.Data = dataComOQC.Data.TrimEnd(new char[] { '\r', '\n' });
-
+                    if (MyParam.runParam.HistoryOQCData.Contains(dataComOQC.Data)) //check duplicate data
+                    {
+                        AddLogAuto(dataComOQC.Data, dataComOQC.Timestamp, eSerialDataType.Duplicate, eIndex.Index_OQC_Data);
+                        continue;
+                    }
                     // Ghi log
                     AddLogAuto(dataComOQC.Data, dataComOQC.Timestamp, dataComOQC.Type, eIndex.Index_OQC_Data);
+                    MyParam.runParam.HistoryOQCData.Add(dataComOQC.Data); //add history data
+
                     switch (MyParam.runParam.Mode)
                     {
                         case eMode.eOnlyTID:
@@ -999,8 +1011,6 @@ namespace TanHungHa.Common
         
         public static void LoopProcessHEARTBEAT()
         {
-            MyParam.autoForm.UpdateLabelDataBase();
-           
             //RAM
             string RamInfo = "";
             if (curpcp != null)

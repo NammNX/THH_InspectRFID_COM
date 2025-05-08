@@ -33,7 +33,16 @@ namespace TanHungHa.Common
         public const string treenodeTheme = "Theme";
         public const string treenodeDev = "Developer";
 
+
+        // control Module RFID of Mr.TruTho
         public const string ResetIO_RFID = "r";
+        public const string NoByPass = "s"; //Dừng máy khi lỗi
+        public const string ByPass = "x"; //Không dừng máy khi lỗi
+        public const string EnableModeOnlyEPCModuleRFID = "1";
+        public const string EnableModeEPCTIDModuleRFID = "2";
+        public const string EnableModeOnlyTIDModuleRFID = "3";
+        public const string TriggerAndEnableO8 = "d"; // Trigger và bật O8
+
 
 
         public const int NUM_FAIL_HEART_BEAR = 5;

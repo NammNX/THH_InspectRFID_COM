@@ -45,7 +45,6 @@ namespace TanHungHa.Common
         private static int totalIqcFlushed = 0;
         private static int totalOqcFlushed = 0;
 
-        private static CancellationTokenSource _cancellationTokenSource;
 
         public bool ConnectMongoDb(string connectionString, string databaseName)
         {

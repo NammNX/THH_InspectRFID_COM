@@ -445,10 +445,15 @@ namespace TanHungHa.Common
                     if (typeData == eSerialDataType.NG)
                     {
                         newItem.BackColor = Color.Red;
-                        newItem.ForeColor = Color.White; // Bạn có thể tùy chỉnh màu chữ nếu cần
+                        newItem.ForeColor = Color.White; 
+                    }
+                    if (typeData == eSerialDataType.Duplicate)
+                    {
+                        newItem.BackColor = Color.Orange;
+                        newItem.ForeColor = Color.Black;
                     }
 
-                   
+
                     listview.Items.Insert(0, newItem);
                 }));
             }
@@ -466,6 +471,11 @@ namespace TanHungHa.Common
                 {
                     newItem.BackColor = Color.Red;
                     newItem.ForeColor = Color.White;
+                }
+                if (typeData == eSerialDataType.Duplicate)
+                {
+                    newItem.BackColor = Color.Orange;
+                    newItem.ForeColor = Color.Black;
                 }
                 listview.Items.Insert(0, newItem);
             }

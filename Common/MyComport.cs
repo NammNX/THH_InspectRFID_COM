@@ -18,6 +18,7 @@ namespace TanHungHa.Common
         {
             OK,
             NG,
+            Duplicate,
             Unknown
         }
 

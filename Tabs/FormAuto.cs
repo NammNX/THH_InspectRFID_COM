@@ -36,7 +36,7 @@ namespace TanHungHa.Tabs
         public FormAuto()
         {
             InitializeComponent();
-           // UpdateModeUI();
+            // UpdateModeUI();
             SetupChart(chartIQC);
             SetupChart(chartOQC);
         }
@@ -77,13 +77,15 @@ namespace TanHungHa.Tabs
             MyParam.commonParam.myComportIQC.DisConnect();
             MyParam.commonParam.myComportOQC.DisConnect();
 
-            EnableBtn(btnStart, true);
+            EnableBtn(btnInit,true);
+            EnableBtn(btnStart, false);
             EnableBtn(btnReset, true);
             EnableBtn(btnStop, false);
             ChangeColor(groupBoxIQC, false);
             ChangeColor(groupBoxOQC, false);
             ChangeColor(groupBoxChartIQC, false);
             ChangeColor(groupBoxOQChart, false);
+            swByPass.Enabled = false;
 
             if (MyParam.runParam.ProgramStatus == ePRGSTATUS.Started)
             {
@@ -107,72 +109,95 @@ namespace TanHungHa.Tabs
         //    EnableBtn(btnStop, true); 
         //    MyParam.runParam.ProgramStatus = ePRGSTATUS.Started;
         //}
-
-        public async void StartProgram()
+        public async void InitProgram()
         {
-            var checkmode =  MainProcess.CheckMode();
-            if(!checkmode)
+            btnInit.Enabled = false;
+
+            MyLib.CloseAllDevices((int)eTaskLoop.Task_HEATBEAT);
+            this.Cursor = Cursors.WaitCursor;
+            var x = THHInitial.InitDevice();
+            await x;
+            Console.WriteLine("-------------btnInitial = " + x.Result);
+            
+            if (x.Result)
             {
-                MyLib.showDlgError(" Vui lòng chọn chế độ chạy");
-                return; 
+                MainProcess.AddLogAuto("Connect Com&DataBase success",eIndex.Index_IQC_OQC_Log);
+                EnableBtn(btnStart, true);
+                EnableBtn(btnEPCTID, true);
+                EnableBtn(btnOnlyEPC, true);
+                EnableBtn(btnOnlyTID, true);
+                swByPass.Enabled = true;
+                MyParam.commonParam.myComportIQC.ClearDataRev();
+                MyParam.commonParam.myComportOQC.ClearDataRev();
+            }
+            else
+            {
+                MainProcess.AddLogAuto("Please check the connections again", eIndex.Index_IQC_OQC_Log);
+                EnableBtn(btnInit, true);
+                EnableBtn(btnStart, false);
             }
 
-            MaterialDialog materialDialog = 
-                new MaterialDialog(this, "Start", $"Bắt đầu chạy cuộn {MyParam.runParam.DataBaseName}" , "OK", true, "Cancel");
+            MyParam.runParam.ProgramStatus = ePRGSTATUS.Initial;
+            this.Cursor = Cursors.Default;
+        }
+        public void StartProgram()
+        {
+            var checkmode = MainProcess.CheckMode();
+            if (!checkmode)
+            {
+                MyLib.showDlgError(" Vui lòng chọn chế độ chạy");
+                return;
+            }
+
+            MaterialDialog materialDialog =
+                new MaterialDialog(this, "Start", $"Bắt đầu chạy cuộn {MyParam.runParam.DataBaseName}", "OK", true, "Cancel");
             DialogResult result = materialDialog.ShowDialog(this);
             if (result == DialogResult.OK)
             {
                 this.Cursor = Cursors.WaitCursor;
-                var x = THHInitial.InitDevice();
-                await x;
-                Console.WriteLine("-------------btnInitial = " + x.Result);
+                MyParam.commonParam.myComportIQC.ClearDataRev();
+                MyParam.commonParam.myComportOQC.ClearDataRev();
+                EnableBtn(btnEPCTID, false);
+                EnableBtn(btnOnlyEPC, false);
+                EnableBtn(btnOnlyTID, false);
+                EnableBtn(btnNewRoll, false);
+                EnableBtn(btnStart, false);
+                EnableBtn(btnReset, false);
+                EnableBtn(btnStop, true);
+                ChangeColor(groupBoxIQC, true);
+                ChangeColor(groupBoxOQC, true);
+                ChangeColor(groupBoxOQChart, true);
+                ChangeColor(groupBoxChartIQC, true);
 
-                if (x.Result)
+                MainProcess.RunLoopChartUpdate();
+                MainProcess.RunLoopCOM();
+
+                if (!MyParam.commonParam.devParam.ignoreDataBase)
                 {
-                    EnableBtn(btnEPCTID, false);
-                    EnableBtn(btnOnlyEPC, false);
-                    EnableBtn(btnOnlyTID, false);
-                    EnableBtn(btnNewRoll, false);
-                    EnableBtn(btnStart, false);
-                    EnableBtn(btnReset, false);
-                    EnableBtn(btnStop, true);
-                    ChangeColor(groupBoxIQC, true);
-                    ChangeColor(groupBoxOQC, true);
-                    ChangeColor(groupBoxOQChart, true);
-                    ChangeColor(groupBoxChartIQC, true);
-
-                    MyParam.commonParam.myComportIQC.ClearDataRev();
-                    MyParam.commonParam.myComportOQC.ClearDataRev();
-
-                    MainProcess.RunLoopChartUpdate();
-
-                    MainProcess.RunLoopCOM();
-                    if (!MyParam.commonParam.devParam.ignoreDataBase)
-                    {
-                        swFlushDB.Checked = true;
-                        MyParam.commonParam.mongoDBService.RunFlushLoop();
-                    }
-                    else
-                    {
-                        swFlushDB.Checked = false;
-                    }
-                    MainProcess.MainIQC_StepCtrl.SetStep(eProcessing.ReceiveData);
-                    MainProcess.MainOQC_StepCtrl.SetStep(eProcessing.ReceiveData);
-                    MyParam.runParam.ProgramStatus = ePRGSTATUS.Started;
+                    swFlushDB.Checked = true;
+                    MyParam.commonParam.mongoDBService.RunFlushLoop();
                 }
                 else
                 {
-                    EnableBtn(btnReset, false);
-                    EnableBtn(btnStop, false);
-                    EnableBtn(btnNewRoll, true);
-                    EnableBtn(btnEPCTID, true);
-                    EnableBtn(btnOnlyEPC, true);
-                    EnableBtn(btnOnlyTID, true);
+                    swFlushDB.Checked = false;
                 }
-
-                this.Cursor = Cursors.Default;
+                MainProcess.MainIQC_StepCtrl.SetStep(eProcessing.ReceiveData);
+                MainProcess.MainOQC_StepCtrl.SetStep(eProcessing.ReceiveData);
+                MyParam.runParam.ProgramStatus = ePRGSTATUS.Started;
             }
+            else
+            {
+                EnableBtn(btnReset, false);
+                EnableBtn(btnStop, false);
+                EnableBtn(btnNewRoll, true);
+                EnableBtn(btnEPCTID, true);
+                EnableBtn(btnOnlyEPC, true);
+                EnableBtn(btnOnlyTID, true);
+            }
+
+            this.Cursor = Cursors.Default;
         }
+        
 
 
 
@@ -214,7 +239,7 @@ namespace TanHungHa.Tabs
             countOK_IQC = 0;
             countNG_IQC = 0;
             UpdateLabelIQC();
-            MyParam.commonParam.myComportIQC.SendData(MyDefine.ResetIO_RFID);
+            //  MyParam.commonParam.myComportIQC.SendData(MyDefine.ResetIO_RFID);
         }
         void resetOQC()
         {
@@ -223,12 +248,12 @@ namespace TanHungHa.Tabs
             countOK_OQC = 0;
             countNG_OQC = 0;
             UpdateLabelOQC();
-            MyParam.commonParam.myComportOQC.SendData(MyDefine.ResetIO_RFID);
+            //  MyParam.commonParam.myComportOQC.SendData(MyDefine.ResetIO_RFID);
         }
 
-        
-       
-     
+
+
+
 
         void EnableBtn(MaterialButton btn, bool bEnable)
         {
@@ -264,8 +289,10 @@ namespace TanHungHa.Tabs
             var btnName = ((MaterialButton)sender).Name;
             switch (btnName)
             {
+                case "btnInit":
+                    InitProgram();
+                    break;
                 case "btnStop":
-
                     StopProgram();
                     break;
 
@@ -487,7 +514,7 @@ namespace TanHungHa.Tabs
         {
             if (InvokeRequired)
             {
-                Invoke(new Action(UpdateLabelIQC));  
+                Invoke(new Action(UpdateLabelIQC));
                 return;
             }
             lbIQC_OK.Text = ($"OK: {countOK_IQC.ToString()}");
@@ -512,14 +539,14 @@ namespace TanHungHa.Tabs
         {
             resetIQC();
             MongoDBService.ClearDBFlushed();
-           // MyParam.commonParam.myComportIQC.SendData(MyDefine.ResetIO_RFID);
+            // MyParam.commonParam.myComportIQC.SendData(MyDefine.ResetIO_RFID);
         }
 
         private void clearLogToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             resetOQC();
             MongoDBService.ClearDBFlushed();
-          //  MyParam.commonParam.myComportIQC.SendData(MyDefine.ResetIO_RFID);
+            //  MyParam.commonParam.myComportIQC.SendData(MyDefine.ResetIO_RFID);
 
         }
 
@@ -537,12 +564,11 @@ namespace TanHungHa.Tabs
                 btnRollName.Text = result;
                 MyParam.runParam.DataBaseName = result;
                 SetModeAndHighlight(eMode.Noon);
+                MyParam.runParam.HistoryIQCData.Clear();
+                MyParam.runParam.HistoryOQCData.Clear(); 
                 MyLib.showDlgInfo("Tạo cuộn mới thành công");
 
             }
-
-
-
         }
         private string ShowInputDialog(string title, string prompt)
         {
@@ -590,16 +616,23 @@ namespace TanHungHa.Tabs
         private void btnEPCTID_Click(object sender, EventArgs e)
         {
             SetModeAndHighlight(eMode.eEPC_TID, btnEPCTID);
+            MyParam.commonParam.myComportIQC.SendData(MyDefine.EnableModeEPCTIDModuleRFID);
+            MyParam.commonParam.myComportOQC.SendData(MyDefine.EnableModeEPCTIDModuleRFID);
+
         }
 
         private void btnOnlyEPC_Click(object sender, EventArgs e)
         {
             SetModeAndHighlight(eMode.eOnlyEPC, btnOnlyEPC);
+            MyParam.commonParam.myComportIQC.SendData(MyDefine.EnableModeOnlyEPCModuleRFID);
+            MyParam.commonParam.myComportOQC.SendData(MyDefine.EnableModeOnlyEPCModuleRFID);
         }
 
         private void btnOnlyTID_Click(object sender, EventArgs e)
         {
             SetModeAndHighlight(eMode.eOnlyTID, btnOnlyTID);
+            MyParam.commonParam.myComportIQC.SendData(MyDefine.EnableModeOnlyTIDModuleRFID);
+            MyParam.commonParam.myComportOQC.SendData(MyDefine.EnableModeOnlyTIDModuleRFID);
         }
 
         private void clearAllLogToolStripMenuItem_Click(object sender, EventArgs e)
@@ -610,6 +643,33 @@ namespace TanHungHa.Tabs
             MongoDBService.ClearDBFlushed();
             lvLogIQC_OQC.Items.Clear();
             lvLogDB.Items.Clear();
+
+        }
+
+        private void swByPass_CheckedChanged(object sender, EventArgs e)
+        {
+            if (swByPass.Checked)
+            {
+                MyParam.commonParam.myComportIQC.SendData(MyDefine.ByPass);
+                MyParam.commonParam.myComportOQC.SendData(MyDefine.ByPass);
+                Console.WriteLine("ByPass");
+            }
+            else
+            {
+                MyParam.commonParam.myComportIQC.SendData(MyDefine.NoByPass);
+                MyParam.commonParam.myComportOQC.SendData(MyDefine.NoByPass);
+                Console.WriteLine("NoByPass");
+            }
+
+        }
+
+        private void tableLayoutPanel4_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnRollName_Click(object sender, EventArgs e)
+        {
 
         }
     }
