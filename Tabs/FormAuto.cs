@@ -218,6 +218,7 @@ namespace TanHungHa.Tabs
                 lvLogDB.Items.Clear();
                 // reset labelDataBase
                 MongoDBService.ClearDBFlushed();
+                UpdateLabelDataBase();
                 //reset label IQCOQC
                 resetIQC();
                 resetOQC();
@@ -639,7 +640,7 @@ namespace TanHungHa.Tabs
         {
             resetIQC();
             MongoDBService.ClearDBFlushed();
-            resetIQC();
+            resetOQC();
             MongoDBService.ClearDBFlushed();
             lvLogIQC_OQC.Items.Clear();
             lvLogDB.Items.Clear();

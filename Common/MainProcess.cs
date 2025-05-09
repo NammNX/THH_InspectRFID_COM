@@ -713,9 +713,10 @@ namespace TanHungHa.Common
 
                                 if ((EPC_IQC_Type == eSerialDataType.OK) && (TID_Type == eSerialDataType.OK)) // Check type EPC & TID 
                                 {
-                                    if (MyParam.runParam.HistoryIQCData.Contains(lastEPC_IQCFormat) ||(MyParam.runParam.HistoryIQCData.Contains(TID_IQCFormat)))
+                                    if (MyParam.runParam.HistoryIQCData.Contains(lastEPC_IQCFormat) ||(MyParam.runParam.HistoryIQCData.Contains(TID_IQCFormat))) //duplicate
                                     {
-                                        AddLogAutoEPCTID(lastEPC_IQCFull, TID_IQCFull, dataComIQC.Timestamp, eSerialDataType.Duplicate, eIndex.Index_IQC_Data);
+                                        DataType = eSerialDataType.Duplicate;
+                                        AddLogAutoEPCTID(lastEPC_IQCFull, TID_IQCFull, dataComIQC.Timestamp, DataType, eIndex.Index_IQC_Data);
                                         lastEPC_IQCFormat = null; // Reset data EPC
                                         lastEPC_IQCFull = null;
                                         EPC_IQC_Type = eSerialDataType.Unknown; // Reset data 
@@ -935,7 +936,8 @@ namespace TanHungHa.Common
                                 {
                                     if (MyParam.runParam.HistoryOQCData.Contains(lastEPC_OQCFormat) || (MyParam.runParam.HistoryOQCData.Contains(TID_OQCFormat))) //check duplicate data
                                     {
-                                        AddLogAutoEPCTID(lastEPC_OQC_Full, TID_OQC_Full, dataComOQC.Timestamp, eSerialDataType.Duplicate, eIndex.Index_OQC_Data);
+                                        DataType = eSerialDataType.Duplicate;
+                                        AddLogAutoEPCTID(lastEPC_OQC_Full, TID_OQC_Full, dataComOQC.Timestamp, DataType, eIndex.Index_OQC_Data);
                                         lastEPC_OQC_Full = null; // Reset data EPC
                                         lastEPC_OQCFormat = null; // Reset data EPC
                                         EPC_OQC_Type = eSerialDataType.Unknown; // Reset data 
