@@ -507,6 +507,11 @@ namespace TanHungHa.Common
                         newItem.BackColor = Color.Orange;
                         newItem.ForeColor = Color.Black;
                     }
+                    if(typeData == eSerialDataType.Unknown)
+                    {
+                        newItem.BackColor = Color.Black;
+                        newItem.ForeColor = Color.White;
+                    }
 
 
                     listview.Items.Insert(0, newItem);
@@ -531,6 +536,11 @@ namespace TanHungHa.Common
                 {
                     newItem.BackColor = Color.Orange;
                     newItem.ForeColor = Color.Black;
+                }
+                if (typeData == eSerialDataType.Unknown)
+                {
+                    newItem.BackColor = Color.Black;
+                    newItem.ForeColor = Color.White;
                 }
                 listview.Items.Insert(0, newItem);
             }

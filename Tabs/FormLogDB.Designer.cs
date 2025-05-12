@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBoxChart = new System.Windows.Forms.GroupBox();
@@ -43,16 +43,11 @@
             this.groupGridView = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.groupBoxFindNameByName = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnScanRollByName = new MaterialSkin.Controls.MaterialButton();
-            this.cbbFindRollByName = new MaterialSkin.Controls.MaterialComboBox();
-            this.txtFindRollByName = new MaterialSkin.Controls.MaterialTextBox2();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBoxFindRollByDate = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.cbbListRoll = new MaterialSkin.Controls.MaterialComboBox();
             this.btnScanRoll = new MaterialSkin.Controls.MaterialButton();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.cbNG = new MaterialSkin.Controls.MaterialCheckbox();
             this.cbOK = new MaterialSkin.Controls.MaterialCheckbox();
             this.cbOQC = new MaterialSkin.Controls.MaterialCheckbox();
@@ -62,6 +57,11 @@
             this.cbHex2AciiEPC = new System.Windows.Forms.CheckBox();
             this.btnExportExcel = new MaterialSkin.Controls.MaterialButton();
             this.btnRefresh = new MaterialSkin.Controls.MaterialButton();
+            this.groupBoxFindNameByName = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnScanRollByName = new MaterialSkin.Controls.MaterialButton();
+            this.cbbFindRollByName = new MaterialSkin.Controls.MaterialComboBox();
+            this.txtFindRollByName = new MaterialSkin.Controls.MaterialTextBox2();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.groupBoxChart.SuspendLayout();
@@ -71,12 +71,12 @@
             this.groupGridView.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
-            this.groupBoxFindNameByName.SuspendLayout();
-            this.tableLayoutPanel5.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.groupBoxFindRollByDate.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBoxFindNameByName.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -140,17 +140,17 @@
             // 
             // chart
             // 
-            chartArea7.Name = "ChartArea1";
-            this.chart.ChartAreas.Add(chartArea7);
+            chartArea1.Name = "ChartArea1";
+            this.chart.ChartAreas.Add(chartArea1);
             this.chart.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend7.Name = "Legend1";
-            this.chart.Legends.Add(legend7);
+            legend1.Name = "Legend1";
+            this.chart.Legends.Add(legend1);
             this.chart.Location = new System.Drawing.Point(3, 3);
             this.chart.Name = "chart";
-            series7.ChartArea = "ChartArea1";
-            series7.Legend = "Legend1";
-            series7.Name = "Series1";
-            this.chart.Series.Add(series7);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart.Series.Add(series1);
             this.chart.Size = new System.Drawing.Size(149, 430);
             this.chart.TabIndex = 0;
             this.chart.Text = "chart1";
@@ -255,126 +255,6 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(140, 597);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
-            // groupBoxFindNameByName
-            // 
-            this.groupBoxFindNameByName.BackColor = System.Drawing.Color.Silver;
-            this.groupBoxFindNameByName.Controls.Add(this.tableLayoutPanel5);
-            this.groupBoxFindNameByName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxFindNameByName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBoxFindNameByName.Location = new System.Drawing.Point(3, 300);
-            this.groupBoxFindNameByName.Name = "groupBoxFindNameByName";
-            this.groupBoxFindNameByName.Size = new System.Drawing.Size(134, 173);
-            this.groupBoxFindNameByName.TabIndex = 6;
-            this.groupBoxFindNameByName.TabStop = false;
-            this.groupBoxFindNameByName.Text = "Tìm cuộn theo tên";
-            // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.ColumnCount = 1;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Controls.Add(this.btnScanRollByName, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.cbbFindRollByName, 0, 2);
-            this.tableLayoutPanel5.Controls.Add(this.txtFindRollByName, 0, 1);
-            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 22);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 3;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.34F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(128, 148);
-            this.tableLayoutPanel5.TabIndex = 0;
-            // 
-            // btnScanRollByName
-            // 
-            this.btnScanRollByName.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnScanRollByName.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnScanRollByName.Depth = 0;
-            this.btnScanRollByName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnScanRollByName.HighEmphasis = true;
-            this.btnScanRollByName.Icon = null;
-            this.btnScanRollByName.Location = new System.Drawing.Point(4, 6);
-            this.btnScanRollByName.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnScanRollByName.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnScanRollByName.Name = "btnScanRollByName";
-            this.btnScanRollByName.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnScanRollByName.Size = new System.Drawing.Size(120, 37);
-            this.btnScanRollByName.TabIndex = 2;
-            this.btnScanRollByName.Text = "Scan";
-            this.btnScanRollByName.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnScanRollByName.UseAccentColor = false;
-            this.btnScanRollByName.UseVisualStyleBackColor = true;
-            this.btnScanRollByName.Click += new System.EventHandler(this.btnScanRollByName_Click);
-            // 
-            // cbbFindRollByName
-            // 
-            this.cbbFindRollByName.AutoResize = false;
-            this.cbbFindRollByName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cbbFindRollByName.Depth = 0;
-            this.cbbFindRollByName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbbFindRollByName.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cbbFindRollByName.DropDownHeight = 174;
-            this.cbbFindRollByName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbbFindRollByName.DropDownWidth = 121;
-            this.cbbFindRollByName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.cbbFindRollByName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cbbFindRollByName.FormattingEnabled = true;
-            this.cbbFindRollByName.IntegralHeight = false;
-            this.cbbFindRollByName.ItemHeight = 43;
-            this.cbbFindRollByName.Location = new System.Drawing.Point(3, 101);
-            this.cbbFindRollByName.MaxDropDownItems = 4;
-            this.cbbFindRollByName.MouseState = MaterialSkin.MouseState.OUT;
-            this.cbbFindRollByName.Name = "cbbFindRollByName";
-            this.cbbFindRollByName.Size = new System.Drawing.Size(122, 49);
-            this.cbbFindRollByName.StartIndex = 0;
-            this.cbbFindRollByName.TabIndex = 1;
-            // 
-            // txtFindRollByName
-            // 
-            this.txtFindRollByName.AnimateReadOnly = false;
-            this.txtFindRollByName.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.txtFindRollByName.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
-            this.txtFindRollByName.Depth = 0;
-            this.txtFindRollByName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtFindRollByName.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtFindRollByName.HideSelection = true;
-            this.txtFindRollByName.Hint = "Nhập tên cuộn";
-            this.txtFindRollByName.LeadingIcon = null;
-            this.txtFindRollByName.Location = new System.Drawing.Point(3, 52);
-            this.txtFindRollByName.MaxLength = 32767;
-            this.txtFindRollByName.MouseState = MaterialSkin.MouseState.OUT;
-            this.txtFindRollByName.Name = "txtFindRollByName";
-            this.txtFindRollByName.PasswordChar = '\0';
-            this.txtFindRollByName.PrefixSuffixText = null;
-            this.txtFindRollByName.ReadOnly = false;
-            this.txtFindRollByName.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtFindRollByName.SelectedText = "";
-            this.txtFindRollByName.SelectionLength = 0;
-            this.txtFindRollByName.SelectionStart = 0;
-            this.txtFindRollByName.ShortcutsEnabled = true;
-            this.txtFindRollByName.Size = new System.Drawing.Size(122, 48);
-            this.txtFindRollByName.TabIndex = 3;
-            this.txtFindRollByName.TabStop = false;
-            this.txtFindRollByName.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtFindRollByName.TrailingIcon = global::TanHungHa.Properties.Resources.outline_cleaning_services_black_18dp;
-            this.txtFindRollByName.UseSystemPasswordChar = false;
-            this.txtFindRollByName.TrailingIconClick += new System.EventHandler(this.txtFindRollByName_TrailingIconClick);
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.cbNG);
-            this.groupBox3.Controls.Add(this.cbOK);
-            this.groupBox3.Controls.Add(this.cbOQC);
-            this.groupBox3.Controls.Add(this.cbIQC);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(3, 62);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(134, 113);
-            this.groupBox3.TabIndex = 2;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Select Log";
-            // 
             // groupBoxFindRollByDate
             // 
             this.groupBoxFindRollByDate.BackColor = System.Drawing.Color.Silver;
@@ -446,6 +326,21 @@
             this.btnScanRoll.UseAccentColor = false;
             this.btnScanRoll.UseVisualStyleBackColor = true;
             this.btnScanRoll.Click += new System.EventHandler(this.btnScanRoll_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.cbNG);
+            this.groupBox3.Controls.Add(this.cbOK);
+            this.groupBox3.Controls.Add(this.cbOQC);
+            this.groupBox3.Controls.Add(this.cbIQC);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox3.Location = new System.Drawing.Point(3, 62);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(134, 113);
+            this.groupBox3.TabIndex = 2;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Select Log";
             // 
             // cbNG
             // 
@@ -602,6 +497,111 @@
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
+            // groupBoxFindNameByName
+            // 
+            this.groupBoxFindNameByName.BackColor = System.Drawing.Color.Silver;
+            this.groupBoxFindNameByName.Controls.Add(this.tableLayoutPanel5);
+            this.groupBoxFindNameByName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxFindNameByName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxFindNameByName.Location = new System.Drawing.Point(3, 300);
+            this.groupBoxFindNameByName.Name = "groupBoxFindNameByName";
+            this.groupBoxFindNameByName.Size = new System.Drawing.Size(134, 173);
+            this.groupBoxFindNameByName.TabIndex = 6;
+            this.groupBoxFindNameByName.TabStop = false;
+            this.groupBoxFindNameByName.Text = "Tìm cuộn theo tên";
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 1;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Controls.Add(this.btnScanRollByName, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.cbbFindRollByName, 0, 2);
+            this.tableLayoutPanel5.Controls.Add(this.txtFindRollByName, 0, 1);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 22);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 3;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.34F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(128, 148);
+            this.tableLayoutPanel5.TabIndex = 0;
+            // 
+            // btnScanRollByName
+            // 
+            this.btnScanRollByName.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnScanRollByName.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnScanRollByName.Depth = 0;
+            this.btnScanRollByName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnScanRollByName.HighEmphasis = true;
+            this.btnScanRollByName.Icon = null;
+            this.btnScanRollByName.Location = new System.Drawing.Point(4, 6);
+            this.btnScanRollByName.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnScanRollByName.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnScanRollByName.Name = "btnScanRollByName";
+            this.btnScanRollByName.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnScanRollByName.Size = new System.Drawing.Size(120, 37);
+            this.btnScanRollByName.TabIndex = 2;
+            this.btnScanRollByName.Text = "Scan";
+            this.btnScanRollByName.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnScanRollByName.UseAccentColor = false;
+            this.btnScanRollByName.UseVisualStyleBackColor = true;
+            this.btnScanRollByName.Click += new System.EventHandler(this.btnScanRollByName_Click);
+            // 
+            // cbbFindRollByName
+            // 
+            this.cbbFindRollByName.AutoResize = false;
+            this.cbbFindRollByName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cbbFindRollByName.Depth = 0;
+            this.cbbFindRollByName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbbFindRollByName.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cbbFindRollByName.DropDownHeight = 174;
+            this.cbbFindRollByName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbbFindRollByName.DropDownWidth = 121;
+            this.cbbFindRollByName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.cbbFindRollByName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cbbFindRollByName.FormattingEnabled = true;
+            this.cbbFindRollByName.IntegralHeight = false;
+            this.cbbFindRollByName.ItemHeight = 43;
+            this.cbbFindRollByName.Location = new System.Drawing.Point(3, 101);
+            this.cbbFindRollByName.MaxDropDownItems = 4;
+            this.cbbFindRollByName.MouseState = MaterialSkin.MouseState.OUT;
+            this.cbbFindRollByName.Name = "cbbFindRollByName";
+            this.cbbFindRollByName.Size = new System.Drawing.Size(122, 49);
+            this.cbbFindRollByName.StartIndex = 0;
+            this.cbbFindRollByName.TabIndex = 1;
+            // 
+            // txtFindRollByName
+            // 
+            this.txtFindRollByName.AnimateReadOnly = false;
+            this.txtFindRollByName.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtFindRollByName.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtFindRollByName.Depth = 0;
+            this.txtFindRollByName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtFindRollByName.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtFindRollByName.HideSelection = true;
+            this.txtFindRollByName.Hint = "Nhập tên cuộn";
+            this.txtFindRollByName.LeadingIcon = null;
+            this.txtFindRollByName.Location = new System.Drawing.Point(3, 52);
+            this.txtFindRollByName.MaxLength = 32767;
+            this.txtFindRollByName.MouseState = MaterialSkin.MouseState.OUT;
+            this.txtFindRollByName.Name = "txtFindRollByName";
+            this.txtFindRollByName.PasswordChar = '\0';
+            this.txtFindRollByName.PrefixSuffixText = null;
+            this.txtFindRollByName.ReadOnly = false;
+            this.txtFindRollByName.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtFindRollByName.SelectedText = "";
+            this.txtFindRollByName.SelectionLength = 0;
+            this.txtFindRollByName.SelectionStart = 0;
+            this.txtFindRollByName.ShortcutsEnabled = true;
+            this.txtFindRollByName.Size = new System.Drawing.Size(122, 48);
+            this.txtFindRollByName.TabIndex = 3;
+            this.txtFindRollByName.TabStop = false;
+            this.txtFindRollByName.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtFindRollByName.TrailingIcon = global::TanHungHa.Properties.Resources.outline_cleaning_services_black_18dp;
+            this.txtFindRollByName.UseSystemPasswordChar = false;
+            this.txtFindRollByName.TrailingIconClick += new System.EventHandler(this.txtFindRollByName_TrailingIconClick);
+            // 
             // FormLogDB
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -623,15 +623,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            this.groupBoxFindNameByName.ResumeLayout(false);
-            this.tableLayoutPanel5.ResumeLayout(false);
-            this.tableLayoutPanel5.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.groupBoxFindRollByDate.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.groupBoxFindNameByName.ResumeLayout(false);
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel5.PerformLayout();
             this.ResumeLayout(false);
 
         }

@@ -10,6 +10,8 @@ using TanHungHa.Common.Parameter;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Linq;
 using System.Security.Cryptography;
+using DevExpress.XtraSpreadsheet;
+using DevExpress.Spreadsheet;
 
 namespace TanHungHa.Tabs
 {
@@ -92,7 +94,7 @@ namespace TanHungHa.Tabs
                 MainProcess.AddLogAuto($"Disconnect COM IQC", eIndex.Index_IQC_OQC_Log);
                 MainProcess.AddLogAuto($"Disconnect COM OQC", eIndex.Index_IQC_OQC_Log);
             }
-            MainProcess.isRunLoopCOM = false;
+            MainProcess.isRunLoopProcess = false;
             MainProcess.isChartUpdateRunning = false;
             MongoDBService.isFlushLoop = false;
 
@@ -122,7 +124,15 @@ namespace TanHungHa.Tabs
             if (x.Result)
             {
                 MainProcess.AddLogAuto("Connect Com&DataBase success",eIndex.Index_IQC_OQC_Log);
-                EnableBtn(btnStart, true);
+                if (swModeDCM.Checked)
+                {
+                    EnableBtn(btnStart, false);
+                    MainProcess.AddLogAuto("Import File Excel sau đó Start chương trình", eIndex.Index_IQC_OQC_Log);
+                }
+                else
+                {
+                    EnableBtn(btnStart, true);
+                }
                 EnableBtn(btnEPCTID, true);
                 EnableBtn(btnOnlyEPC, true);
                 EnableBtn(btnOnlyTID, true);
@@ -139,6 +149,61 @@ namespace TanHungHa.Tabs
 
             MyParam.runParam.ProgramStatus = ePRGSTATUS.Initial;
             this.Cursor = Cursors.Default;
+        }
+        public void StartProgramDCM()
+        {
+           
+            MaterialDialog materialDialog =
+                new MaterialDialog(this, "Start", $"Bắt đầu chạy cuộn {MyParam.runParam.DataBaseName}", "OK", true, "Cancel");
+            DialogResult result = materialDialog.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                this.Cursor = Cursors.WaitCursor;
+                MyParam.commonParam.myComportIQC.ClearDataRev();
+                MyParam.commonParam.myComportOQC.ClearDataRev();
+               
+                EnableBtn(btnEPCTID, false);
+                EnableBtn(btnOnlyEPC, false);
+                EnableBtn(btnOnlyTID, false);
+                EnableBtn(btnNewRoll, false);
+                EnableBtn(btnStart, false);
+                EnableBtn(btnReset, false);
+                EnableBtn(btnStop, true);
+                ChangeColor(groupBoxIQC, true);
+                ChangeColor(groupBoxOQC, true);
+                ChangeColor(groupBoxOQChart, true);
+                ChangeColor(groupBoxChartIQC, true);
+
+                MainProcess.RunLoopChartUpdate();
+                MainProcess.RunLoopProcessDCM();
+
+                if (!MyParam.commonParam.devParam.ignoreDataBase)
+                {
+                    swFlushDB.Checked = true;
+                    MyParam.commonParam.mongoDBService.RunFlushLoop();
+                }
+                else
+                {
+                    swFlushDB.Checked = false;
+                }
+                MainProcess.MainIQC_StepCtrl.SetStep(eProcessing.ReceiveData);
+                //MainProcess.MainOQC_StepCtrl.SetStep(eProcessing.ReceiveData);
+                MyParam.runParam.ProgramStatus = ePRGSTATUS.Started;
+            }
+            else
+            {
+                EnableBtn(btnReset, false);
+                EnableBtn(btnStop, false);
+                EnableBtn(btnNewRoll, true);
+                EnableBtn(btnEPCTID, true);
+                EnableBtn(btnOnlyEPC, true);
+                EnableBtn(btnOnlyTID, true);
+            }
+
+            this.Cursor = Cursors.Default;
+
+
+
         }
         public void StartProgram()
         {
@@ -170,7 +235,7 @@ namespace TanHungHa.Tabs
                 ChangeColor(groupBoxChartIQC, true);
 
                 MainProcess.RunLoopChartUpdate();
-                MainProcess.RunLoopCOM();
+                MainProcess.RunLoopProcess();
 
                 if (!MyParam.commonParam.devParam.ignoreDataBase)
                 {
@@ -228,6 +293,7 @@ namespace TanHungHa.Tabs
                 EnableBtn(btnOnlyEPC, true);
                 EnableBtn(btnOnlyTID, true);
                 EnableBtn(btnNewRoll, true);
+                groupBoxDcm.Enabled = true;
                 MyParam.runParam.ProgramStatus = ePRGSTATUS.Reset;
                 this.Cursor = Cursors.Default;
             }
@@ -292,13 +358,22 @@ namespace TanHungHa.Tabs
             {
                 case "btnInit":
                     InitProgram();
+
                     break;
                 case "btnStop":
                     StopProgram();
                     break;
 
                 case "btnStart":
-                    StartProgram();
+                    if (swModeDCM.Checked)
+                    {
+                        StartProgramDCM();
+                    }
+                    else
+                    {
+                        StartProgram();
+                    }
+                    groupBoxDcm.Enabled = false;
                     break;
 
                 case "btnReset":
@@ -674,5 +749,107 @@ namespace TanHungHa.Tabs
             MyParam.commonParam.myComportIQC.SendData(MyDefine.TriggerAndEnableO8);
             MyParam.commonParam.myComportOQC.SendData(MyDefine.TriggerAndEnableO8);
         }
+        private void SetMode(string mode)
+        {
+            if (mode == "DCM")
+            {
+                tableLayoutPanelModeDCM.Visible = true;
+                splitContainer1.Visible = false;
+            }
+            else if (mode == "Normal")
+            {
+                tableLayoutPanelModeDCM.Visible = false;
+                splitContainer1.Visible = true;
+            }
+        }
+
+
+        private void tableLayoutPanel15_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void swModeDCM_CheckedChanged(object sender, EventArgs e)
+        {
+            if (swModeDCM.Checked)
+            {
+                SetMode("DCM");
+                EnableBtn(btnStart, false);
+                btnInputDataSourceDCM.Enabled = true;
+                MyParam.commonParam.myExcel.SetSpreadSheet(spreadsheetControl1);
+                if (MyParam.runParam.ProgramStatus == ePRGSTATUS.Initial)
+                {
+                    AddLog(" Import File Excel sau đó Start chương trình", eIndex.Index_IQC_OQC_Log);
+                }
+            }
+            else
+            {
+                SetMode("Normal");
+                if (MyParam.runParam.ProgramStatus == ePRGSTATUS.Initial)
+                {
+                    EnableBtn(btnStart, true);
+                }
+                else
+                {
+                    EnableBtn(btnStart, false);
+                }
+                btnInputDataSourceDCM.Enabled = false;
+            }
+        }
+        private bool IsValidExcelTemplate(SpreadsheetControl spreadsheet)
+        {
+            Worksheet sheet = spreadsheet.Document.Worksheets[0]; // Sheet đầu tiên
+
+            // Lấy các tiêu đề dòng đầu (hàng 0 = hàng 1 trong Excel)
+            string col1 = sheet.Cells["A1"].Value.TextValue.Trim();
+            string col2 = sheet.Cells["B1"].Value.TextValue.Trim();
+            string col3 = sheet.Cells["C1"].Value.TextValue.Trim();
+            string col4 = sheet.Cells["D1"].Value.TextValue.Trim();
+            string col5 = sheet.Cells["E1"].Value.TextValue.Trim();
+
+            // So sánh với tiêu đề mẫu
+            return col1 == "STT"
+                && col2 == "Mã Qrcode"
+                && col3 == "EPC"
+                && col4 == "TID"
+                && col5 == "10 ký tự in dưới QRCode";
+        }
+        private void btnInputDataSourceDCM_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "Excel Files|*.xlsx;*.xls";
+                ofd.Title = "Select an Excel File";
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        spreadsheetControl1.LoadDocument(ofd.FileName);
+
+                        if (!IsValidExcelTemplate(spreadsheetControl1))
+                        {
+                            MessageBox.Show("❌ File Excel không đúng định dạng yêu cầu. Vui lòng kiểm tra lại!",
+                                            "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                            spreadsheetControl1.CreateNewDocument(); // Trả về trạng thái trống
+                        }
+                        else // Load OK
+                        {
+                            EnableBtn(btnStart, true);
+                            MyParam.commonParam.myExcel.LoadEpcFromExcel();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi khi load file: " + ex.Message);
+                        spreadsheetControl1.CreateNewDocument(); // Phòng khi lỗi file bị hỏng
+                    }
+                }
+            }
+        }
+        
+
+
     }
 }

@@ -26,6 +26,7 @@ namespace TanHungHa.Common
     {
         Index_OQC_Data,
         Index_IQC_Data,
+        Index_ModeDCM_Data,
         Index_IQC_OQC_Log,
         Index_MongoDB_Log
     }
@@ -449,19 +450,19 @@ namespace TanHungHa.Common
         }
 
 
-        public static bool isRunLoopCOM = false;
+        public static bool isRunLoopProcess = false;
         public static void StopLoopCOM()
         {
             MyParam.taskLoops[(int)eTaskLoop.Task_RS232_IQC].StopLoop();
             MyParam.taskLoops[(int)eTaskLoop.Task_RS232_OQC].StopLoop();
 
-            isRunLoopCOM = false;
+            isRunLoopProcess = false;
         }
-        public static void RunLoopCOM()
+        public static void RunLoopProcess()
         {
-            if (isRunLoopCOM)
+            if (isRunLoopProcess)
             {
-                MyLib.showDlgInfo("Loop COM is running!");
+                MyLib.showDlgInfo("Loop Process is running!");
                 return;
             }
             //IQC
@@ -470,7 +471,7 @@ namespace TanHungHa.Common
                 MyParam.taskLoops[(int)eTaskLoop.Task_RS232_IQC].ResetToken();
                 MyParam.taskLoops[(int)eTaskLoop.Task_RS232_IQC].RunLoop(MyParam.commonParam.timeDelay.timeLoopCOM, LoopProcessIQC).ContinueWith((a) =>
                 {
-                    MyLib.log($"Done task COM IQC!");
+                    MyLib.log($"Done task Process IQC!");
                 });
             }
             //OQC
@@ -479,11 +480,137 @@ namespace TanHungHa.Common
                 MyParam.taskLoops[(int)eTaskLoop.Task_RS232_OQC].ResetToken();
                 MyParam.taskLoops[(int)eTaskLoop.Task_RS232_OQC].RunLoop(MyParam.commonParam.timeDelay.timeLoopCOM, LoopProcessOQC).ContinueWith((a) =>
                 {
-                    MyLib.log($"Done task COM OQC!");
+                    MyLib.log($"Done task Process OQC!");
                 });
             }
-            isRunLoopCOM = true;
+            isRunLoopProcess = true;
         }
+        static bool isRunLoopProcessDCM = false;
+        public static void RunLoopProcessDCM()
+        {
+            if (isRunLoopProcessDCM)
+            {
+                MyLib.showDlgInfo("Loop ProcessDCM is running!");
+                return;
+            }
+            //Excel
+                MyParam.taskLoops[(int)eTaskLoop.Task_DCM_Excel].ResetToken();
+                MyParam.taskLoops[(int)eTaskLoop.Task_DCM_Excel].RunLoop(MyParam.commonParam.timeDelay.timeLoopCOM, LoopProcessDCM).ContinueWith((a) =>
+                {
+                    MyLib.log($"Done task Task_DCM_Excel!");
+                });
+            
+            ////ListView
+            //    MyParam.taskLoops[(int)eTaskLoop.Task_DCM_ListView].ResetToken();
+            //    MyParam.taskLoops[(int)eTaskLoop.Task_DCM_ListView].RunLoop(MyParam.commonParam.timeDelay.timeLoopCOM, LoopProcessDCMListView).ContinueWith((a) =>
+            //    {
+            //        MyLib.log($"Done task Task_DCM_ListView!");
+            //    });
+            
+                isRunLoopProcessDCM = true;
+        }
+        public static void LoopProcessDCM()
+        {
+            // Lặp và xử lý dữ liệu trong queue IQC cho đến khi queue trống
+            while (MyParam.commonParam.myComportIQC.GetQueueCount() > 0)
+            {
+                var dataComIQC = MyParam.commonParam.myComportIQC.GetDataCom();
+                if (dataComIQC != null)
+                {
+                    dataComIQC.Data = dataComIQC.Data.TrimEnd(new char[] { '\r', '\n' });
+
+
+
+                    if (lastEPC_IQCFormat == null) // EPC
+                    {
+                        lastEPC_IQCFull = dataComIQC.Data;
+                        lastEPC_IQCFormat = ProcessData(dataComIQC.Data);
+                        EPC_IQC_Type = dataComIQC.Type;
+                    }
+                    else //TID
+                    {
+                        var TID_IQCFull = dataComIQC.Data;
+                        var TID_IQCFormat = ProcessData(dataComIQC.Data);
+                        var TID_Type = dataComIQC.Type;
+                        var DataType = eSerialDataType.Unknown;
+
+
+                        if ((EPC_IQC_Type == eSerialDataType.OK) && (TID_Type == eSerialDataType.OK)) // Check type EPC & TID 
+                        {
+                            if (MyParam.runParam.HistoryIQCData.Contains(lastEPC_IQCFormat) || (MyParam.runParam.HistoryIQCData.Contains(TID_IQCFormat))) //duplicate
+                            {
+                                DataType = eSerialDataType.Duplicate;
+                                AddLogAutoEPCTID(lastEPC_IQCFull, TID_IQCFull, dataComIQC.Timestamp, DataType, eIndex.Index_ModeDCM_Data);
+                                lastEPC_IQCFormat = null; // Reset data EPC
+                                lastEPC_IQCFull = null;
+                                EPC_IQC_Type = eSerialDataType.Unknown; // Reset data 
+                                continue;
+                            }
+                            else //OK
+                            {
+                                var lastEPC_IQCFormat_Ascii = HexToAscii(lastEPC_IQCFormat);
+                                var isContainEPC = MyParam.commonParam.myExcel.ContainsEpc(lastEPC_IQCFormat_Ascii);
+                                if (isContainEPC) // EPC có trong danh sách Excel
+                                {
+                                    MyParam.commonParam.myExcel.SetTidForEpc(lastEPC_IQCFormat_Ascii, TID_IQCFormat);
+
+                                    DataType = eSerialDataType.OK;
+                                    MyParam.runParam.HistoryIQCData.Add(lastEPC_IQCFormat);
+                                    MyParam.runParam.HistoryIQCData.Add(TID_IQCFormat);
+                                }
+                                else
+                                {
+                                    DataType = eSerialDataType.Unknown;
+                                    MyParam.commonParam.myComportIQC.SendData(MyDefine.StopMachine);
+                                    MyLib.showDlgError("EPC không tồn tại trong danh sách Excel");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            DataType = eSerialDataType.NG;
+                        }
+
+                        AddLogAutoEPCTID(lastEPC_IQCFull, TID_IQCFull, dataComIQC.Timestamp, DataType, eIndex.Index_ModeDCM_Data);
+
+                        chartIQCUpdateQueue.Enqueue(DataType);
+                        if (MyParam.autoForm.swFlushDB.Checked)
+                            MyParam.commonParam.mongoDBService.AddToBuffer(lastEPC_IQCFormat, TID_IQCFormat, dataComIQC.Timestamp, DataType.ToString(), "IQC");
+
+                        lastEPC_IQCFull = null;
+                        lastEPC_IQCFormat = null; // Reset data EPC
+                        EPC_IQC_Type = eSerialDataType.Unknown; // Reset data 
+                    }
+                }
+            }
+        }
+        private static string HexToAscii(string hexValue)
+        {
+            try
+            {
+                // Chuyển đổi Hex thành ASCII
+                if (hexValue.Length % 2 != 0)
+                    hexValue = "0" + hexValue;  // Nếu số ký tự là lẻ, thêm số 0 vào đầu
+
+                byte[] bytes = new byte[hexValue.Length / 2];
+                for (int i = 0; i < hexValue.Length; i += 2)
+                {
+                    bytes[i / 2] = Convert.ToByte(hexValue.Substring(i, 2), 16);
+                }
+                return System.Text.Encoding.ASCII.GetString(bytes);
+            }
+            catch
+            {
+                return hexValue;  // Trả lại giá trị gốc nếu có lỗi
+            }
+        }
+
+        public static void LoopProcessDCMListView()
+        {
+
+        }
+
+
 
         public static bool isChartUpdateRunning = false;
         public static void StopLoopChartUpdate()
@@ -514,7 +641,7 @@ namespace TanHungHa.Common
             });
             isChartUpdateRunning = true;
         }
-
+        
         public static void LoopProcessLoopChartUpdateIQC()
         {
             MyParam.autoForm.UpdateLabelDataBase();
@@ -1038,6 +1165,9 @@ namespace TanHungHa.Common
 
                 case eIndex.Index_OQC_Data:
                     MyLib.ShowLogListviewEPCTID(MyParam.autoForm.lvOQC, dateTime, EPC,TID, dataType);
+                    break;
+                case eIndex.Index_ModeDCM_Data:
+                    MyLib.ShowLogListviewEPCTID(MyParam.autoForm.lvDataModeDCM, dateTime, EPC, TID, dataType);
                     break;
                 default:
                     break;

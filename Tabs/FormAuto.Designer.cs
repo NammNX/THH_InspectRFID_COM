@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea13 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend13 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series13 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea14 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend14 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series14 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.lbOQCbuffer = new System.Windows.Forms.Label();
             this.lbIQCbuffer = new System.Windows.Forms.Label();
@@ -79,6 +79,32 @@
             this.btnNewRoll = new MaterialSkin.Controls.MaterialButton();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
+            this.groupBoxLogDB = new System.Windows.Forms.GroupBox();
+            this.lvLogDB = new MaterialSkin.Controls.MaterialListView();
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.groupBoxLogIQC_OQC = new System.Windows.Forms.GroupBox();
+            this.lvLogIQC_OQC = new MaterialSkin.Controls.MaterialListView();
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanelModeDCM = new System.Windows.Forms.TableLayoutPanel();
+            this.lvDataModeDCM = new System.Windows.Forms.ListView();
+            this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader14 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader15 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader16 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.clearLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.spreadsheetControl1 = new DevExpress.XtraSpreadsheet.SpreadsheetControl();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.groupBoxIQC = new System.Windows.Forms.GroupBox();
+            this.lvIQC = new System.Windows.Forms.ListView();
+            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBoxOQC = new System.Windows.Forms.GroupBox();
             this.lvOQC = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -88,24 +114,6 @@
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.clearLogToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.clearAllLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupBoxIQC = new System.Windows.Forms.GroupBox();
-            this.lvIQC = new System.Windows.Forms.ListView();
-            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.clearLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupBoxLogIQC_OQC = new System.Windows.Forms.GroupBox();
-            this.lvLogIQC_OQC = new MaterialSkin.Controls.MaterialListView();
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.groupBoxLogDB = new System.Windows.Forms.GroupBox();
-            this.lvLogDB = new MaterialSkin.Controls.MaterialListView();
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5.SuspendLayout();
             this.groupDB_UI.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -127,17 +135,19 @@
             this.tableLayoutPanel12.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.groupBoxOQC.SuspendLayout();
-            this.contextMenuStrip2.SuspendLayout();
-            this.groupBoxIQC.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
-            this.groupBoxLogIQC_OQC.SuspendLayout();
+            this.tableLayoutPanel14.SuspendLayout();
             this.groupBoxLogDB.SuspendLayout();
+            this.groupBoxLogIQC_OQC.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.tableLayoutPanelModeDCM.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.tableLayoutPanel14.SuspendLayout();
+            this.groupBoxIQC.SuspendLayout();
+            this.groupBoxOQC.SuspendLayout();
+            this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel5
@@ -395,6 +405,7 @@
             this.swModeDCM.Size = new System.Drawing.Size(115, 26);
             this.swModeDCM.TabIndex = 10;
             this.swModeDCM.UseVisualStyleBackColor = true;
+            this.swModeDCM.CheckedChanged += new System.EventHandler(this.swModeDCM_CheckedChanged);
             // 
             // btnInputDataSourceDCM
             // 
@@ -416,6 +427,7 @@
             this.btnInputDataSourceDCM.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btnInputDataSourceDCM.UseAccentColor = false;
             this.btnInputDataSourceDCM.UseVisualStyleBackColor = true;
+            this.btnInputDataSourceDCM.Click += new System.EventHandler(this.btnInputDataSourceDCM_Click);
             // 
             // groupboxbypass
             // 
@@ -550,17 +562,17 @@
             // 
             // chartOQC
             // 
-            chartArea13.Name = "ChartArea1";
-            this.chartOQC.ChartAreas.Add(chartArea13);
+            chartArea1.Name = "ChartArea1";
+            this.chartOQC.ChartAreas.Add(chartArea1);
             this.chartOQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend13.Name = "Legend1";
-            this.chartOQC.Legends.Add(legend13);
+            legend1.Name = "Legend1";
+            this.chartOQC.Legends.Add(legend1);
             this.chartOQC.Location = new System.Drawing.Point(3, 3);
             this.chartOQC.Name = "chartOQC";
-            series13.ChartArea = "ChartArea1";
-            series13.Legend = "Legend1";
-            series13.Name = "Series1";
-            this.chartOQC.Series.Add(series13);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chartOQC.Series.Add(series1);
             this.chartOQC.Size = new System.Drawing.Size(108, 431);
             this.chartOQC.TabIndex = 0;
             this.chartOQC.Text = "chart1";
@@ -649,17 +661,17 @@
             // 
             // chartIQC
             // 
-            chartArea14.Name = "ChartArea1";
-            this.chartIQC.ChartAreas.Add(chartArea14);
+            chartArea2.Name = "ChartArea1";
+            this.chartIQC.ChartAreas.Add(chartArea2);
             this.chartIQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend14.Name = "Legend1";
-            this.chartIQC.Legends.Add(legend14);
+            legend2.Name = "Legend1";
+            this.chartIQC.Legends.Add(legend2);
             this.chartIQC.Location = new System.Drawing.Point(3, 3);
             this.chartIQC.Name = "chartIQC";
-            series14.ChartArea = "ChartArea1";
-            series14.Legend = "Legend1";
-            series14.Name = "Series1";
-            this.chartIQC.Series.Add(series14);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chartIQC.Series.Add(series2);
             this.chartIQC.Size = new System.Drawing.Size(107, 431);
             this.chartIQC.TabIndex = 0;
             this.chartIQC.Text = "chart1";
@@ -825,8 +837,8 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.splitContainer1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel14, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -835,6 +847,281 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(915, 644);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // tableLayoutPanel14
+            // 
+            this.tableLayoutPanel14.ColumnCount = 2;
+            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel14.Controls.Add(this.groupBoxLogDB, 1, 0);
+            this.tableLayoutPanel14.Controls.Add(this.groupBoxLogIQC_OQC, 0, 0);
+            this.tableLayoutPanel14.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel14.Location = new System.Drawing.Point(3, 518);
+            this.tableLayoutPanel14.Name = "tableLayoutPanel14";
+            this.tableLayoutPanel14.RowCount = 1;
+            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel14.Size = new System.Drawing.Size(909, 123);
+            this.tableLayoutPanel14.TabIndex = 13;
+            // 
+            // groupBoxLogDB
+            // 
+            this.groupBoxLogDB.BackColor = System.Drawing.Color.Cyan;
+            this.groupBoxLogDB.Controls.Add(this.lvLogDB);
+            this.groupBoxLogDB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxLogDB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxLogDB.Location = new System.Drawing.Point(457, 3);
+            this.groupBoxLogDB.Name = "groupBoxLogDB";
+            this.groupBoxLogDB.Size = new System.Drawing.Size(449, 117);
+            this.groupBoxLogDB.TabIndex = 3;
+            this.groupBoxLogDB.TabStop = false;
+            this.groupBoxLogDB.Text = "Log Data Base";
+            // 
+            // lvLogDB
+            // 
+            this.lvLogDB.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.lvLogDB.AllowColumnReorder = true;
+            this.lvLogDB.AutoSizeTable = false;
+            this.lvLogDB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.lvLogDB.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lvLogDB.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader5,
+            this.columnHeader6});
+            this.lvLogDB.Depth = 0;
+            this.lvLogDB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvLogDB.FullRowSelect = true;
+            this.lvLogDB.HideSelection = false;
+            this.lvLogDB.HotTracking = true;
+            this.lvLogDB.HoverSelection = true;
+            this.lvLogDB.Location = new System.Drawing.Point(3, 18);
+            this.lvLogDB.Margin = new System.Windows.Forms.Padding(0);
+            this.lvLogDB.MinimumSize = new System.Drawing.Size(200, 100);
+            this.lvLogDB.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.lvLogDB.MouseState = MaterialSkin.MouseState.OUT;
+            this.lvLogDB.Name = "lvLogDB";
+            this.lvLogDB.OwnerDraw = true;
+            this.lvLogDB.Size = new System.Drawing.Size(443, 100);
+            this.lvLogDB.TabIndex = 11;
+            this.lvLogDB.UseCompatibleStateImageBehavior = false;
+            this.lvLogDB.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "TimeStamp";
+            this.columnHeader5.Width = 115;
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "Info";
+            this.columnHeader6.Width = 1200;
+            // 
+            // groupBoxLogIQC_OQC
+            // 
+            this.groupBoxLogIQC_OQC.BackColor = System.Drawing.Color.Cyan;
+            this.groupBoxLogIQC_OQC.Controls.Add(this.lvLogIQC_OQC);
+            this.groupBoxLogIQC_OQC.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxLogIQC_OQC.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxLogIQC_OQC.Location = new System.Drawing.Point(3, 3);
+            this.groupBoxLogIQC_OQC.Name = "groupBoxLogIQC_OQC";
+            this.groupBoxLogIQC_OQC.Size = new System.Drawing.Size(448, 117);
+            this.groupBoxLogIQC_OQC.TabIndex = 2;
+            this.groupBoxLogIQC_OQC.TabStop = false;
+            this.groupBoxLogIQC_OQC.Text = "Log IQC - OQC";
+            // 
+            // lvLogIQC_OQC
+            // 
+            this.lvLogIQC_OQC.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.lvLogIQC_OQC.AllowColumnReorder = true;
+            this.lvLogIQC_OQC.AutoSizeTable = false;
+            this.lvLogIQC_OQC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.lvLogIQC_OQC.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lvLogIQC_OQC.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader3,
+            this.columnHeader4});
+            this.lvLogIQC_OQC.Depth = 0;
+            this.lvLogIQC_OQC.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvLogIQC_OQC.FullRowSelect = true;
+            this.lvLogIQC_OQC.HideSelection = false;
+            this.lvLogIQC_OQC.HotTracking = true;
+            this.lvLogIQC_OQC.HoverSelection = true;
+            this.lvLogIQC_OQC.Location = new System.Drawing.Point(3, 18);
+            this.lvLogIQC_OQC.Margin = new System.Windows.Forms.Padding(0);
+            this.lvLogIQC_OQC.MinimumSize = new System.Drawing.Size(200, 100);
+            this.lvLogIQC_OQC.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.lvLogIQC_OQC.MouseState = MaterialSkin.MouseState.OUT;
+            this.lvLogIQC_OQC.Name = "lvLogIQC_OQC";
+            this.lvLogIQC_OQC.OwnerDraw = true;
+            this.lvLogIQC_OQC.Size = new System.Drawing.Size(442, 100);
+            this.lvLogIQC_OQC.TabIndex = 10;
+            this.lvLogIQC_OQC.UseCompatibleStateImageBehavior = false;
+            this.lvLogIQC_OQC.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "TimeStamp";
+            this.columnHeader3.Width = 115;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Info";
+            this.columnHeader4.Width = 1200;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.tableLayoutPanelModeDCM);
+            this.panel1.Controls.Add(this.splitContainer1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(909, 509);
+            this.panel1.TabIndex = 14;
+            // 
+            // tableLayoutPanelModeDCM
+            // 
+            this.tableLayoutPanelModeDCM.ColumnCount = 1;
+            this.tableLayoutPanelModeDCM.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelModeDCM.Controls.Add(this.lvDataModeDCM, 0, 1);
+            this.tableLayoutPanelModeDCM.Controls.Add(this.spreadsheetControl1, 0, 0);
+            this.tableLayoutPanelModeDCM.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelModeDCM.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanelModeDCM.Name = "tableLayoutPanelModeDCM";
+            this.tableLayoutPanelModeDCM.RowCount = 2;
+            this.tableLayoutPanelModeDCM.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelModeDCM.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelModeDCM.Size = new System.Drawing.Size(909, 509);
+            this.tableLayoutPanelModeDCM.TabIndex = 13;
+            this.tableLayoutPanelModeDCM.Visible = false;
+            // 
+            // lvDataModeDCM
+            // 
+            this.lvDataModeDCM.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader13,
+            this.columnHeader14,
+            this.columnHeader15,
+            this.columnHeader16});
+            this.lvDataModeDCM.ContextMenuStrip = this.contextMenuStrip1;
+            this.lvDataModeDCM.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvDataModeDCM.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lvDataModeDCM.GridLines = true;
+            this.lvDataModeDCM.HideSelection = false;
+            this.lvDataModeDCM.Location = new System.Drawing.Point(3, 257);
+            this.lvDataModeDCM.Name = "lvDataModeDCM";
+            this.lvDataModeDCM.Size = new System.Drawing.Size(903, 249);
+            this.lvDataModeDCM.TabIndex = 1;
+            this.lvDataModeDCM.UseCompatibleStateImageBehavior = false;
+            this.lvDataModeDCM.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader13
+            // 
+            this.columnHeader13.Text = "TimeStamp";
+            this.columnHeader13.Width = 80;
+            // 
+            // columnHeader14
+            // 
+            this.columnHeader14.Text = "EPC";
+            this.columnHeader14.Width = 500;
+            // 
+            // columnHeader15
+            // 
+            this.columnHeader15.Text = "TID";
+            this.columnHeader15.Width = 500;
+            // 
+            // columnHeader16
+            // 
+            this.columnHeader16.Text = "Type";
+            this.columnHeader16.Width = 120;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clearLogToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(125, 26);
+            // 
+            // clearLogToolStripMenuItem
+            // 
+            this.clearLogToolStripMenuItem.Name = "clearLogToolStripMenuItem";
+            this.clearLogToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.clearLogToolStripMenuItem.Text = "Clear Log";
+            this.clearLogToolStripMenuItem.Click += new System.EventHandler(this.clearLogToolStripMenuItem_Click);
+            // 
+            // spreadsheetControl1
+            // 
+            this.spreadsheetControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.spreadsheetControl1.Location = new System.Drawing.Point(3, 3);
+            this.spreadsheetControl1.Name = "spreadsheetControl1";
+            this.spreadsheetControl1.Size = new System.Drawing.Size(903, 248);
+            this.spreadsheetControl1.TabIndex = 0;
+            this.spreadsheetControl1.Text = "spreadsheetControl1";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.groupBoxIQC);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.groupBoxOQC);
+            this.splitContainer1.Size = new System.Drawing.Size(909, 509);
+            this.splitContainer1.SplitterDistance = 262;
+            this.splitContainer1.TabIndex = 12;
+            // 
+            // groupBoxIQC
+            // 
+            this.groupBoxIQC.BackColor = System.Drawing.Color.Silver;
+            this.groupBoxIQC.Controls.Add(this.lvIQC);
+            this.groupBoxIQC.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxIQC.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxIQC.Location = new System.Drawing.Point(0, 0);
+            this.groupBoxIQC.Name = "groupBoxIQC";
+            this.groupBoxIQC.Size = new System.Drawing.Size(909, 262);
+            this.groupBoxIQC.TabIndex = 0;
+            this.groupBoxIQC.TabStop = false;
+            this.groupBoxIQC.Text = "IQC Data";
+            // 
+            // lvIQC
+            // 
+            this.lvIQC.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader8,
+            this.columnHeader9,
+            this.columnHeader11,
+            this.columnHeader10});
+            this.lvIQC.ContextMenuStrip = this.contextMenuStrip1;
+            this.lvIQC.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvIQC.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lvIQC.GridLines = true;
+            this.lvIQC.HideSelection = false;
+            this.lvIQC.Location = new System.Drawing.Point(3, 18);
+            this.lvIQC.Name = "lvIQC";
+            this.lvIQC.Size = new System.Drawing.Size(903, 241);
+            this.lvIQC.TabIndex = 0;
+            this.lvIQC.UseCompatibleStateImageBehavior = false;
+            this.lvIQC.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "TimeStamp";
+            this.columnHeader8.Width = 80;
+            // 
+            // columnHeader9
+            // 
+            this.columnHeader9.Text = "EPC";
+            this.columnHeader9.Width = 500;
+            // 
+            // columnHeader11
+            // 
+            this.columnHeader11.Text = "TID";
+            this.columnHeader11.Width = 500;
+            // 
+            // columnHeader10
+            // 
+            this.columnHeader10.Text = "Type";
+            this.columnHeader10.Width = 120;
             // 
             // groupBoxOQC
             // 
@@ -910,207 +1197,6 @@
             this.clearAllLogToolStripMenuItem.Text = "Clear All Log";
             this.clearAllLogToolStripMenuItem.Click += new System.EventHandler(this.clearAllLogToolStripMenuItem_Click);
             // 
-            // groupBoxIQC
-            // 
-            this.groupBoxIQC.BackColor = System.Drawing.Color.Silver;
-            this.groupBoxIQC.Controls.Add(this.lvIQC);
-            this.groupBoxIQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxIQC.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBoxIQC.Location = new System.Drawing.Point(0, 0);
-            this.groupBoxIQC.Name = "groupBoxIQC";
-            this.groupBoxIQC.Size = new System.Drawing.Size(909, 262);
-            this.groupBoxIQC.TabIndex = 0;
-            this.groupBoxIQC.TabStop = false;
-            this.groupBoxIQC.Text = "IQC Data";
-            // 
-            // lvIQC
-            // 
-            this.lvIQC.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader8,
-            this.columnHeader9,
-            this.columnHeader11,
-            this.columnHeader10});
-            this.lvIQC.ContextMenuStrip = this.contextMenuStrip1;
-            this.lvIQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvIQC.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lvIQC.GridLines = true;
-            this.lvIQC.HideSelection = false;
-            this.lvIQC.Location = new System.Drawing.Point(3, 18);
-            this.lvIQC.Name = "lvIQC";
-            this.lvIQC.Size = new System.Drawing.Size(903, 241);
-            this.lvIQC.TabIndex = 0;
-            this.lvIQC.UseCompatibleStateImageBehavior = false;
-            this.lvIQC.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader8
-            // 
-            this.columnHeader8.Text = "TimeStamp";
-            this.columnHeader8.Width = 80;
-            // 
-            // columnHeader9
-            // 
-            this.columnHeader9.Text = "EPC";
-            this.columnHeader9.Width = 500;
-            // 
-            // columnHeader11
-            // 
-            this.columnHeader11.Text = "TID";
-            this.columnHeader11.Width = 500;
-            // 
-            // columnHeader10
-            // 
-            this.columnHeader10.Text = "Type";
-            this.columnHeader10.Width = 120;
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.clearLogToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(125, 26);
-            // 
-            // clearLogToolStripMenuItem
-            // 
-            this.clearLogToolStripMenuItem.Name = "clearLogToolStripMenuItem";
-            this.clearLogToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.clearLogToolStripMenuItem.Text = "Clear Log";
-            this.clearLogToolStripMenuItem.Click += new System.EventHandler(this.clearLogToolStripMenuItem_Click);
-            // 
-            // groupBoxLogIQC_OQC
-            // 
-            this.groupBoxLogIQC_OQC.BackColor = System.Drawing.Color.Cyan;
-            this.groupBoxLogIQC_OQC.Controls.Add(this.lvLogIQC_OQC);
-            this.groupBoxLogIQC_OQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxLogIQC_OQC.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBoxLogIQC_OQC.Location = new System.Drawing.Point(3, 3);
-            this.groupBoxLogIQC_OQC.Name = "groupBoxLogIQC_OQC";
-            this.groupBoxLogIQC_OQC.Size = new System.Drawing.Size(448, 117);
-            this.groupBoxLogIQC_OQC.TabIndex = 2;
-            this.groupBoxLogIQC_OQC.TabStop = false;
-            this.groupBoxLogIQC_OQC.Text = "Log IQC - OQC";
-            // 
-            // lvLogIQC_OQC
-            // 
-            this.lvLogIQC_OQC.Activation = System.Windows.Forms.ItemActivation.OneClick;
-            this.lvLogIQC_OQC.AllowColumnReorder = true;
-            this.lvLogIQC_OQC.AutoSizeTable = false;
-            this.lvLogIQC_OQC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.lvLogIQC_OQC.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lvLogIQC_OQC.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader3,
-            this.columnHeader4});
-            this.lvLogIQC_OQC.Depth = 0;
-            this.lvLogIQC_OQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvLogIQC_OQC.FullRowSelect = true;
-            this.lvLogIQC_OQC.HideSelection = false;
-            this.lvLogIQC_OQC.HotTracking = true;
-            this.lvLogIQC_OQC.HoverSelection = true;
-            this.lvLogIQC_OQC.Location = new System.Drawing.Point(3, 18);
-            this.lvLogIQC_OQC.Margin = new System.Windows.Forms.Padding(0);
-            this.lvLogIQC_OQC.MinimumSize = new System.Drawing.Size(200, 100);
-            this.lvLogIQC_OQC.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.lvLogIQC_OQC.MouseState = MaterialSkin.MouseState.OUT;
-            this.lvLogIQC_OQC.Name = "lvLogIQC_OQC";
-            this.lvLogIQC_OQC.OwnerDraw = true;
-            this.lvLogIQC_OQC.Size = new System.Drawing.Size(442, 100);
-            this.lvLogIQC_OQC.TabIndex = 10;
-            this.lvLogIQC_OQC.UseCompatibleStateImageBehavior = false;
-            this.lvLogIQC_OQC.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "TimeStamp";
-            this.columnHeader3.Width = 115;
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Info";
-            this.columnHeader4.Width = 1200;
-            // 
-            // groupBoxLogDB
-            // 
-            this.groupBoxLogDB.BackColor = System.Drawing.Color.Cyan;
-            this.groupBoxLogDB.Controls.Add(this.lvLogDB);
-            this.groupBoxLogDB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxLogDB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBoxLogDB.Location = new System.Drawing.Point(457, 3);
-            this.groupBoxLogDB.Name = "groupBoxLogDB";
-            this.groupBoxLogDB.Size = new System.Drawing.Size(449, 117);
-            this.groupBoxLogDB.TabIndex = 3;
-            this.groupBoxLogDB.TabStop = false;
-            this.groupBoxLogDB.Text = "Log Data Base";
-            // 
-            // lvLogDB
-            // 
-            this.lvLogDB.Activation = System.Windows.Forms.ItemActivation.OneClick;
-            this.lvLogDB.AllowColumnReorder = true;
-            this.lvLogDB.AutoSizeTable = false;
-            this.lvLogDB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.lvLogDB.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lvLogDB.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader5,
-            this.columnHeader6});
-            this.lvLogDB.Depth = 0;
-            this.lvLogDB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvLogDB.FullRowSelect = true;
-            this.lvLogDB.HideSelection = false;
-            this.lvLogDB.HotTracking = true;
-            this.lvLogDB.HoverSelection = true;
-            this.lvLogDB.Location = new System.Drawing.Point(3, 18);
-            this.lvLogDB.Margin = new System.Windows.Forms.Padding(0);
-            this.lvLogDB.MinimumSize = new System.Drawing.Size(200, 100);
-            this.lvLogDB.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.lvLogDB.MouseState = MaterialSkin.MouseState.OUT;
-            this.lvLogDB.Name = "lvLogDB";
-            this.lvLogDB.OwnerDraw = true;
-            this.lvLogDB.Size = new System.Drawing.Size(443, 100);
-            this.lvLogDB.TabIndex = 11;
-            this.lvLogDB.UseCompatibleStateImageBehavior = false;
-            this.lvLogDB.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "TimeStamp";
-            this.columnHeader5.Width = 115;
-            // 
-            // columnHeader6
-            // 
-            this.columnHeader6.Text = "Info";
-            this.columnHeader6.Width = 1200;
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.groupBoxIQC);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.groupBoxOQC);
-            this.splitContainer1.Size = new System.Drawing.Size(909, 509);
-            this.splitContainer1.SplitterDistance = 262;
-            this.splitContainer1.TabIndex = 12;
-            // 
-            // tableLayoutPanel14
-            // 
-            this.tableLayoutPanel14.ColumnCount = 2;
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel14.Controls.Add(this.groupBoxLogDB, 1, 0);
-            this.tableLayoutPanel14.Controls.Add(this.groupBoxLogIQC_OQC, 0, 0);
-            this.tableLayoutPanel14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel14.Location = new System.Drawing.Point(3, 518);
-            this.tableLayoutPanel14.Name = "tableLayoutPanel14";
-            this.tableLayoutPanel14.RowCount = 1;
-            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel14.Size = new System.Drawing.Size(909, 123);
-            this.tableLayoutPanel14.TabIndex = 13;
-            // 
             // FormAuto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1150,17 +1236,19 @@
             this.tableLayoutPanel12.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.groupBoxOQC.ResumeLayout(false);
-            this.contextMenuStrip2.ResumeLayout(false);
-            this.groupBoxIQC.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
-            this.groupBoxLogIQC_OQC.ResumeLayout(false);
+            this.tableLayoutPanel14.ResumeLayout(false);
             this.groupBoxLogDB.ResumeLayout(false);
+            this.groupBoxLogIQC_OQC.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.tableLayoutPanelModeDCM.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.tableLayoutPanel14.ResumeLayout(false);
+            this.groupBoxIQC.ResumeLayout(false);
+            this.groupBoxOQC.ResumeLayout(false);
+            this.contextMenuStrip2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1220,7 +1308,7 @@
         private System.Windows.Forms.GroupBox groupBoxDcm;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
         private MaterialSkin.Controls.MaterialSwitch swModeDCM;
-        private MaterialSkin.Controls.MaterialButton btnInputDataSourceDCM;
+        public MaterialSkin.Controls.MaterialButton btnInputDataSourceDCM;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
         public MaterialSkin.Controls.MaterialButton btnRollName;
@@ -1237,5 +1325,13 @@
         private System.Windows.Forms.ColumnHeader columnHeader12;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel14;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelModeDCM;
+        public DevExpress.XtraSpreadsheet.SpreadsheetControl spreadsheetControl1;
+        public System.Windows.Forms.ListView lvDataModeDCM;
+        private System.Windows.Forms.ColumnHeader columnHeader13;
+        private System.Windows.Forms.ColumnHeader columnHeader14;
+        private System.Windows.Forms.ColumnHeader columnHeader15;
+        private System.Windows.Forms.ColumnHeader columnHeader16;
     }
 }

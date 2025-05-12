@@ -11,7 +11,7 @@ namespace TanHungHa.Common
     public class MyDefine
     {
         //public static DateTime expried_time = new DateTime(2024, 8, 13, 9, 0, 0);
-        public const string VERSION = @"Ver 1.0.0.220425";
+        public const string VERSION = @"Ver 1.0.0.100525";
         
         public const int HEIGHT_OF_ROW = 50;
         
@@ -25,7 +25,7 @@ namespace TanHungHa.Common
 
 
         public static readonly string title = "RFID Inspection";
-        public static readonly string version = "Version 1.0.0 \r\n 22/04/2025";
+        public static readonly string version = "Version 1.0.0 \r\n 10/05/2025";
 
         public const string treenodeRunParam = "Run Param";
         public const string treenodeRS232 = "RS232";
@@ -42,12 +42,13 @@ namespace TanHungHa.Common
         public const string EnableModeEPCTIDModuleRFID = "2";
         public const string EnableModeOnlyTIDModuleRFID = "3";
         public const string TriggerAndEnableO8 = "d"; // Trigger và bật O8
+        public const string StopMachine = "a"; // Dừng máy
 
 
 
         public const int NUM_FAIL_HEART_BEAR = 5;
-        public const int NUM_THREAD = 8;
-        public const int MAX_QUEUE_DATA = 2;
+        public const int NUM_THREAD = 10;
+        public const int MAX_QUEUE_DATA = 30;
         public const int NUM_DEVICES = 2;
 
         public static int[] baudrates = new int[] { 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200 } ;
@@ -80,10 +81,8 @@ namespace TanHungHa.Common
         public static readonly string file_config_format_data = String.Format($"{workingDirectory}\\Data\\configs\\format_data.json");
         public static readonly string file_config_common_param = String.Format($"{workingDirectory}\\Data\\configs\\common_param.json");
         public static readonly string file_config_filter_window = String.Format($"{workingDirectory}\\Data\\configs\\filter_window.json");
-        public static readonly string path_load_img_database = @"C:\Program Files\Cognex\VisionPro\Images";
-        public static readonly string path_load_vpp_file = @"C:\Users\Admin\Desktop\Vpp_file";
-        public static readonly string path_save_images = String.Format("{0}\\Images", projectDirectory);
-        public static readonly string path_grab_images = String.Format("{0}\\GrabImages", projectDirectory);
+        
+        
 
         public static readonly string key_thh = @"https://tanhungha.com.vn/";
         public static readonly string hash_key = "";

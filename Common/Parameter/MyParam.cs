@@ -19,6 +19,8 @@ namespace TanHungHa.Common
         Task_RS232_IQC,
         Task_RS232_OQC,
         Task_RS232_Manual,
+        Task_DCM_Excel,
+        Task_DCM_ListView,
         Task_FlushBuffersIQC,
         Task_FlushBuffersOQC,
         Task_LoopLogIQC,
