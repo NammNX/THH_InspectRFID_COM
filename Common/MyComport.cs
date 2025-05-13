@@ -14,6 +14,8 @@ namespace TanHungHa.Common
 {
     public class MyComport
     {
+        public event Action<string> OnDataReceived;
+
         public enum eSerialDataType
         {
             OK,
@@ -174,6 +176,7 @@ namespace TanHungHa.Common
                             }
                         }
 
+
                         // Đảm bảo vòng lặp không chiếm dụng quá nhiều CPU
                         Thread.Sleep(10); 
                     }
@@ -219,15 +222,7 @@ namespace TanHungHa.Common
             //}    
 
                 queueData.Enqueue(item);
-                //try
-                //{
-                //    string json = JsonConvert.SerializeObject(item);
-                //    File.AppendAllText(tempFileName, json + Environment.NewLine);
-                //}
-                //catch (Exception ex)
-                //{
-                //    MyLib.showDlgError("Error writing to temp file: " + ex.Message);
-                //}
+            OnDataReceived?.Invoke(str);  // Gọi sự kiện ra UI
         }
         public void RestoreQueueFromFile()
         {

@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.lbOQCbuffer = new System.Windows.Forms.Label();
             this.lbIQCbuffer = new System.Windows.Forms.Label();
@@ -49,7 +49,6 @@
             this.swFlushDB = new MaterialSkin.Controls.MaterialSwitch();
             this.groupBoxDcm = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
-            this.swModeDCM = new MaterialSkin.Controls.MaterialSwitch();
             this.btnInputDataSourceDCM = new MaterialSkin.Controls.MaterialButton();
             this.groupboxbypass = new System.Windows.Forms.GroupBox();
             this.swByPass = new MaterialSkin.Controls.MaterialSwitch();
@@ -77,6 +76,9 @@
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
             this.btnRollName = new MaterialSkin.Controls.MaterialButton();
             this.btnNewRoll = new MaterialSkin.Controls.MaterialButton();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
+            this.lbSpeed = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
@@ -114,6 +116,10 @@
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.clearLogToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.clearAllLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupBoxMode = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnFuncNormal = new System.Windows.Forms.Button();
+            this.btnFuncDCM = new System.Windows.Forms.Button();
             this.tableLayoutPanel5.SuspendLayout();
             this.groupDB_UI.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -133,6 +139,8 @@
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
             this.tableLayoutPanel12.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.tableLayoutPanel15.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel14.SuspendLayout();
@@ -148,6 +156,8 @@
             this.groupBoxIQC.SuspendLayout();
             this.groupBoxOQC.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
+            this.groupBoxMode.SuspendLayout();
+            this.tableLayoutPanel16.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel5
@@ -159,7 +169,7 @@
             this.tableLayoutPanel5.Controls.Add(this.lbOQCflushed, 0, 1);
             this.tableLayoutPanel5.Controls.Add(this.lbIQCflushed, 0, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(2, 17);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(2, 15);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 5;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
@@ -167,7 +177,7 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(119, 110);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(119, 113);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // lbOQCbuffer
@@ -178,7 +188,7 @@
             this.lbOQCbuffer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbOQCbuffer.Location = new System.Drawing.Point(3, 88);
             this.lbOQCbuffer.Name = "lbOQCbuffer";
-            this.lbOQCbuffer.Size = new System.Drawing.Size(113, 22);
+            this.lbOQCbuffer.Size = new System.Drawing.Size(113, 25);
             this.lbOQCbuffer.TabIndex = 4;
             this.lbOQCbuffer.Text = "OQC buffer";
             this.lbOQCbuffer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -293,29 +303,29 @@
             this.groupDB_UI.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.groupDB_UI.Controls.Add(this.tableLayoutPanel5);
             this.groupDB_UI.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupDB_UI.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupDB_UI.Location = new System.Drawing.Point(2, 513);
+            this.groupDB_UI.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupDB_UI.Location = new System.Drawing.Point(2, 512);
             this.groupDB_UI.Margin = new System.Windows.Forms.Padding(2);
             this.groupDB_UI.Name = "groupDB_UI";
             this.groupDB_UI.Padding = new System.Windows.Forms.Padding(2);
-            this.groupDB_UI.Size = new System.Drawing.Size(123, 129);
+            this.groupDB_UI.Size = new System.Drawing.Size(123, 130);
             this.groupDB_UI.TabIndex = 8;
             this.groupDB_UI.TabStop = false;
-            this.groupDB_UI.Text = "DB";
+            this.groupDB_UI.Text = "Log FlushDB";
             // 
             // tableLayoutPanel4
             // 
             this.tableLayoutPanel4.ColumnCount = 1;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Controls.Add(this.groupBoxMode, 0, 5);
             this.tableLayoutPanel4.Controls.Add(this.groupDB_UI, 0, 8);
             this.tableLayoutPanel4.Controls.Add(this.groupBoxFlushDBChecked, 0, 7);
-            this.tableLayoutPanel4.Controls.Add(this.groupBoxDcm, 0, 6);
-            this.tableLayoutPanel4.Controls.Add(this.groupboxbypass, 0, 5);
-            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel13, 0, 4);
-            this.tableLayoutPanel4.Controls.Add(this.btnReset, 0, 3);
             this.tableLayoutPanel4.Controls.Add(this.btnStop, 0, 2);
             this.tableLayoutPanel4.Controls.Add(this.btnStart, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.btnInit, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.btnReset, 0, 3);
+            this.tableLayoutPanel4.Controls.Add(this.groupBoxDcm, 0, 4);
+            this.tableLayoutPanel4.Controls.Add(this.groupboxbypass, 0, 6);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(1187, 3);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -324,10 +334,10 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 18F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(127, 644);
             this.tableLayoutPanel4.TabIndex = 2;
@@ -338,9 +348,10 @@
             this.groupBoxFlushDBChecked.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.groupBoxFlushDBChecked.Controls.Add(this.swFlushDB);
             this.groupBoxFlushDBChecked.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxFlushDBChecked.Location = new System.Drawing.Point(3, 450);
+            this.groupBoxFlushDBChecked.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxFlushDBChecked.Location = new System.Drawing.Point(3, 456);
             this.groupBoxFlushDBChecked.Name = "groupBoxFlushDBChecked";
-            this.groupBoxFlushDBChecked.Size = new System.Drawing.Size(121, 58);
+            this.groupBoxFlushDBChecked.Size = new System.Drawing.Size(121, 51);
             this.groupBoxFlushDBChecked.TabIndex = 9;
             this.groupBoxFlushDBChecked.TabStop = false;
             this.groupBoxFlushDBChecked.Text = "Flush DB";
@@ -360,7 +371,7 @@
             this.swFlushDB.MouseState = MaterialSkin.MouseState.HOVER;
             this.swFlushDB.Name = "swFlushDB";
             this.swFlushDB.Ripple = true;
-            this.swFlushDB.Size = new System.Drawing.Size(115, 39);
+            this.swFlushDB.Size = new System.Drawing.Size(115, 32);
             this.swFlushDB.TabIndex = 0;
             this.swFlushDB.UseVisualStyleBackColor = false;
             // 
@@ -369,59 +380,45 @@
             this.groupBoxDcm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.groupBoxDcm.Controls.Add(this.tableLayoutPanel10);
             this.groupBoxDcm.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxDcm.Location = new System.Drawing.Point(3, 335);
+            this.groupBoxDcm.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxDcm.Location = new System.Drawing.Point(3, 207);
             this.groupBoxDcm.Name = "groupBoxDcm";
             this.groupBoxDcm.Size = new System.Drawing.Size(121, 109);
             this.groupBoxDcm.TabIndex = 11;
             this.groupBoxDcm.TabStop = false;
-            this.groupBoxDcm.Text = "ModeDCM";
+            this.groupBoxDcm.Text = "Function";
             // 
             // tableLayoutPanel10
             // 
             this.tableLayoutPanel10.ColumnCount = 1;
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel10.Controls.Add(this.swModeDCM, 0, 0);
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel10.Controls.Add(this.tableLayoutPanel16, 0, 0);
             this.tableLayoutPanel10.Controls.Add(this.btnInputDataSourceDCM, 0, 1);
             this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 2;
-            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 29.87013F));
-            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70.12987F));
+            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.tableLayoutPanel10.Size = new System.Drawing.Size(115, 90);
             this.tableLayoutPanel10.TabIndex = 0;
-            // 
-            // swModeDCM
-            // 
-            this.swModeDCM.AutoSize = true;
-            this.swModeDCM.Depth = 0;
-            this.swModeDCM.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.swModeDCM.Location = new System.Drawing.Point(0, 0);
-            this.swModeDCM.Margin = new System.Windows.Forms.Padding(0);
-            this.swModeDCM.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.swModeDCM.MouseState = MaterialSkin.MouseState.HOVER;
-            this.swModeDCM.Name = "swModeDCM";
-            this.swModeDCM.Ripple = true;
-            this.swModeDCM.Size = new System.Drawing.Size(115, 26);
-            this.swModeDCM.TabIndex = 10;
-            this.swModeDCM.UseVisualStyleBackColor = true;
-            this.swModeDCM.CheckedChanged += new System.EventHandler(this.swModeDCM_CheckedChanged);
             // 
             // btnInputDataSourceDCM
             // 
             this.btnInputDataSourceDCM.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnInputDataSourceDCM.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnInputDataSourceDCM.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             this.btnInputDataSourceDCM.Depth = 0;
             this.btnInputDataSourceDCM.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnInputDataSourceDCM.Enabled = false;
             this.btnInputDataSourceDCM.HighEmphasis = true;
             this.btnInputDataSourceDCM.Icon = null;
-            this.btnInputDataSourceDCM.Location = new System.Drawing.Point(4, 32);
+            this.btnInputDataSourceDCM.Location = new System.Drawing.Point(4, 60);
             this.btnInputDataSourceDCM.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnInputDataSourceDCM.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnInputDataSourceDCM.Name = "btnInputDataSourceDCM";
             this.btnInputDataSourceDCM.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnInputDataSourceDCM.Size = new System.Drawing.Size(107, 52);
+            this.btnInputDataSourceDCM.Size = new System.Drawing.Size(107, 24);
             this.btnInputDataSourceDCM.TabIndex = 11;
             this.btnInputDataSourceDCM.Text = "Import File DCM";
             this.btnInputDataSourceDCM.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -434,9 +431,10 @@
             this.groupboxbypass.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.groupboxbypass.Controls.Add(this.swByPass);
             this.groupboxbypass.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupboxbypass.Location = new System.Drawing.Point(3, 271);
+            this.groupboxbypass.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupboxbypass.Location = new System.Drawing.Point(3, 399);
             this.groupboxbypass.Name = "groupboxbypass";
-            this.groupboxbypass.Size = new System.Drawing.Size(121, 58);
+            this.groupboxbypass.Size = new System.Drawing.Size(121, 51);
             this.groupboxbypass.TabIndex = 13;
             this.groupboxbypass.TabStop = false;
             this.groupboxbypass.Text = "By Pass";
@@ -453,7 +451,7 @@
             this.swByPass.MouseState = MaterialSkin.MouseState.HOVER;
             this.swByPass.Name = "swByPass";
             this.swByPass.Ripple = true;
-            this.swByPass.Size = new System.Drawing.Size(115, 39);
+            this.swByPass.Size = new System.Drawing.Size(115, 32);
             this.swByPass.TabIndex = 12;
             this.swByPass.UseVisualStyleBackColor = true;
             this.swByPass.CheckedChanged += new System.EventHandler(this.swByPass_CheckedChanged);
@@ -468,20 +466,20 @@
             this.tableLayoutPanel13.Controls.Add(this.btnOnlyEPC, 1, 0);
             this.tableLayoutPanel13.Controls.Add(this.btnEPCTID, 0, 0);
             this.tableLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel13.Location = new System.Drawing.Point(3, 207);
+            this.tableLayoutPanel13.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel13.Name = "tableLayoutPanel13";
             this.tableLayoutPanel13.RowCount = 1;
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel13.Size = new System.Drawing.Size(121, 58);
+            this.tableLayoutPanel13.Size = new System.Drawing.Size(115, 52);
             this.tableLayoutPanel13.TabIndex = 14;
             // 
             // btnOnlyTID
             // 
             this.btnOnlyTID.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnOnlyTID.Enabled = false;
-            this.btnOnlyTID.Location = new System.Drawing.Point(83, 3);
+            this.btnOnlyTID.Location = new System.Drawing.Point(79, 3);
             this.btnOnlyTID.Name = "btnOnlyTID";
-            this.btnOnlyTID.Size = new System.Drawing.Size(35, 52);
+            this.btnOnlyTID.Size = new System.Drawing.Size(33, 46);
             this.btnOnlyTID.TabIndex = 2;
             this.btnOnlyTID.Text = "Only TID";
             this.btnOnlyTID.UseVisualStyleBackColor = true;
@@ -491,9 +489,9 @@
             // 
             this.btnOnlyEPC.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnOnlyEPC.Enabled = false;
-            this.btnOnlyEPC.Location = new System.Drawing.Point(43, 3);
+            this.btnOnlyEPC.Location = new System.Drawing.Point(41, 3);
             this.btnOnlyEPC.Name = "btnOnlyEPC";
-            this.btnOnlyEPC.Size = new System.Drawing.Size(34, 52);
+            this.btnOnlyEPC.Size = new System.Drawing.Size(32, 46);
             this.btnOnlyEPC.TabIndex = 1;
             this.btnOnlyEPC.Text = "Only EPC";
             this.btnOnlyEPC.UseVisualStyleBackColor = true;
@@ -505,7 +503,7 @@
             this.btnEPCTID.Enabled = false;
             this.btnEPCTID.Location = new System.Drawing.Point(3, 3);
             this.btnEPCTID.Name = "btnEPCTID";
-            this.btnEPCTID.Size = new System.Drawing.Size(34, 52);
+            this.btnEPCTID.Size = new System.Drawing.Size(32, 46);
             this.btnEPCTID.TabIndex = 0;
             this.btnEPCTID.Text = "EPC\r\n/TID";
             this.btnEPCTID.UseVisualStyleBackColor = true;
@@ -562,17 +560,17 @@
             // 
             // chartOQC
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chartOQC.ChartAreas.Add(chartArea1);
+            chartArea7.Name = "ChartArea1";
+            this.chartOQC.ChartAreas.Add(chartArea7);
             this.chartOQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Name = "Legend1";
-            this.chartOQC.Legends.Add(legend1);
+            legend7.Name = "Legend1";
+            this.chartOQC.Legends.Add(legend7);
             this.chartOQC.Location = new System.Drawing.Point(3, 3);
             this.chartOQC.Name = "chartOQC";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chartOQC.Series.Add(series1);
+            series7.ChartArea = "ChartArea1";
+            series7.Legend = "Legend1";
+            series7.Name = "Series1";
+            this.chartOQC.Series.Add(series7);
             this.chartOQC.Size = new System.Drawing.Size(108, 431);
             this.chartOQC.TabIndex = 0;
             this.chartOQC.Text = "chart1";
@@ -661,17 +659,17 @@
             // 
             // chartIQC
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chartIQC.ChartAreas.Add(chartArea2);
+            chartArea8.Name = "ChartArea1";
+            this.chartIQC.ChartAreas.Add(chartArea8);
             this.chartIQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend2.Name = "Legend1";
-            this.chartIQC.Legends.Add(legend2);
+            legend8.Name = "Legend1";
+            this.chartIQC.Legends.Add(legend8);
             this.chartIQC.Location = new System.Drawing.Point(3, 3);
             this.chartIQC.Name = "chartIQC";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chartIQC.Series.Add(series2);
+            series8.ChartArea = "ChartArea1";
+            series8.Legend = "Legend1";
+            series8.Name = "Series1";
+            this.chartIQC.Series.Add(series8);
             this.chartIQC.Size = new System.Drawing.Size(107, 431);
             this.chartIQC.TabIndex = 0;
             this.chartIQC.Text = "chart1";
@@ -761,16 +759,18 @@
             // 
             // tableLayoutPanel12
             // 
-            this.tableLayoutPanel12.ColumnCount = 2;
-            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.70423F));
-            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 74.29578F));
-            this.tableLayoutPanel12.Controls.Add(this.btnRollName, 1, 0);
-            this.tableLayoutPanel12.Controls.Add(this.btnNewRoll, 0, 0);
+            this.tableLayoutPanel12.ColumnCount = 3;
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel12.Controls.Add(this.btnRollName, 2, 0);
+            this.tableLayoutPanel12.Controls.Add(this.btnNewRoll, 1, 0);
+            this.tableLayoutPanel12.Controls.Add(this.groupBox1, 0, 0);
             this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel12.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel12.Name = "tableLayoutPanel12";
             this.tableLayoutPanel12.RowCount = 1;
-            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel12.Size = new System.Drawing.Size(251, 58);
             this.tableLayoutPanel12.TabIndex = 2;
             // 
@@ -782,12 +782,12 @@
             this.btnRollName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnRollName.HighEmphasis = true;
             this.btnRollName.Icon = null;
-            this.btnRollName.Location = new System.Drawing.Point(68, 6);
+            this.btnRollName.Location = new System.Drawing.Point(129, 6);
             this.btnRollName.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnRollName.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnRollName.Name = "btnRollName";
             this.btnRollName.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnRollName.Size = new System.Drawing.Size(179, 46);
+            this.btnRollName.Size = new System.Drawing.Size(118, 46);
             this.btnRollName.TabIndex = 1;
             this.btnRollName.Text = "Empty";
             this.btnRollName.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
@@ -803,18 +803,56 @@
             this.btnNewRoll.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnNewRoll.HighEmphasis = true;
             this.btnNewRoll.Icon = null;
-            this.btnNewRoll.Location = new System.Drawing.Point(4, 6);
+            this.btnNewRoll.Location = new System.Drawing.Point(79, 6);
             this.btnNewRoll.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnNewRoll.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnNewRoll.Name = "btnNewRoll";
             this.btnNewRoll.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnNewRoll.Size = new System.Drawing.Size(56, 46);
+            this.btnNewRoll.Size = new System.Drawing.Size(42, 46);
             this.btnNewRoll.TabIndex = 0;
             this.btnNewRoll.Text = "New Roll";
             this.btnNewRoll.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btnNewRoll.UseAccentColor = false;
             this.btnNewRoll.UseVisualStyleBackColor = true;
             this.btnNewRoll.Click += new System.EventHandler(this.btnNewRoll_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.groupBox1.Controls.Add(this.tableLayoutPanel15);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(69, 52);
+            this.groupBox1.TabIndex = 2;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Speed";
+            // 
+            // tableLayoutPanel15
+            // 
+            this.tableLayoutPanel15.ColumnCount = 1;
+            this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel15.Controls.Add(this.lbSpeed, 0, 0);
+            this.tableLayoutPanel15.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel15.Location = new System.Drawing.Point(3, 18);
+            this.tableLayoutPanel15.Name = "tableLayoutPanel15";
+            this.tableLayoutPanel15.RowCount = 1;
+            this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel15.Size = new System.Drawing.Size(63, 31);
+            this.tableLayoutPanel15.TabIndex = 0;
+            // 
+            // lbSpeed
+            // 
+            this.lbSpeed.AutoSize = true;
+            this.lbSpeed.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbSpeed.Location = new System.Drawing.Point(3, 0);
+            this.lbSpeed.Name = "lbSpeed";
+            this.lbSpeed.Size = new System.Drawing.Size(57, 31);
+            this.lbSpeed.TabIndex = 2;
+            this.lbSpeed.Text = "0 pcs/s";
+            this.lbSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel2
             // 
@@ -1197,6 +1235,56 @@
             this.clearAllLogToolStripMenuItem.Text = "Clear All Log";
             this.clearAllLogToolStripMenuItem.Click += new System.EventHandler(this.clearAllLogToolStripMenuItem_Click);
             // 
+            // groupBoxMode
+            // 
+            this.groupBoxMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.groupBoxMode.Controls.Add(this.tableLayoutPanel13);
+            this.groupBoxMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxMode.Location = new System.Drawing.Point(3, 322);
+            this.groupBoxMode.Name = "groupBoxMode";
+            this.groupBoxMode.Size = new System.Drawing.Size(121, 71);
+            this.groupBoxMode.TabIndex = 1;
+            this.groupBoxMode.TabStop = false;
+            this.groupBoxMode.Text = "Mode";
+            // 
+            // tableLayoutPanel16
+            // 
+            this.tableLayoutPanel16.ColumnCount = 2;
+            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel16.Controls.Add(this.btnFuncDCM, 1, 0);
+            this.tableLayoutPanel16.Controls.Add(this.btnFuncNormal, 0, 0);
+            this.tableLayoutPanel16.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel16.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel16.Name = "tableLayoutPanel16";
+            this.tableLayoutPanel16.RowCount = 1;
+            this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel16.Size = new System.Drawing.Size(109, 48);
+            this.tableLayoutPanel16.TabIndex = 13;
+            // 
+            // btnFuncNormal
+            // 
+            this.btnFuncNormal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnFuncNormal.Location = new System.Drawing.Point(3, 3);
+            this.btnFuncNormal.Name = "btnFuncNormal";
+            this.btnFuncNormal.Size = new System.Drawing.Size(48, 42);
+            this.btnFuncNormal.TabIndex = 0;
+            this.btnFuncNormal.Text = "Normal";
+            this.btnFuncNormal.UseVisualStyleBackColor = true;
+            this.btnFuncNormal.Click += new System.EventHandler(this.btnFuncNormal_Click);
+            // 
+            // btnFuncDCM
+            // 
+            this.btnFuncDCM.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnFuncDCM.Location = new System.Drawing.Point(57, 3);
+            this.btnFuncDCM.Name = "btnFuncDCM";
+            this.btnFuncDCM.Size = new System.Drawing.Size(49, 42);
+            this.btnFuncDCM.TabIndex = 1;
+            this.btnFuncDCM.Text = "DCM";
+            this.btnFuncDCM.UseVisualStyleBackColor = true;
+            this.btnFuncDCM.Click += new System.EventHandler(this.btnFuncDCM_Click);
+            // 
             // FormAuto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1234,6 +1322,9 @@
             this.tableLayoutPanel11.ResumeLayout(false);
             this.tableLayoutPanel12.ResumeLayout(false);
             this.tableLayoutPanel12.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.tableLayoutPanel15.ResumeLayout(false);
+            this.tableLayoutPanel15.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel14.ResumeLayout(false);
@@ -1249,6 +1340,8 @@
             this.groupBoxIQC.ResumeLayout(false);
             this.groupBoxOQC.ResumeLayout(false);
             this.contextMenuStrip2.ResumeLayout(false);
+            this.groupBoxMode.ResumeLayout(false);
+            this.tableLayoutPanel16.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1307,7 +1400,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader7;
         private System.Windows.Forms.GroupBox groupBoxDcm;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
-        private MaterialSkin.Controls.MaterialSwitch swModeDCM;
         public MaterialSkin.Controls.MaterialButton btnInputDataSourceDCM;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
@@ -1333,5 +1425,12 @@
         private System.Windows.Forms.ColumnHeader columnHeader14;
         private System.Windows.Forms.ColumnHeader columnHeader15;
         private System.Windows.Forms.ColumnHeader columnHeader16;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel15;
+        private System.Windows.Forms.Label lbSpeed;
+        private System.Windows.Forms.GroupBox groupBoxMode;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel16;
+        private System.Windows.Forms.Button btnFuncDCM;
+        private System.Windows.Forms.Button btnFuncNormal;
     }
 }

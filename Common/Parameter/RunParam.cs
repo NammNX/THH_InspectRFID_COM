@@ -49,8 +49,9 @@ namespace TanHungHa.Common
         public int Baudrate  { get; set; }
         [Category("Device"), DescriptionAttribute("Mode")]
         public eMode Mode { get; set; }
+        public eFunc Func { get; set; }
 
-        
+
 
         //[Category("Device"), DescriptionAttribute("Use TID Data")]
         //public bool getTID { get; set; }
@@ -68,6 +69,7 @@ namespace TanHungHa.Common
         [Category("DataBase"), DescriptionAttribute("Time between each flush, in milliseconds")]
         public int mongoFlushIntervalMs { get; set; }
 
+        public HashSet<string> HistoryDamCaMauData { get; set; } = new HashSet<string>();
         public HashSet<string> HistoryIQCData { get; set; } = new HashSet<string>();
         public HashSet<string> HistoryOQCData { get; set; } = new HashSet<string>();
 
@@ -80,12 +82,13 @@ namespace TanHungHa.Common
             COM_IQC = "COM1";
             COM_OQC = "COM2";
             Baudrate = 9600;
-            Mode = eMode.Noon;
-            //getTID = false;
+            Mode = eMode.None;
+            Func = eFunc.eFunctionNormal;
             MongoClient = "mongodb://localhost:27017";
             DataBaseName = "Empty";
             ConnectTimeOut = 5000;
             mongoFlushIntervalMs = 3000;
+            HistoryDamCaMauData = new HashSet<string>();
             HistoryIQCData = new HashSet<string>();
             HistoryOQCData = new HashSet<string>();
         }

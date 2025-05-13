@@ -1,6 +1,7 @@
 ﻿using MaterialSkin;
 using MaterialSkin.Controls;
 using System;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using TanHungHa.Common;
 using TanHungHa.Common.TaskCustomize;
@@ -66,17 +67,23 @@ namespace TanHungHa
             if (MyParam.runParam.DataBaseName != String.Empty)
             {
                 MyParam.autoForm.btnRollName.Visible = true;
-                MyParam.autoForm.btnRollName.Text = "Name: " + MyParam.runParam.DataBaseName;
+                string dbName = Regex.Replace(MyParam.runParam.DataBaseName, ".{20}", "$0\n"); // xuống dòng mỗi 20 ký tự
+                MyParam.autoForm.btnRollName.Text = "Name: " + dbName;
             }
             else
             {
                 MyParam.autoForm.btnRollName.Visible = false;
             }
-            if(MyParam.runParam.Mode != eMode.Noon)
+
+            if(MyParam.runParam.Mode != eMode.None)
             {
                 MyParam.autoForm.UpdateModeUI();
             }
-         //   MyParam.autoForm.UpdateModeUI();
+            if(MyParam.runParam.Func != eFunc.None)
+            {
+                MyParam.autoForm.UpdateFuncUI();
+            }
+            //   MyParam.autoForm.UpdateModeUI();
 
             materialTabControl1.SelectedTab = tabPageAuto;
 
@@ -154,7 +161,8 @@ namespace TanHungHa
                     if (MyParam.runParam.DataBaseName != String.Empty)
                     {
                         MyParam.autoForm.btnRollName.Visible = true;
-                        MyParam.autoForm.btnRollName.Text = "Name: " + MyParam.runParam.DataBaseName;
+                        string dbName = Regex.Replace(MyParam.runParam.DataBaseName, ".{20}", "$0\n"); // xuống dòng mỗi 20 ký tự
+                        MyParam.autoForm.btnRollName.Text = "Name: " + dbName;
                     }
                     else
                     {

@@ -12,6 +12,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using DevExpress.XtraSpreadsheet;
 using DevExpress.Spreadsheet;
+using DevExpress.Internal.WinApi.Windows.UI.Notifications;
+using System.Text.RegularExpressions;
+using System.IO;
 
 namespace TanHungHa.Tabs
 {
@@ -57,8 +60,21 @@ namespace TanHungHa.Tabs
                 case eMode.eOnlyTID:
                     SetModeAndHighlight(eMode.eOnlyTID, btnOnlyTID);
                     break;
-                case eMode.Noon:
-                    SetModeAndHighlight(eMode.Noon); // reset, không nút nào sáng
+                case eMode.None:
+                    SetModeAndHighlight(eMode.None); // reset, không nút nào sáng
+                    break;
+            }
+        }
+        public void UpdateFuncUI()
+        {
+            var func = MyParam.runParam.Func;
+            switch (func)
+            {
+                case eFunc.eFunctionNormal:
+                    FuncNormal();
+                    break;
+                case eFunc.eFunctionDamCaMau:
+                    FuncDCM();
                     break;
             }
         }
@@ -79,7 +95,7 @@ namespace TanHungHa.Tabs
             MyParam.commonParam.myComportIQC.DisConnect();
             MyParam.commonParam.myComportOQC.DisConnect();
 
-            EnableBtn(btnInit,true);
+            EnableBtn(btnInit, true);
             EnableBtn(btnStart, false);
             EnableBtn(btnReset, true);
             EnableBtn(btnStop, false);
@@ -113,46 +129,52 @@ namespace TanHungHa.Tabs
         //}
         public async void InitProgram()
         {
-            btnInit.Enabled = false;
-
-            MyLib.CloseAllDevices((int)eTaskLoop.Task_HEATBEAT);
-            this.Cursor = Cursors.WaitCursor;
-            var x = THHInitial.InitDevice();
-            await x;
-            Console.WriteLine("-------------btnInitial = " + x.Result);
-            
-            if (x.Result)
+            try
             {
-                MainProcess.AddLogAuto("Connect Com&DataBase success",eIndex.Index_IQC_OQC_Log);
-                if (swModeDCM.Checked)
+                btnInit.Enabled = false;
+
+                MyLib.CloseAllDevices((int)eTaskLoop.Task_HEATBEAT);
+                this.Cursor = Cursors.WaitCursor;
+                var x = THHInitial.InitDevice();
+                await x;
+                Console.WriteLine("-------------btnInitial = " + x.Result);
+
+                if (x.Result)
                 {
-                    EnableBtn(btnStart, false);
-                    MainProcess.AddLogAuto("Import File Excel sau đó Start chương trình", eIndex.Index_IQC_OQC_Log);
+                    MainProcess.AddLogAuto("Connect Com&DataBase success", eIndex.Index_IQC_OQC_Log);
+                    if (MyParam.runParam.Func == eFunc.eFunctionDamCaMau)
+                    {
+                        MainProcess.AddLogAuto("Import File Excel sau đó Start chương trình", eIndex.Index_IQC_OQC_Log);
+                        EnableBtn(btnInputDataSourceDCM, false); // sau khi nhập file excel thì mới cho phép Init
+                    }
+
+                    EnableBtn(btnStart, true);
+                    EnableBtn(btnEPCTID, true);
+                    EnableBtn(btnOnlyEPC, true);
+                    EnableBtn(btnOnlyTID, true);
+                    swByPass.Enabled = true;
+                    MyParam.commonParam.myComportIQC.ClearDataRev();
+                    MyParam.commonParam.myComportOQC.ClearDataRev();
                 }
                 else
                 {
-                    EnableBtn(btnStart, true);
+                    MainProcess.AddLogAuto("Please check the connections again", eIndex.Index_IQC_OQC_Log);
+                    EnableBtn(btnInit, true);
+                    EnableBtn(btnStart, false);
                 }
-                EnableBtn(btnEPCTID, true);
-                EnableBtn(btnOnlyEPC, true);
-                EnableBtn(btnOnlyTID, true);
-                swByPass.Enabled = true;
-                MyParam.commonParam.myComportIQC.ClearDataRev();
-                MyParam.commonParam.myComportOQC.ClearDataRev();
-            }
-            else
-            {
-                MainProcess.AddLogAuto("Please check the connections again", eIndex.Index_IQC_OQC_Log);
-                EnableBtn(btnInit, true);
-                EnableBtn(btnStart, false);
-            }
 
-            MyParam.runParam.ProgramStatus = ePRGSTATUS.Initial;
-            this.Cursor = Cursors.Default;
+                MyParam.runParam.ProgramStatus = ePRGSTATUS.Initial;
+                this.Cursor = Cursors.Default;
+            }
+            catch 
+            {
+                MyLib.showDlgError("Lỗi khởi động chương trình, vui lòng kiểm tra lại kết nối");
+                this.Cursor = Cursors.Default;
+            }
         }
         public void StartProgramDCM()
         {
-           
+
             MaterialDialog materialDialog =
                 new MaterialDialog(this, "Start", $"Bắt đầu chạy cuộn {MyParam.runParam.DataBaseName}", "OK", true, "Cancel");
             DialogResult result = materialDialog.ShowDialog(this);
@@ -161,7 +183,7 @@ namespace TanHungHa.Tabs
                 this.Cursor = Cursors.WaitCursor;
                 MyParam.commonParam.myComportIQC.ClearDataRev();
                 MyParam.commonParam.myComportOQC.ClearDataRev();
-               
+
                 EnableBtn(btnEPCTID, false);
                 EnableBtn(btnOnlyEPC, false);
                 EnableBtn(btnOnlyTID, false);
@@ -262,7 +284,7 @@ namespace TanHungHa.Tabs
 
             this.Cursor = Cursors.Default;
         }
-        
+
 
 
 
@@ -365,7 +387,7 @@ namespace TanHungHa.Tabs
                     break;
 
                 case "btnStart":
-                    if (swModeDCM.Checked)
+                    if (MyParam.runParam.Func == eFunc.eFunctionDamCaMau)
                     {
                         StartProgramDCM();
                     }
@@ -637,11 +659,11 @@ namespace TanHungHa.Tabs
                     MyLib.showDlgError("Tên cuộn không hợp lệ, Không dùng dấu cách hoặc kí tự đặc biệt để đặt tên");
                     return;
                 }
-                btnRollName.Text = result;
-                MyParam.runParam.DataBaseName = result;
-                SetModeAndHighlight(eMode.Noon);
+                btnRollName.Text = result.ToUpper();
+                MyParam.runParam.DataBaseName = result.ToUpper();
+                SetModeAndHighlight(eMode.None);
                 MyParam.runParam.HistoryIQCData.Clear();
-                MyParam.runParam.HistoryOQCData.Clear(); 
+                MyParam.runParam.HistoryOQCData.Clear();
                 MyLib.showDlgInfo("Tạo cuộn mới thành công");
 
             }
@@ -675,6 +697,24 @@ namespace TanHungHa.Tabs
 
             return inputForm.ShowDialog() == DialogResult.OK ? textBox.Text.Trim() : null;
         }
+        private void SetFuncAndHighlightButton(eFunc func, Button selectedButton = null)
+        {
+            MainProcess.SetFunc(func);
+            MainProcess.AddLogAuto($"Function hiện tại: {func}", eIndex.Index_IQC_OQC_Log);
+            var buttons = new[] { btnFuncNormal, btnFuncDCM };
+            foreach (var btn in buttons)
+            {
+                btn.BackColor = Color.White;
+            }
+            if (selectedButton != null)
+            {
+                selectedButton.BackColor = Color.YellowGreen;
+            }
+
+        }
+
+
+
         private void SetModeAndHighlight(eMode mode, Button selectedButton = null)
         {
             MainProcess.SetMode(mode);
@@ -749,14 +789,14 @@ namespace TanHungHa.Tabs
             MyParam.commonParam.myComportIQC.SendData(MyDefine.TriggerAndEnableO8);
             MyParam.commonParam.myComportOQC.SendData(MyDefine.TriggerAndEnableO8);
         }
-        private void SetMode(string mode)
+        private void SetUIFunc(eFunc func)
         {
-            if (mode == "DCM")
+            if (func == eFunc.eFunctionDamCaMau)
             {
                 tableLayoutPanelModeDCM.Visible = true;
                 splitContainer1.Visible = false;
             }
-            else if (mode == "Normal")
+            else if (func == eFunc.eFunctionNormal)
             {
                 tableLayoutPanelModeDCM.Visible = false;
                 splitContainer1.Visible = true;
@@ -764,38 +804,48 @@ namespace TanHungHa.Tabs
         }
 
 
-        private void tableLayoutPanel15_Paint(object sender, PaintEventArgs e)
-        {
+        //private void swModeDCM_CheckedChanged(object sender, EventArgs e)
+        //{
 
-        }
-
-        private void swModeDCM_CheckedChanged(object sender, EventArgs e)
-        {
-            if (swModeDCM.Checked)
-            {
-                SetMode("DCM");
-                EnableBtn(btnStart, false);
-                btnInputDataSourceDCM.Enabled = true;
-                MyParam.commonParam.myExcel.SetSpreadSheet(spreadsheetControl1);
-                if (MyParam.runParam.ProgramStatus == ePRGSTATUS.Initial)
-                {
-                    AddLog(" Import File Excel sau đó Start chương trình", eIndex.Index_IQC_OQC_Log);
-                }
-            }
-            else
-            {
-                SetMode("Normal");
-                if (MyParam.runParam.ProgramStatus == ePRGSTATUS.Initial)
-                {
-                    EnableBtn(btnStart, true);
-                }
-                else
-                {
-                    EnableBtn(btnStart, false);
-                }
-                btnInputDataSourceDCM.Enabled = false;
-            }
-        }
+        //    if (swModeDCM.Checked)
+        //    {
+        //        MaterialDialog materialDialog =
+        //        new MaterialDialog(this, "Mode", "Chạy Mode Đạm Cà Mau", "OK", true, "Cancel");
+        //        DialogResult result = materialDialog.ShowDialog(this);
+        //        if (result == DialogResult.Cancel)
+        //        {
+        //            swModeDCM.Checked = false;
+        //            return;
+        //        }
+        //        MyParam.runParam.Func = eFunc.eFunctionDamCaMau;
+        //        SetUIFunc(eFunc.eFunctionDamCaMau);
+        //        EnableBtn(btnInit,false);
+        //        EnableBtn(btnStart, false);
+        //        btnInputDataSourceDCM.Enabled = true;
+        //        MyParam.commonParam.myExcel.SetSpreadSheet(spreadsheetControl1);
+        //        if (MyParam.runParam.ProgramStatus == ePRGSTATUS.Initial)
+        //        {
+        //            AddLog(" Import File Excel sau đó Start chương trình", eIndex.Index_IQC_OQC_Log);
+        //            StartBlinkButton();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        MyParam.runParam.Func = eFunc.eFunctionNormal;
+        //        EnableBtn(btnInit, true);
+        //        StopBlinkButton();
+        //        SetUIFunc(eFunc.eFunctionNormal);
+        //        if (MyParam.runParam.ProgramStatus == ePRGSTATUS.Initial)
+        //        {
+        //            EnableBtn(btnStart, true);
+        //        }
+        //        else
+        //        {
+        //            EnableBtn(btnStart, false);
+        //        }
+        //        btnInputDataSourceDCM.Enabled = false;
+        //    }
+        //}
         private bool IsValidExcelTemplate(SpreadsheetControl spreadsheet)
         {
             Worksheet sheet = spreadsheet.Document.Worksheets[0]; // Sheet đầu tiên
@@ -836,8 +886,17 @@ namespace TanHungHa.Tabs
                         }
                         else // Load OK
                         {
-                            EnableBtn(btnStart, true);
+                            StopBlinkButton();
+                            EnableBtn(btnInit, true);
                             MyParam.commonParam.myExcel.LoadEpcFromExcel();
+
+                            var dbName = Regex.Replace(Path.GetFileNameWithoutExtension(ofd.FileName), @"[^a-zA-Z0-9_]", "_").ToUpper();
+                            MyParam.runParam.DataBaseName = dbName;
+                            string dbNameWrappedText = Regex.Replace(dbName, ".{20}", "$0\n"); // xuống dòng mỗi 20 ký tự
+                            btnRollName.Text = $"Name: {dbNameWrappedText}";
+                            MyParam.runParam.HistoryIQCData.Clear();
+                            MyParam.runParam.HistoryOQCData.Clear();
+                            MyLib.showDlgInfo("Tạo cuộn mới thành công");
                         }
                     }
                     catch (Exception ex)
@@ -848,8 +907,127 @@ namespace TanHungHa.Tabs
                 }
             }
         }
-        
+       
+        private System.Windows.Forms.Timer checkTimer;
+        private DateTime lastUpdateTime;
+        private void CheckTimer_Tick(object sender, EventArgs e)
+        {
+            // Nếu không có sự thay đổi trong 2 giây, gán lại label = 0
+            if ((DateTime.Now - lastUpdateTime).TotalSeconds >= 2)
+            {
+                lbSpeed.Text = "0 pcs/s";
+                checkTimer.Stop(); // Dừng timer khi không cần kiểm tra nữa
+            }
+        }
+        private static string GetLastDataAfterColon(string raw)
+        {
+            if (string.IsNullOrWhiteSpace(raw))
+                return string.Empty;
 
+            int lastColonIndex = raw.LastIndexOf(':');
 
+            // Không có dấu :
+            if (lastColonIndex < 0)
+                return string.Empty;
+
+            // Dấu : nằm ở cuối chuỗi (không có gì phía sau)
+            if (lastColonIndex == raw.Length - 1)
+                return string.Empty;
+
+            // Dữ liệu sau dấu : cuối cùng
+            return raw.Substring(lastColonIndex + 1).Trim();
+        }
+        public void UpdateLabelSpeed(string data)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<string>(UpdateLabelSpeed), data);
+                return;
+            }
+
+            var speed = GetLastDataAfterColon(data);
+
+            lbSpeed.Text = $"{speed} pcs/s";
+            lastUpdateTime = DateTime.Now;
+
+            if (checkTimer == null)
+            {
+                checkTimer = new System.Windows.Forms.Timer();
+                checkTimer.Interval = 1000;
+                checkTimer.Tick += CheckTimer_Tick;
+            }
+
+            if (!checkTimer.Enabled)
+            {
+                checkTimer.Start();
+            }
+        }
+        private System.Windows.Forms.Timer blinkTimer;
+        private bool isBlinkState = false;
+        private void StartBlinkButton()
+        {
+            if (blinkTimer == null)
+            {
+                blinkTimer = new System.Windows.Forms.Timer();
+                blinkTimer.Interval = 500; // Mỗi 0.5 giây đổi màu
+                blinkTimer.Tick += BlinkTimer_Tick;
+            }
+            blinkTimer.Start();
+        }
+
+        private void StopBlinkButton()
+        {
+            if (blinkTimer != null)
+            {
+                blinkTimer.Stop();
+                btnInputDataSourceDCM.Type = MaterialButton.MaterialButtonType.Contained;
+                isBlinkState = false;
+            }
+        }
+
+        private void BlinkTimer_Tick(object sender, EventArgs e)
+        {
+            if (isBlinkState)
+                btnInputDataSourceDCM.Type = MaterialButton.MaterialButtonType.Contained;
+            else
+                btnInputDataSourceDCM.Type = MaterialButton.MaterialButtonType.Outlined;
+
+            isBlinkState = !isBlinkState;
+        }
+
+        private void btnFuncNormal_Click(object sender, EventArgs e)
+        {
+            FuncNormal();
+        }
+        public void FuncNormal()
+        {
+            SetFuncAndHighlightButton(eFunc.eFunctionNormal, btnFuncNormal);
+            SetUIFunc(eFunc.eFunctionNormal);
+
+            EnableBtn(btnInit, true);
+            EnableBtn(btnStart, false);
+
+            StopBlinkButton();
+
+            btnInputDataSourceDCM.Enabled = false;
+        }
+
+        private void btnFuncDCM_Click(object sender, EventArgs e) // Chạy chế độ Đạm Cà Mau
+        {
+            FuncDCM();
+        }
+        public void FuncDCM()
+        {
+            SetFuncAndHighlightButton(eFunc.eFunctionDamCaMau, btnFuncDCM);
+            SetUIFunc(eFunc.eFunctionDamCaMau);
+
+            EnableBtn(btnInit, false);
+            EnableBtn(btnStart, false);
+            btnInputDataSourceDCM.Enabled = true;
+            MyParam.commonParam.myExcel.SetSpreadSheet(spreadsheetControl1);
+            AddLog("Import File Excel sau đó Start chương trình", eIndex.Index_IQC_OQC_Log);
+            StartBlinkButton();
+            
+        }
     }
 }
