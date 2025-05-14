@@ -19,11 +19,11 @@ namespace TanHungHa.Common
         // Cấu hình cột
         private readonly int epcColumnIndex = 2; // Cột C
         private readonly int tidColumnIndex = 3; // Cột D
-        public MyExcel() 
+        public MyExcel()
         {
-           
+
         }
-        
+
         /// <summary>
         /// Gán đối tượng SpreadsheetControl để sử dụng trong class
         /// </summary>
@@ -73,6 +73,7 @@ namespace TanHungHa.Common
         //}
         public bool SetTidForEpc(string epc, string tid, bool highlight = true)
         {
+            Stopwatch sw = Stopwatch.StartNew();
             if (!spreadsheet.InvokeRequired)
             {
                 return SetTidForEpcUIThread(epc, tid, highlight);
@@ -84,6 +85,10 @@ namespace TanHungHa.Common
                 {
                     result = SetTidForEpcUIThread(epc, tid, highlight);
                 }));
+
+                sw.Stop(); // Kết thúc đếm thời gian
+
+                Console.WriteLine($"[Hàm vẽ excel UI] Time taken: {sw.ElapsedMilliseconds} ms");
                 return result;
             }
         }
@@ -120,7 +125,33 @@ namespace TanHungHa.Common
             CellRange usedRange = sheet.GetUsedRange();
             sheet.Clear(usedRange);
         }
+        /// <summary>
+        /// Tạo file excel mới
+        /// </summary>
+        public void CreateNewExcelFile()
+        {
+            spreadsheet.CreateNewDocument();
+        }
+        /// <summary>
+        /// Lưu file Excel đang mở tới đường dẫn cụ thể.
+        /// </summary>
+        /// <param name="filePath">Đường dẫn muốn lưu file, ví dụ: "C:\\Data\\output.xlsx"</param>
+        /// <returns>True nếu lưu thành công, false nếu có lỗi.</returns>
+        public bool SaveExcelToPath(string filePath)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(filePath))
+                    throw new ArgumentException("Invalid file path.");
 
-
+                spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MyLib.showDlgError($"[SaveExcelToPath] Error saving Excel file: {ex.Message}");
+                return false;
+            }
+        }
     }
 }

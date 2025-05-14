@@ -52,7 +52,14 @@ namespace TanHungHa.Common.TaskCustomize
                 case eTaskToDo.ConnectMongoDB:
                     if (!MyParam.commonParam.devParam.ignoreDataBase)
                     {
-                        bResult = MyParam.commonParam.mongoDBService.ConnectMongoDb($"{MyParam.runParam.MongoClient}?connectTimeoutMS={MyParam.runParam.ConnectTimeOut}&socketTimeoutMS=10000&serverSelectionTimeoutMS=5000", $"{MyParam.runParam.DataBaseName}");
+                        if (MyParam.runParam.Func == eFunc.eFunctionNormal)
+                        {
+                            bResult = MyParam.commonParam.mongoDBService.ConnectMongoDb($"{MyParam.runParam.MongoClient}?connectTimeoutMS={MyParam.runParam.ConnectTimeOut}&socketTimeoutMS=10000&serverSelectionTimeoutMS=5000", $"{MyParam.runParam.DataBaseName}");
+                        }
+                        else if(MyParam.runParam.Func == eFunc.eFunctionDamCaMau)
+                        {
+                            bResult = MyParam.commonParam.mongoDBService.ConnectMongoDb($"{MyParam.runParam.MongoClient}?connectTimeoutMS={MyParam.runParam.ConnectTimeOut}&socketTimeoutMS=10000&serverSelectionTimeoutMS=5000", $"{MyParam.runParam.DataBaseNameDamCaMau}");
+                        }
                     }
                     else
                     {

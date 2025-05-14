@@ -15,6 +15,9 @@ using DevExpress.Spreadsheet;
 using DevExpress.Internal.WinApi.Windows.UI.Notifications;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+
 
 namespace TanHungHa.Tabs
 {
@@ -87,6 +90,11 @@ namespace TanHungHa.Tabs
                 MyLib.showDlgInfo("Quá trình ghi dữ liệu vào data base chưa hoàn tất, vui lòng đợi trong giây lát");
                 return;
             }
+            if (MyParam.runParam.Func == eFunc.eFunctionDamCaMau)
+            {
+                KillAllExcelProcesses();
+                MyParam.autoForm.SaveFileExcel();
+            }
 
             this.Cursor = Cursors.WaitCursor;
             //Close all connection
@@ -105,18 +113,98 @@ namespace TanHungHa.Tabs
             ChangeColor(groupBoxOQChart, false);
             swByPass.Enabled = false;
 
+           
+
             if (MyParam.runParam.ProgramStatus == ePRGSTATUS.Started)
             {
                 MainProcess.AddLogAuto($"Disconnect COM IQC", eIndex.Index_IQC_OQC_Log);
                 MainProcess.AddLogAuto($"Disconnect COM OQC", eIndex.Index_IQC_OQC_Log);
+                if (MyParam.runParam.Func == eFunc.eFunctionDamCaMau)
+                {
+                    MaterialDialog materialDialog = new MaterialDialog(this, "Thông báo", "Bạn có muốn mở thư mục chứa file Excel", "OK", true, "Cancel");
+                    DialogResult result = materialDialog.ShowDialog(this);
+                    if (result == DialogResult.OK)
+                    {
+                        Process.Start("explorer.exe", MyParam.runParam.PathFolderSaveFileExcel);
+                    }
+                }
             }
             MainProcess.isRunLoopProcess = false;
             MainProcess.isChartUpdateRunning = false;
+            MainProcess.isRunLoopProcessDCM = false;
             MongoDBService.isFlushLoop = false;
 
             MyParam.runParam.ProgramStatus = ePRGSTATUS.Stoped;
+   
             this.Cursor = Cursors.Default;
         }
+        public bool SaveFileExcel()
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+            // Đường dẫn đầy đủ tới file
+            string folderPath = MyParam.runParam.PathFolderSaveFileExcel;
+            string fullPath = System.IO.Path.Combine(folderPath, MyParam.runParam.FileNameDamCaMau);
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            var x = MyParam.commonParam.myExcel.SaveExcelToPath(fullPath);
+            MyParam.runParam.FullPathSaveFileExcel = fullPath;
+            sw.Stop(); // Kết thúc đếm thời gian
+            Console.WriteLine($"[SaveFileExcel] Time taken: {sw.ElapsedMilliseconds} ms");
+            return x;
+        }
+        public bool LoadFileExcel()
+        {
+            try
+            {
+                if( MyParam.runParam.FullPathSaveFileExcel == MyDefine.pathDefaultSaveFileExcel)
+                {
+                    return false;
+                }
+                // Đường dẫn đầy đủ tới file
+                spreadsheetControl1.LoadDocument(MyParam.runParam.FullPathSaveFileExcel);
+
+            }
+            catch (Exception ex)
+            {
+                MyParam.runParam.FullPathSaveFileExcel = MyDefine.pathDefaultSaveFileExcel;
+                AddLog($"Lỗi khi mở file Excel:{ex.ToString()}", eIndex.Index_IQC_OQC_Log);
+                return false;
+            }
+            return true;
+        }
+        public static void KillAllExcelProcesses()
+        {
+            var processes = Process.GetProcessesByName("EXCEL");
+
+            if (processes.Length == 0)
+            {
+                return;
+            }
+
+            foreach (var process in processes)
+            {
+                try
+                {
+                    process.Kill();
+                    process.WaitForExit();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Không thể đóng Excel (PID {process.Id}): {ex.Message}");
+                }
+            }
+
+            Console.WriteLine("Tất cả tiến trình Excel đã được đóng.");
+        }
+
+
+
+
+
 
 
 
@@ -129,6 +217,22 @@ namespace TanHungHa.Tabs
         //}
         public async void InitProgram()
         {
+            if (MyParam.runParam.Func == eFunc.eFunctionNormal)
+            {
+                if (MyParam.runParam.DataBaseName == MyDefine.dataBaseNameDefault) 
+                {
+                    MyLib.showDlgError("Vui lòng nhập tên cuộn trước khi khởi động");
+                    return;
+                }
+            }
+            if (MyParam.runParam.Func == eFunc.eFunctionDamCaMau)
+            {
+                if (MyParam.runParam.DataBaseNameDamCaMau == MyDefine.dataBaseNameDefault)
+                {
+                    MyLib.showDlgError("Vui lòng nhập tên cuộn trước khi khởi động");
+                    return;
+                }
+            }
             try
             {
                 btnInit.Enabled = false;
@@ -142,11 +246,11 @@ namespace TanHungHa.Tabs
                 if (x.Result)
                 {
                     MainProcess.AddLogAuto("Connect Com&DataBase success", eIndex.Index_IQC_OQC_Log);
-                    if (MyParam.runParam.Func == eFunc.eFunctionDamCaMau)
-                    {
-                        MainProcess.AddLogAuto("Import File Excel sau đó Start chương trình", eIndex.Index_IQC_OQC_Log);
-                        EnableBtn(btnInputDataSourceDCM, false); // sau khi nhập file excel thì mới cho phép Init
-                    }
+                    //if (MyParam.runParam.Func == eFunc.eFunctionDamCaMau)
+                    //{
+                    //    MainProcess.AddLogAuto("Import File Excel sau đó Start chương trình", eIndex.Index_IQC_OQC_Log);
+                    //    EnableBtn(btnInputDataSourceDCM, false); // sau khi nhập file excel thì mới cho phép Init
+                    //}
 
                     EnableBtn(btnStart, true);
                     EnableBtn(btnEPCTID, true);
@@ -176,7 +280,7 @@ namespace TanHungHa.Tabs
         {
 
             MaterialDialog materialDialog =
-                new MaterialDialog(this, "Start", $"Bắt đầu chạy cuộn {MyParam.runParam.DataBaseName}", "OK", true, "Cancel");
+                new MaterialDialog(this, "Start", $"Bắt đầu chạy cuộn {MyParam.runParam.DataBaseNameDamCaMau}", "OK", true, "Cancel");
             DialogResult result = materialDialog.ShowDialog(this);
             if (result == DialogResult.OK)
             {
@@ -311,10 +415,26 @@ namespace TanHungHa.Tabs
                 resetOQC();
                 StopProgram();
                 EnableBtn(btnReset, false);
-                EnableBtn(btnEPCTID, true);
-                EnableBtn(btnOnlyEPC, true);
-                EnableBtn(btnOnlyTID, true);
-                EnableBtn(btnNewRoll, true);
+                if (MyParam.runParam.Func == eFunc.eFunctionDamCaMau)
+                {
+
+                    groupBoxMode.Enabled = false;
+                    EnableBtn(btnNewRoll, false);
+                    EnableBtn(btnInit, false);
+                    EnableBtn(btnInputDataSourceDCM, true);
+                    StartBlinkButtonImportFileExcel();
+                    MyParam.commonParam.myExcel.CreateNewExcelFile();
+                    MyParam.runParam.FullPathSaveFileExcel = MyDefine.pathDefaultSaveFileExcel;
+                    MyParam.runParam.DataBaseNameDamCaMau = MyDefine.dataBaseNameDefault;
+                    UpdateLabelRollName(MyParam.runParam.DataBaseNameDamCaMau);
+
+                }
+                else
+                {
+                    groupBoxMode.Enabled = true;
+                    EnableBtn(btnNewRoll, true);
+                    EnableBtn(btnInit, true);
+                }
                 groupBoxDcm.Enabled = true;
                 MyParam.runParam.ProgramStatus = ePRGSTATUS.Reset;
                 this.Cursor = Cursors.Default;
@@ -530,14 +650,7 @@ namespace TanHungHa.Tabs
                     groupBox.BackColor = Color.Gray;
                 }
             }
-
         }
-
-
-
-
-
-
 
         public void AddLog(string message, eIndex index = eIndex.Index_IQC_Data)
         {
@@ -661,9 +774,10 @@ namespace TanHungHa.Tabs
                 }
                 btnRollName.Text = result.ToUpper();
                 MyParam.runParam.DataBaseName = result.ToUpper();
-                SetModeAndHighlight(eMode.None);
+                SetModeAndHighlight(eMode.eEPC_TID,btnEPCTID);
                 MyParam.runParam.HistoryIQCData.Clear();
                 MyParam.runParam.HistoryOQCData.Clear();
+                EnableBtn(btnInit, true);
                 MyLib.showDlgInfo("Tạo cuộn mới thành công");
 
             }
@@ -871,38 +985,43 @@ namespace TanHungHa.Tabs
                 ofd.Filter = "Excel Files|*.xlsx;*.xls";
                 ofd.Title = "Select an Excel File";
 
+
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     try
                     {
                         spreadsheetControl1.LoadDocument(ofd.FileName);
+                        MyParam.runParam.FileNameDamCaMau = Path.GetFileName(ofd.FileName);
+                        
 
                         if (!IsValidExcelTemplate(spreadsheetControl1))
                         {
-                            MessageBox.Show("❌ File Excel không đúng định dạng yêu cầu. Vui lòng kiểm tra lại!",
-                                            "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
+                            MyLib.showDlgError("❌ File Excel không đúng định dạng yêu cầu. Vui lòng kiểm tra lại!");
                             spreadsheetControl1.CreateNewDocument(); // Trả về trạng thái trống
                         }
                         else // Load OK
                         {
-                            StopBlinkButton();
+                            SaveFileExcel();
+                            
+                            StopBlinkButtonImportFileExcel();
                             EnableBtn(btnInit, true);
+                            EnableBtn(btnReset, true);
+                            groupBoxDcm.Enabled = false;
+                          
                             MyParam.commonParam.myExcel.LoadEpcFromExcel();
 
                             var dbName = Regex.Replace(Path.GetFileNameWithoutExtension(ofd.FileName), @"[^a-zA-Z0-9_]", "_").ToUpper();
-                            MyParam.runParam.DataBaseName = dbName;
+                            MyParam.runParam.DataBaseNameDamCaMau = dbName;
                             string dbNameWrappedText = Regex.Replace(dbName, ".{20}", "$0\n"); // xuống dòng mỗi 20 ký tự
                             btnRollName.Text = $"Name: {dbNameWrappedText}";
-                            MyParam.runParam.HistoryIQCData.Clear();
-                            MyParam.runParam.HistoryOQCData.Clear();
+                            MyParam.runParam.HistoryDamCaMauData.Clear();
                             MyLib.showDlgInfo("Tạo cuộn mới thành công");
                         }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Lỗi khi load file: " + ex.Message);
-                        spreadsheetControl1.CreateNewDocument(); // Phòng khi lỗi file bị hỏng
+                        MyLib.showDlgError("Lỗi khi load file: " + ex.Message);
+                        spreadsheetControl1.CreateNewDocument(); 
                     }
                 }
             }
@@ -964,7 +1083,7 @@ namespace TanHungHa.Tabs
         }
         private System.Windows.Forms.Timer blinkTimer;
         private bool isBlinkState = false;
-        private void StartBlinkButton()
+        private void StartBlinkButtonImportFileExcel()
         {
             if (blinkTimer == null)
             {
@@ -975,7 +1094,7 @@ namespace TanHungHa.Tabs
             blinkTimer.Start();
         }
 
-        private void StopBlinkButton()
+        private void StopBlinkButtonImportFileExcel()
         {
             if (blinkTimer != null)
             {
@@ -1006,28 +1125,67 @@ namespace TanHungHa.Tabs
 
             EnableBtn(btnInit, true);
             EnableBtn(btnStart, false);
+            EnableBtn(btnNewRoll, true);
+            EnableBtn(btnInputDataSourceDCM, false);
+            StopBlinkButtonImportFileExcel();
+            groupBoxMode.Enabled = true;
 
-            StopBlinkButton();
-
-            btnInputDataSourceDCM.Enabled = false;
+            UpdateLabelRollName(MyParam.runParam.DataBaseName);
         }
 
+        public void UpdateLabelRollName(string name)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<string>(UpdateLabelRollName), name);
+                return;
+            }
+            string dbName = Regex.Replace(name, ".{20}", "$0\n"); // xuống dòng mỗi 20 ký tự
+            btnRollName.Text = $"Name: {dbName}";
+        }
         private void btnFuncDCM_Click(object sender, EventArgs e) // Chạy chế độ Đạm Cà Mau
         {
             FuncDCM();
         }
         public void FuncDCM()
         {
-            SetFuncAndHighlightButton(eFunc.eFunctionDamCaMau, btnFuncDCM);
-            SetUIFunc(eFunc.eFunctionDamCaMau);
-
-            EnableBtn(btnInit, false);
-            EnableBtn(btnStart, false);
-            btnInputDataSourceDCM.Enabled = true;
             MyParam.commonParam.myExcel.SetSpreadSheet(spreadsheetControl1);
-            AddLog("Import File Excel sau đó Start chương trình", eIndex.Index_IQC_OQC_Log);
-            StartBlinkButton();
-            
+            var x = LoadFileExcel();
+            if (!x)
+            {
+                SetFuncAndHighlightButton(eFunc.eFunctionDamCaMau, btnFuncDCM);
+                SetUIFunc(eFunc.eFunctionDamCaMau);
+                SetModeAndHighlight(eMode.eEPC_TID, btnEPCTID);
+                EnableBtn(btnInit, false);
+                EnableBtn(btnStart, false);
+                EnableBtn(btnNewRoll, false);
+                EnableBtn(btnInputDataSourceDCM, true);
+                groupBoxMode.Enabled = false;
+
+                AddLog("Import File Excel sau đó Start chương trình", eIndex.Index_IQC_OQC_Log);
+                StartBlinkButtonImportFileExcel();
+                MyParam.runParam.DataBaseNameDamCaMau = MyDefine.dataBaseNameDefault;
+                UpdateLabelRollName(MyParam.runParam.DataBaseNameDamCaMau);
+            }
+            else
+            {
+                SetFuncAndHighlightButton(eFunc.eFunctionDamCaMau, btnFuncDCM);
+                SetUIFunc(eFunc.eFunctionDamCaMau);
+                SetModeAndHighlight(eMode.eEPC_TID, btnEPCTID);
+                EnableBtn(btnInit, true);
+                EnableBtn(btnStart, false);
+                EnableBtn(btnNewRoll, false);
+                EnableBtn(btnReset, true);
+                groupBoxMode.Enabled = false;
+
+                AddLog($"Load File Excel {MyParam.runParam.FileNameDamCaMau} thành công", eIndex.Index_IQC_OQC_Log);
+                UpdateLabelRollName(MyParam.runParam.DataBaseNameDamCaMau);
+                MyParam.commonParam.myExcel.LoadEpcFromExcel();
+
+            }
+
+
+
         }
     }
 }

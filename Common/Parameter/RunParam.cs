@@ -47,14 +47,16 @@ namespace TanHungHa.Common
         public string COM_OQC { get; set; }
         [Category("Device"), DescriptionAttribute("Baudrate")]
         public int Baudrate  { get; set; }
-        [Category("Device"), DescriptionAttribute("Mode")]
-        public eMode Mode { get; set; }
-        public eFunc Func { get; set; }
+
+        [Category("Device"), DescriptionAttribute("Folder Save File Excel Mode Dam Ca Mau")]
+        public string PathFolderSaveFileExcel { get; set; }
 
 
+        [Browsable(false)]
+        public string FileNameDamCaMau { get; set; }
+        [Browsable(false)]
+        public string FullPathSaveFileExcel { get; set; }
 
-        //[Category("Device"), DescriptionAttribute("Use TID Data")]
-        //public bool getTID { get; set; }
 
 
 
@@ -62,15 +64,28 @@ namespace TanHungHa.Common
 
         [Category("DataBase"), DescriptionAttribute("client")]
         public string MongoClient { get; set; }
-        [Category("DataBase"), DescriptionAttribute("DataBase name")]
-        public string DataBaseName { get; set; }
+        
         [Category("DataBase"), DescriptionAttribute("Connect TimeOut")]
         public int ConnectTimeOut { get; set; }
         [Category("DataBase"), DescriptionAttribute("Time between each flush, in milliseconds")]
         public int mongoFlushIntervalMs { get; set; }
 
+
+        [Browsable(false)]
+        public eFunc Func { get; set; }
+
+        [Browsable(false)]
+        public eMode Mode { get; set; }
+
+        [Browsable(false)]
+        public string DataBaseName { get; set; }
+        [Browsable(false)]
+        public string DataBaseNameDamCaMau { get; set; }
+        [Browsable(false)]
         public HashSet<string> HistoryDamCaMauData { get; set; } = new HashSet<string>();
+        [Browsable(false)]
         public HashSet<string> HistoryIQCData { get; set; } = new HashSet<string>();
+        [Browsable(false)]
         public HashSet<string> HistoryOQCData { get; set; } = new HashSet<string>();
 
         [JsonIgnore]
@@ -84,8 +99,12 @@ namespace TanHungHa.Common
             Baudrate = 9600;
             Mode = eMode.None;
             Func = eFunc.eFunctionNormal;
+            PathFolderSaveFileExcel = MyDefine.pathDefaultSaveFileExcel;
+            FullPathSaveFileExcel = $"{MyDefine.pathDefaultSaveFileExcel}\\DamCaMau.xlsx";
+            FileNameDamCaMau = "DamCaMau.xlsx";
             MongoClient = "mongodb://localhost:27017";
-            DataBaseName = "Empty";
+            DataBaseName = MyDefine.dataBaseNameDefault;
+            DataBaseNameDamCaMau = MyDefine.dataBaseNameDefault;
             ConnectTimeOut = 5000;
             mongoFlushIntervalMs = 3000;
             HistoryDamCaMauData = new HashSet<string>();

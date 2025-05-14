@@ -64,16 +64,16 @@ namespace TanHungHa
         void InitGUI()
         {
             this.Text = MyDefine.title;
-            if (MyParam.runParam.DataBaseName != String.Empty)
-            {
-                MyParam.autoForm.btnRollName.Visible = true;
-                string dbName = Regex.Replace(MyParam.runParam.DataBaseName, ".{20}", "$0\n"); // xuống dòng mỗi 20 ký tự
-                MyParam.autoForm.btnRollName.Text = "Name: " + dbName;
-            }
-            else
-            {
-                MyParam.autoForm.btnRollName.Visible = false;
-            }
+            //if (MyParam.runParam.DataBaseName != String.Empty)
+            //{
+            //    MyParam.autoForm.btnRollName.Visible = true;
+            //    string dbName = Regex.Replace(MyParam.runParam.DataBaseName, ".{20}", "$0\n"); // xuống dòng mỗi 20 ký tự
+            //    MyParam.autoForm.btnRollName.Text = "Name: " + dbName;
+            //}
+            //else
+            //{
+            //    MyParam.autoForm.btnRollName.Visible = false;
+            //}
 
             if(MyParam.runParam.Mode != eMode.None)
             {
@@ -158,16 +158,16 @@ namespace TanHungHa
             {
                 case "tabPageAuto":
                     MyParam.curMainView = eMainView.AUTO_VIEW;
-                    if (MyParam.runParam.DataBaseName != String.Empty)
-                    {
-                        MyParam.autoForm.btnRollName.Visible = true;
-                        string dbName = Regex.Replace(MyParam.runParam.DataBaseName, ".{20}", "$0\n"); // xuống dòng mỗi 20 ký tự
-                        MyParam.autoForm.btnRollName.Text = "Name: " + dbName;
-                    }
-                    else
-                    {
-                        MyParam.autoForm.btnRollName.Visible = false;
-                    }
+                    //if (MyParam.runParam.DataBaseName != String.Empty)
+                    //{
+                    //    MyParam.autoForm.btnRollName.Visible = true;
+                    //    string dbName = Regex.Replace(MyParam.runParam.DataBaseName, ".{20}", "$0\n"); // xuống dòng mỗi 20 ký tự
+                    //    MyParam.autoForm.btnRollName.Text = "Name: " + dbName;
+                    //}
+                    //else
+                    //{
+                    //    MyParam.autoForm.btnRollName.Visible = false;
+                    //}
                     break;
                 
                 case "tabPageManual":

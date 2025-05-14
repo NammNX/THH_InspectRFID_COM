@@ -33,6 +33,8 @@ namespace TanHungHa.Common
         public const string treenodeTheme = "Theme";
         public const string treenodeDev = "Developer";
 
+        public const string dataBaseNameDefault  = "Default";
+
 
         // control Module RFID of Mr.TruTho
         public const string ResetIO_RFID = "r";
@@ -60,13 +62,13 @@ namespace TanHungHa.Common
         public static readonly string projectDirectory = Directory.GetParent(workingDirectory).Parent.FullName;
         //public static readonly string workspaceDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
 
-      
 
+        public static readonly string pathDefaultSaveFileExcel = String.Format($"{workingDirectory}\\Excel");
 
         #region Path file json
-       
 
-        
+
+
         public static readonly string file_config = String.Format($"{workingDirectory}\\Configs\\config_param.json");
         public static readonly string file_uiParam= String.Format($"{workingDirectory}\\Configs\\uiParameter.json");
         public static readonly string file_runParam= String.Format($"{workingDirectory}\\Configs\\runParameter.json");

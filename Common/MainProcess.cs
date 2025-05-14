@@ -492,7 +492,7 @@ namespace TanHungHa.Common
             }
             isRunLoopProcess = true;
         }
-        static bool isRunLoopProcessDCM = false;
+        public static bool isRunLoopProcessDCM = false;
         public static void RunLoopProcessDCM()
         {
             if (isRunLoopProcessDCM)
@@ -521,6 +521,8 @@ namespace TanHungHa.Common
            
             while (MyParam.commonParam.myComportIQC.GetQueueCount() > 0)
             {
+                Stopwatch sw = Stopwatch.StartNew();
+
                 var dataComIQC = MyParam.commonParam.myComportIQC.GetDataCom();
                 if (dataComIQC != null)
                 {
@@ -532,7 +534,7 @@ namespace TanHungHa.Common
                     if (dataType == eSerialDataType.OK)
                     {
                         // Kiểm tra xem dữ liệu đã tồn tại trong danh sách lịch sử chưa
-                        if (MyParam.runParam.HistoryIQCData.Contains(EPC) || MyParam.runParam.HistoryIQCData.Contains(TID))
+                        if (MyParam.runParam.HistoryDamCaMauData.Contains(EPC) || MyParam.runParam.HistoryDamCaMauData.Contains(TID))
                         {
                             dataType = eSerialDataType.Duplicate;
                             AddLogAutoEPCTID(EPC, TID, dataComIQC.Timestamp, dataType, eIndex.Index_ModeDCM_Data);
@@ -554,6 +556,8 @@ namespace TanHungHa.Common
                                 dataType = eSerialDataType.Unknown;
                                 MyParam.commonParam.myComportIQC.SendData(MyDefine.StopMachine);
                                 MyLib.showDlgError("EPC không tồn tại trong danh sách Excel");
+                                AddLogAutoEPCTID(EPC, TID, dataComIQC.Timestamp, dataType, eIndex.Index_ModeDCM_Data);
+                                continue;
                             }
                         }
                     }
@@ -563,83 +567,85 @@ namespace TanHungHa.Common
                     if (MyParam.autoForm.swFlushDB.Checked)
                         MyParam.commonParam.mongoDBService.AddToBuffer(EPC, TID, dataComIQC.Timestamp, dataType.ToString(), "IQC");
                 }
+                sw.Stop(); // Kết thúc đếm thời gian
+                Console.WriteLine($"[ProcessDCM] Time taken: {sw.ElapsedMilliseconds} ms");
             }
         }
-        public static void LoopProcessDCM1() // mode cũ lấy từng data EPC/TID
-        {
-            // Lặp và xử lý dữ liệu trong queue IQC cho đến khi queue trống
-            while (MyParam.commonParam.myComportIQC.GetQueueCount() > 0)
-            {
-                var dataComIQC = MyParam.commonParam.myComportIQC.GetDataCom();
-                if (dataComIQC != null)
-                {
-                    dataComIQC.Data = dataComIQC.Data.TrimEnd(new char[] { '\r', '\n' });
+        //public static void LoopProcessDCM1() // mode cũ lấy từng data EPC/TID
+        //{
+        //    // Lặp và xử lý dữ liệu trong queue IQC cho đến khi queue trống
+        //    while (MyParam.commonParam.myComportIQC.GetQueueCount() > 0)
+        //    {
+        //        var dataComIQC = MyParam.commonParam.myComportIQC.GetDataCom();
+        //        if (dataComIQC != null)
+        //        {
+        //            dataComIQC.Data = dataComIQC.Data.TrimEnd(new char[] { '\r', '\n' });
 
 
 
-                    if (lastEPC_IQCFormat == null) // EPC
-                    {
-                        lastEPC_IQCFull = dataComIQC.Data;
-                        lastEPC_IQCFormat = ProcessData(dataComIQC.Data);
-                        EPC_IQC_Type = dataComIQC.Type;
-                    }
-                    else //TID
-                    {
-                        var TID_IQCFull = dataComIQC.Data;
-                        var TID_IQCFormat = ProcessData(dataComIQC.Data);
-                        var TID_Type = dataComIQC.Type;
-                        var DataType = eSerialDataType.Unknown;
+        //            if (lastEPC_IQCFormat == null) // EPC
+        //            {
+        //                lastEPC_IQCFull = dataComIQC.Data;
+        //                lastEPC_IQCFormat = ProcessData(dataComIQC.Data);
+        //                EPC_IQC_Type = dataComIQC.Type;
+        //            }
+        //            else //TID
+        //            {
+        //                var TID_IQCFull = dataComIQC.Data;
+        //                var TID_IQCFormat = ProcessData(dataComIQC.Data);
+        //                var TID_Type = dataComIQC.Type;
+        //                var DataType = eSerialDataType.Unknown;
 
 
-                        if ((EPC_IQC_Type == eSerialDataType.OK) && (TID_Type == eSerialDataType.OK)) // Check type EPC & TID 
-                        {
-                            if (MyParam.runParam.HistoryIQCData.Contains(lastEPC_IQCFormat) || (MyParam.runParam.HistoryIQCData.Contains(TID_IQCFormat))) //duplicate
-                            {
-                                DataType = eSerialDataType.Duplicate;
-                                AddLogAutoEPCTID(lastEPC_IQCFull, TID_IQCFull, dataComIQC.Timestamp, DataType, eIndex.Index_ModeDCM_Data);
-                                lastEPC_IQCFormat = null; // Reset data EPC
-                                lastEPC_IQCFull = null;
-                                EPC_IQC_Type = eSerialDataType.Unknown; // Reset data 
-                                continue;
-                            }
-                            else //OK
-                            {
-                                var lastEPC_IQCFormat_Ascii = HexToAscii(lastEPC_IQCFormat);
-                                var isContainEPC = MyParam.commonParam.myExcel.ContainsEpc(lastEPC_IQCFormat_Ascii);
-                                if (isContainEPC) // EPC có trong danh sách Excel
-                                {
-                                    MyParam.commonParam.myExcel.SetTidForEpc(lastEPC_IQCFormat_Ascii, TID_IQCFormat);
+        //                if ((EPC_IQC_Type == eSerialDataType.OK) && (TID_Type == eSerialDataType.OK)) // Check type EPC & TID 
+        //                {
+        //                    if (MyParam.runParam.HistoryIQCData.Contains(lastEPC_IQCFormat) || (MyParam.runParam.HistoryIQCData.Contains(TID_IQCFormat))) //duplicate
+        //                    {
+        //                        DataType = eSerialDataType.Duplicate;
+        //                        AddLogAutoEPCTID(lastEPC_IQCFull, TID_IQCFull, dataComIQC.Timestamp, DataType, eIndex.Index_ModeDCM_Data);
+        //                        lastEPC_IQCFormat = null; // Reset data EPC
+        //                        lastEPC_IQCFull = null;
+        //                        EPC_IQC_Type = eSerialDataType.Unknown; // Reset data 
+        //                        continue;
+        //                    }
+        //                    else //OK
+        //                    {
+        //                        var lastEPC_IQCFormat_Ascii = HexToAscii(lastEPC_IQCFormat);
+        //                        var isContainEPC = MyParam.commonParam.myExcel.ContainsEpc(lastEPC_IQCFormat_Ascii);
+        //                        if (isContainEPC) // EPC có trong danh sách Excel
+        //                        {
+        //                            MyParam.commonParam.myExcel.SetTidForEpc(lastEPC_IQCFormat_Ascii, TID_IQCFormat);
 
-                                    DataType = eSerialDataType.OK;
-                                    MyParam.runParam.HistoryIQCData.Add(lastEPC_IQCFormat);
-                                    MyParam.runParam.HistoryIQCData.Add(TID_IQCFormat);
-                                }
-                                else
-                                {
-                                    DataType = eSerialDataType.Unknown;
-                                    MyParam.commonParam.myComportIQC.SendData(MyDefine.StopMachine);
-                                    MyLib.showDlgError("EPC không tồn tại trong danh sách Excel");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            DataType = eSerialDataType.NG;
-                        }
+        //                            DataType = eSerialDataType.OK;
+        //                            MyParam.runParam.HistoryIQCData.Add(lastEPC_IQCFormat);
+        //                            MyParam.runParam.HistoryIQCData.Add(TID_IQCFormat);
+        //                        }
+        //                        else
+        //                        {
+        //                            DataType = eSerialDataType.Unknown;
+        //                            MyParam.commonParam.myComportIQC.SendData(MyDefine.StopMachine);
+        //                            MyLib.showDlgError("EPC không tồn tại trong danh sách Excel");
+        //                        }
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    DataType = eSerialDataType.NG;
+        //                }
 
-                        AddLogAutoEPCTID(lastEPC_IQCFull, TID_IQCFull, dataComIQC.Timestamp, DataType, eIndex.Index_ModeDCM_Data);
+        //                AddLogAutoEPCTID(lastEPC_IQCFull, TID_IQCFull, dataComIQC.Timestamp, DataType, eIndex.Index_ModeDCM_Data);
 
-                        chartIQCUpdateQueue.Enqueue(DataType);
-                        if (MyParam.autoForm.swFlushDB.Checked)
-                            MyParam.commonParam.mongoDBService.AddToBuffer(lastEPC_IQCFormat, TID_IQCFormat, dataComIQC.Timestamp, DataType.ToString(), "IQC");
+        //                chartIQCUpdateQueue.Enqueue(DataType);
+        //                if (MyParam.autoForm.swFlushDB.Checked)
+        //                    MyParam.commonParam.mongoDBService.AddToBuffer(lastEPC_IQCFormat, TID_IQCFormat, dataComIQC.Timestamp, DataType.ToString(), "IQC");
 
-                        lastEPC_IQCFull = null;
-                        lastEPC_IQCFormat = null; // Reset data EPC
-                        EPC_IQC_Type = eSerialDataType.Unknown; // Reset data 
-                    }
-                }
-            }
-        }
+        //                lastEPC_IQCFull = null;
+        //                lastEPC_IQCFormat = null; // Reset data EPC
+        //                EPC_IQC_Type = eSerialDataType.Unknown; // Reset data 
+        //            }
+        //        }
+        //    }
+        //}
         private static string HexToAscii(string hexValue)
         {
             try
