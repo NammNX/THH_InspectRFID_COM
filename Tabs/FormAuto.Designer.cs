@@ -29,12 +29,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea15 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend15 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series15 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea16 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend16 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series16 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.lbOQCbuffer = new System.Windows.Forms.Label();
             this.lbIQCbuffer = new System.Windows.Forms.Label();
@@ -45,18 +48,22 @@
             this.btnStart = new MaterialSkin.Controls.MaterialButton();
             this.groupDB_UI = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.groupBoxFlushDBChecked = new System.Windows.Forms.GroupBox();
-            this.swFlushDB = new MaterialSkin.Controls.MaterialSwitch();
-            this.groupBoxDcm = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnInputDataSourceDCM = new MaterialSkin.Controls.MaterialButton();
-            this.groupboxbypass = new System.Windows.Forms.GroupBox();
-            this.swByPass = new MaterialSkin.Controls.MaterialSwitch();
+            this.groupBoxMode = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
             this.btnOnlyTID = new System.Windows.Forms.Button();
             this.btnOnlyEPC = new System.Windows.Forms.Button();
             this.btnEPCTID = new System.Windows.Forms.Button();
+            this.groupBoxFlushDBChecked = new System.Windows.Forms.GroupBox();
+            this.swFlushDB = new MaterialSkin.Controls.MaterialSwitch();
             this.btnInit = new MaterialSkin.Controls.MaterialButton();
+            this.groupBoxDcm = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnFuncDCM = new System.Windows.Forms.Button();
+            this.btnFuncNormal = new System.Windows.Forms.Button();
+            this.btnInputDataSourceDCM = new MaterialSkin.Controls.MaterialButton();
+            this.groupboxbypass = new System.Windows.Forms.GroupBox();
+            this.swByPass = new MaterialSkin.Controls.MaterialSwitch();
             this.groupBoxOQChart = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.chartOQC = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -72,7 +79,15 @@
             this.lbNG_IQC = new System.Windows.Forms.Label();
             this.lbIQC_OK = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
+            this.panelChart = new System.Windows.Forms.Panel();
+            this.groupBoxDCMChart = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
+            this.chartDCM = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.tableLayoutPanel18 = new System.Windows.Forms.TableLayoutPanel();
+            this.lbTotal_DCM = new System.Windows.Forms.Label();
+            this.lbDCM_NG = new System.Windows.Forms.Label();
+            this.lbDCM_OK = new System.Windows.Forms.Label();
+            this.tableLayoutPanelIQCOQCChart = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
             this.btnRollName = new MaterialSkin.Controls.MaterialButton();
             this.btnNewRoll = new MaterialSkin.Controls.MaterialButton();
@@ -116,18 +131,16 @@
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.clearLogToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.clearAllLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupBoxMode = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnFuncNormal = new System.Windows.Forms.Button();
-            this.btnFuncDCM = new System.Windows.Forms.Button();
             this.tableLayoutPanel5.SuspendLayout();
             this.groupDB_UI.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
+            this.groupBoxMode.SuspendLayout();
+            this.tableLayoutPanel13.SuspendLayout();
             this.groupBoxFlushDBChecked.SuspendLayout();
             this.groupBoxDcm.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
+            this.tableLayoutPanel16.SuspendLayout();
             this.groupboxbypass.SuspendLayout();
-            this.tableLayoutPanel13.SuspendLayout();
             this.groupBoxOQChart.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartOQC)).BeginInit();
@@ -137,7 +150,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.chartIQC)).BeginInit();
             this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
-            this.tableLayoutPanel11.SuspendLayout();
+            this.panelChart.SuspendLayout();
+            this.groupBoxDCMChart.SuspendLayout();
+            this.tableLayoutPanel17.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chartDCM)).BeginInit();
+            this.tableLayoutPanel18.SuspendLayout();
+            this.tableLayoutPanelIQCOQCChart.SuspendLayout();
             this.tableLayoutPanel12.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel15.SuspendLayout();
@@ -156,8 +174,6 @@
             this.groupBoxIQC.SuspendLayout();
             this.groupBoxOQC.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
-            this.groupBoxMode.SuspendLayout();
-            this.tableLayoutPanel16.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel5
@@ -343,6 +359,69 @@
             this.tableLayoutPanel4.TabIndex = 2;
             this.tableLayoutPanel4.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel4_Paint);
             // 
+            // groupBoxMode
+            // 
+            this.groupBoxMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.groupBoxMode.Controls.Add(this.tableLayoutPanel13);
+            this.groupBoxMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxMode.Location = new System.Drawing.Point(3, 322);
+            this.groupBoxMode.Name = "groupBoxMode";
+            this.groupBoxMode.Size = new System.Drawing.Size(121, 71);
+            this.groupBoxMode.TabIndex = 1;
+            this.groupBoxMode.TabStop = false;
+            this.groupBoxMode.Text = "Mode";
+            // 
+            // tableLayoutPanel13
+            // 
+            this.tableLayoutPanel13.ColumnCount = 3;
+            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
+            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
+            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.34F));
+            this.tableLayoutPanel13.Controls.Add(this.btnOnlyTID, 2, 0);
+            this.tableLayoutPanel13.Controls.Add(this.btnOnlyEPC, 1, 0);
+            this.tableLayoutPanel13.Controls.Add(this.btnEPCTID, 0, 0);
+            this.tableLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel13.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutPanel13.Name = "tableLayoutPanel13";
+            this.tableLayoutPanel13.RowCount = 1;
+            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel13.Size = new System.Drawing.Size(115, 52);
+            this.tableLayoutPanel13.TabIndex = 14;
+            // 
+            // btnOnlyTID
+            // 
+            this.btnOnlyTID.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnOnlyTID.Location = new System.Drawing.Point(79, 3);
+            this.btnOnlyTID.Name = "btnOnlyTID";
+            this.btnOnlyTID.Size = new System.Drawing.Size(33, 46);
+            this.btnOnlyTID.TabIndex = 2;
+            this.btnOnlyTID.Text = "Only TID";
+            this.btnOnlyTID.UseVisualStyleBackColor = true;
+            this.btnOnlyTID.Click += new System.EventHandler(this.btnOnlyTID_Click);
+            // 
+            // btnOnlyEPC
+            // 
+            this.btnOnlyEPC.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnOnlyEPC.Location = new System.Drawing.Point(41, 3);
+            this.btnOnlyEPC.Name = "btnOnlyEPC";
+            this.btnOnlyEPC.Size = new System.Drawing.Size(32, 46);
+            this.btnOnlyEPC.TabIndex = 1;
+            this.btnOnlyEPC.Text = "Only EPC";
+            this.btnOnlyEPC.UseVisualStyleBackColor = true;
+            this.btnOnlyEPC.Click += new System.EventHandler(this.btnOnlyEPC_Click);
+            // 
+            // btnEPCTID
+            // 
+            this.btnEPCTID.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnEPCTID.Location = new System.Drawing.Point(3, 3);
+            this.btnEPCTID.Name = "btnEPCTID";
+            this.btnEPCTID.Size = new System.Drawing.Size(32, 46);
+            this.btnEPCTID.TabIndex = 0;
+            this.btnEPCTID.Text = "EPC\r\n/TID";
+            this.btnEPCTID.UseVisualStyleBackColor = true;
+            this.btnEPCTID.Click += new System.EventHandler(this.btnEPCTID_Click);
+            // 
             // groupBoxFlushDBChecked
             // 
             this.groupBoxFlushDBChecked.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
@@ -375,6 +454,27 @@
             this.swFlushDB.TabIndex = 0;
             this.swFlushDB.UseVisualStyleBackColor = false;
             // 
+            // btnInit
+            // 
+            this.btnInit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnInit.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnInit.Depth = 0;
+            this.btnInit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnInit.HighEmphasis = true;
+            this.btnInit.Icon = null;
+            this.btnInit.Location = new System.Drawing.Point(4, 6);
+            this.btnInit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnInit.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnInit.Name = "btnInit";
+            this.btnInit.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnInit.Size = new System.Drawing.Size(119, 39);
+            this.btnInit.TabIndex = 15;
+            this.btnInit.Text = "Init";
+            this.btnInit.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnInit.UseAccentColor = false;
+            this.btnInit.UseVisualStyleBackColor = true;
+            this.btnInit.Click += new System.EventHandler(this.btnProgramAction);
+            // 
             // groupBoxDcm
             // 
             this.groupBoxDcm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
@@ -402,6 +502,43 @@
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.tableLayoutPanel10.Size = new System.Drawing.Size(115, 90);
             this.tableLayoutPanel10.TabIndex = 0;
+            // 
+            // tableLayoutPanel16
+            // 
+            this.tableLayoutPanel16.ColumnCount = 2;
+            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel16.Controls.Add(this.btnFuncDCM, 1, 0);
+            this.tableLayoutPanel16.Controls.Add(this.btnFuncNormal, 0, 0);
+            this.tableLayoutPanel16.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel16.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel16.Name = "tableLayoutPanel16";
+            this.tableLayoutPanel16.RowCount = 1;
+            this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel16.Size = new System.Drawing.Size(109, 48);
+            this.tableLayoutPanel16.TabIndex = 13;
+            // 
+            // btnFuncDCM
+            // 
+            this.btnFuncDCM.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnFuncDCM.Location = new System.Drawing.Point(57, 3);
+            this.btnFuncDCM.Name = "btnFuncDCM";
+            this.btnFuncDCM.Size = new System.Drawing.Size(49, 42);
+            this.btnFuncDCM.TabIndex = 1;
+            this.btnFuncDCM.Text = "DCM";
+            this.btnFuncDCM.UseVisualStyleBackColor = true;
+            this.btnFuncDCM.Click += new System.EventHandler(this.btnFuncDCM_Click);
+            // 
+            // btnFuncNormal
+            // 
+            this.btnFuncNormal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnFuncNormal.Location = new System.Drawing.Point(3, 3);
+            this.btnFuncNormal.Name = "btnFuncNormal";
+            this.btnFuncNormal.Size = new System.Drawing.Size(48, 42);
+            this.btnFuncNormal.TabIndex = 0;
+            this.btnFuncNormal.Text = "Normal";
+            this.btnFuncNormal.UseVisualStyleBackColor = true;
+            this.btnFuncNormal.Click += new System.EventHandler(this.btnFuncNormal_Click);
             // 
             // btnInputDataSourceDCM
             // 
@@ -456,77 +593,6 @@
             this.swByPass.UseVisualStyleBackColor = true;
             this.swByPass.CheckedChanged += new System.EventHandler(this.swByPass_CheckedChanged);
             // 
-            // tableLayoutPanel13
-            // 
-            this.tableLayoutPanel13.ColumnCount = 3;
-            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
-            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
-            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.34F));
-            this.tableLayoutPanel13.Controls.Add(this.btnOnlyTID, 2, 0);
-            this.tableLayoutPanel13.Controls.Add(this.btnOnlyEPC, 1, 0);
-            this.tableLayoutPanel13.Controls.Add(this.btnEPCTID, 0, 0);
-            this.tableLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel13.Location = new System.Drawing.Point(3, 16);
-            this.tableLayoutPanel13.Name = "tableLayoutPanel13";
-            this.tableLayoutPanel13.RowCount = 1;
-            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel13.Size = new System.Drawing.Size(115, 52);
-            this.tableLayoutPanel13.TabIndex = 14;
-            // 
-            // btnOnlyTID
-            // 
-            this.btnOnlyTID.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnOnlyTID.Location = new System.Drawing.Point(79, 3);
-            this.btnOnlyTID.Name = "btnOnlyTID";
-            this.btnOnlyTID.Size = new System.Drawing.Size(33, 46);
-            this.btnOnlyTID.TabIndex = 2;
-            this.btnOnlyTID.Text = "Only TID";
-            this.btnOnlyTID.UseVisualStyleBackColor = true;
-            this.btnOnlyTID.Click += new System.EventHandler(this.btnOnlyTID_Click);
-            // 
-            // btnOnlyEPC
-            // 
-            this.btnOnlyEPC.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnOnlyEPC.Location = new System.Drawing.Point(41, 3);
-            this.btnOnlyEPC.Name = "btnOnlyEPC";
-            this.btnOnlyEPC.Size = new System.Drawing.Size(32, 46);
-            this.btnOnlyEPC.TabIndex = 1;
-            this.btnOnlyEPC.Text = "Only EPC";
-            this.btnOnlyEPC.UseVisualStyleBackColor = true;
-            this.btnOnlyEPC.Click += new System.EventHandler(this.btnOnlyEPC_Click);
-            // 
-            // btnEPCTID
-            // 
-            this.btnEPCTID.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnEPCTID.Location = new System.Drawing.Point(3, 3);
-            this.btnEPCTID.Name = "btnEPCTID";
-            this.btnEPCTID.Size = new System.Drawing.Size(32, 46);
-            this.btnEPCTID.TabIndex = 0;
-            this.btnEPCTID.Text = "EPC\r\n/TID";
-            this.btnEPCTID.UseVisualStyleBackColor = true;
-            this.btnEPCTID.Click += new System.EventHandler(this.btnEPCTID_Click);
-            // 
-            // btnInit
-            // 
-            this.btnInit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnInit.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnInit.Depth = 0;
-            this.btnInit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnInit.HighEmphasis = true;
-            this.btnInit.Icon = null;
-            this.btnInit.Location = new System.Drawing.Point(4, 6);
-            this.btnInit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnInit.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnInit.Name = "btnInit";
-            this.btnInit.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnInit.Size = new System.Drawing.Size(119, 39);
-            this.btnInit.TabIndex = 15;
-            this.btnInit.Text = "Init";
-            this.btnInit.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnInit.UseAccentColor = false;
-            this.btnInit.UseVisualStyleBackColor = true;
-            this.btnInit.Click += new System.EventHandler(this.btnProgramAction);
-            // 
             // groupBoxOQChart
             // 
             this.groupBoxOQChart.BackColor = System.Drawing.Color.Silver;
@@ -557,17 +623,17 @@
             // 
             // chartOQC
             // 
-            chartArea15.Name = "ChartArea1";
-            this.chartOQC.ChartAreas.Add(chartArea15);
+            chartArea1.Name = "ChartArea1";
+            this.chartOQC.ChartAreas.Add(chartArea1);
             this.chartOQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend15.Name = "Legend1";
-            this.chartOQC.Legends.Add(legend15);
+            legend1.Name = "Legend1";
+            this.chartOQC.Legends.Add(legend1);
             this.chartOQC.Location = new System.Drawing.Point(3, 3);
             this.chartOQC.Name = "chartOQC";
-            series15.ChartArea = "ChartArea1";
-            series15.Legend = "Legend1";
-            series15.Name = "Series1";
-            this.chartOQC.Series.Add(series15);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chartOQC.Series.Add(series1);
             this.chartOQC.Size = new System.Drawing.Size(108, 431);
             this.chartOQC.TabIndex = 0;
             this.chartOQC.Text = "chart1";
@@ -656,17 +722,17 @@
             // 
             // chartIQC
             // 
-            chartArea16.Name = "ChartArea1";
-            this.chartIQC.ChartAreas.Add(chartArea16);
+            chartArea2.Name = "ChartArea1";
+            this.chartIQC.ChartAreas.Add(chartArea2);
             this.chartIQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend16.Name = "Legend1";
-            this.chartIQC.Legends.Add(legend16);
+            legend2.Name = "Legend1";
+            this.chartIQC.Legends.Add(legend2);
             this.chartIQC.Location = new System.Drawing.Point(3, 3);
             this.chartIQC.Name = "chartIQC";
-            series16.ChartArea = "ChartArea1";
-            series16.Legend = "Legend1";
-            series16.Name = "Series1";
-            this.chartIQC.Series.Add(series16);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chartIQC.Series.Add(series2);
             this.chartIQC.Size = new System.Drawing.Size(107, 431);
             this.chartIQC.TabIndex = 0;
             this.chartIQC.Text = "chart1";
@@ -728,7 +794,7 @@
             // 
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel11, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.panelChart, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel12, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(924, 3);
@@ -736,23 +802,133 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(257, 644);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
-            // tableLayoutPanel11
+            // panelChart
             // 
-            this.tableLayoutPanel11.ColumnCount = 2;
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel11.Controls.Add(this.groupBoxChartIQC, 0, 0);
-            this.tableLayoutPanel11.Controls.Add(this.groupBoxOQChart, 1, 0);
-            this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel11.Location = new System.Drawing.Point(3, 67);
-            this.tableLayoutPanel11.Name = "tableLayoutPanel11";
-            this.tableLayoutPanel11.RowCount = 1;
-            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(251, 574);
-            this.tableLayoutPanel11.TabIndex = 1;
+            this.panelChart.Controls.Add(this.groupBoxDCMChart);
+            this.panelChart.Controls.Add(this.tableLayoutPanelIQCOQCChart);
+            this.panelChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelChart.Location = new System.Drawing.Point(3, 67);
+            this.panelChart.Name = "panelChart";
+            this.panelChart.Size = new System.Drawing.Size(251, 574);
+            this.panelChart.TabIndex = 13;
+            // 
+            // groupBoxDCMChart
+            // 
+            this.groupBoxDCMChart.BackColor = System.Drawing.Color.Silver;
+            this.groupBoxDCMChart.Controls.Add(this.tableLayoutPanel17);
+            this.groupBoxDCMChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxDCMChart.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxDCMChart.ForeColor = System.Drawing.Color.Black;
+            this.groupBoxDCMChart.Location = new System.Drawing.Point(0, 0);
+            this.groupBoxDCMChart.Name = "groupBoxDCMChart";
+            this.groupBoxDCMChart.Size = new System.Drawing.Size(251, 574);
+            this.groupBoxDCMChart.TabIndex = 2;
+            this.groupBoxDCMChart.TabStop = false;
+            this.groupBoxDCMChart.Text = "DamCaMau Chart";
+            // 
+            // tableLayoutPanel17
+            // 
+            this.tableLayoutPanel17.ColumnCount = 1;
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel17.Controls.Add(this.chartDCM, 0, 0);
+            this.tableLayoutPanel17.Controls.Add(this.tableLayoutPanel18, 0, 1);
+            this.tableLayoutPanel17.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel17.Location = new System.Drawing.Point(3, 18);
+            this.tableLayoutPanel17.Name = "tableLayoutPanel17";
+            this.tableLayoutPanel17.RowCount = 2;
+            this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
+            this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel17.Size = new System.Drawing.Size(245, 553);
+            this.tableLayoutPanel17.TabIndex = 1;
+            // 
+            // chartDCM
+            // 
+            chartArea3.Name = "ChartArea1";
+            this.chartDCM.ChartAreas.Add(chartArea3);
+            this.chartDCM.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend3.Name = "Legend1";
+            this.chartDCM.Legends.Add(legend3);
+            this.chartDCM.Location = new System.Drawing.Point(3, 3);
+            this.chartDCM.Name = "chartDCM";
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.chartDCM.Series.Add(series3);
+            this.chartDCM.Size = new System.Drawing.Size(239, 436);
+            this.chartDCM.TabIndex = 0;
+            this.chartDCM.Text = "chart1";
+            // 
+            // tableLayoutPanel18
+            // 
+            this.tableLayoutPanel18.ColumnCount = 1;
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel18.Controls.Add(this.lbTotal_DCM, 0, 2);
+            this.tableLayoutPanel18.Controls.Add(this.lbDCM_NG, 0, 1);
+            this.tableLayoutPanel18.Controls.Add(this.lbDCM_OK, 0, 0);
+            this.tableLayoutPanel18.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel18.Location = new System.Drawing.Point(3, 445);
+            this.tableLayoutPanel18.Name = "tableLayoutPanel18";
+            this.tableLayoutPanel18.RowCount = 3;
+            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
+            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
+            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.34F));
+            this.tableLayoutPanel18.Size = new System.Drawing.Size(239, 105);
+            this.tableLayoutPanel18.TabIndex = 1;
+            // 
+            // lbTotal_DCM
+            // 
+            this.lbTotal_DCM.AutoSize = true;
+            this.lbTotal_DCM.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.lbTotal_DCM.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbTotal_DCM.Location = new System.Drawing.Point(3, 68);
+            this.lbTotal_DCM.Name = "lbTotal_DCM";
+            this.lbTotal_DCM.Size = new System.Drawing.Size(233, 37);
+            this.lbTotal_DCM.TabIndex = 2;
+            this.lbTotal_DCM.Text = "Total";
+            this.lbTotal_DCM.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbDCM_NG
+            // 
+            this.lbDCM_NG.AutoSize = true;
+            this.lbDCM_NG.BackColor = System.Drawing.Color.Red;
+            this.lbDCM_NG.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbDCM_NG.Location = new System.Drawing.Point(3, 34);
+            this.lbDCM_NG.Name = "lbDCM_NG";
+            this.lbDCM_NG.Size = new System.Drawing.Size(233, 34);
+            this.lbDCM_NG.TabIndex = 1;
+            this.lbDCM_NG.Text = "NG";
+            this.lbDCM_NG.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbDCM_OK
+            // 
+            this.lbDCM_OK.AutoSize = true;
+            this.lbDCM_OK.BackColor = System.Drawing.Color.Lime;
+            this.lbDCM_OK.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbDCM_OK.Location = new System.Drawing.Point(3, 0);
+            this.lbDCM_OK.Name = "lbDCM_OK";
+            this.lbDCM_OK.Size = new System.Drawing.Size(233, 34);
+            this.lbDCM_OK.TabIndex = 0;
+            this.lbDCM_OK.Text = "OK";
+            this.lbDCM_OK.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanelIQCOQCChart
+            // 
+            this.tableLayoutPanelIQCOQCChart.ColumnCount = 2;
+            this.tableLayoutPanelIQCOQCChart.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelIQCOQCChart.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelIQCOQCChart.Controls.Add(this.groupBoxOQChart, 1, 0);
+            this.tableLayoutPanelIQCOQCChart.Controls.Add(this.groupBoxChartIQC, 0, 0);
+            this.tableLayoutPanelIQCOQCChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelIQCOQCChart.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanelIQCOQCChart.Name = "tableLayoutPanelIQCOQCChart";
+            this.tableLayoutPanelIQCOQCChart.RowCount = 1;
+            this.tableLayoutPanelIQCOQCChart.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelIQCOQCChart.Size = new System.Drawing.Size(251, 574);
+            this.tableLayoutPanelIQCOQCChart.TabIndex = 1;
             // 
             // tableLayoutPanel12
             // 
@@ -1087,6 +1263,7 @@
             this.spreadsheetControl1.Size = new System.Drawing.Size(903, 248);
             this.spreadsheetControl1.TabIndex = 0;
             this.spreadsheetControl1.Text = "spreadsheetControl1";
+            this.spreadsheetControl1.Click += new System.EventHandler(this.spreadsheetControl1_Click);
             // 
             // splitContainer1
             // 
@@ -1232,56 +1409,6 @@
             this.clearAllLogToolStripMenuItem.Text = "Clear All Log";
             this.clearAllLogToolStripMenuItem.Click += new System.EventHandler(this.clearAllLogToolStripMenuItem_Click);
             // 
-            // groupBoxMode
-            // 
-            this.groupBoxMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.groupBoxMode.Controls.Add(this.tableLayoutPanel13);
-            this.groupBoxMode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBoxMode.Location = new System.Drawing.Point(3, 322);
-            this.groupBoxMode.Name = "groupBoxMode";
-            this.groupBoxMode.Size = new System.Drawing.Size(121, 71);
-            this.groupBoxMode.TabIndex = 1;
-            this.groupBoxMode.TabStop = false;
-            this.groupBoxMode.Text = "Mode";
-            // 
-            // tableLayoutPanel16
-            // 
-            this.tableLayoutPanel16.ColumnCount = 2;
-            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel16.Controls.Add(this.btnFuncDCM, 1, 0);
-            this.tableLayoutPanel16.Controls.Add(this.btnFuncNormal, 0, 0);
-            this.tableLayoutPanel16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel16.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel16.Name = "tableLayoutPanel16";
-            this.tableLayoutPanel16.RowCount = 1;
-            this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel16.Size = new System.Drawing.Size(109, 48);
-            this.tableLayoutPanel16.TabIndex = 13;
-            // 
-            // btnFuncNormal
-            // 
-            this.btnFuncNormal.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnFuncNormal.Location = new System.Drawing.Point(3, 3);
-            this.btnFuncNormal.Name = "btnFuncNormal";
-            this.btnFuncNormal.Size = new System.Drawing.Size(48, 42);
-            this.btnFuncNormal.TabIndex = 0;
-            this.btnFuncNormal.Text = "Normal";
-            this.btnFuncNormal.UseVisualStyleBackColor = true;
-            this.btnFuncNormal.Click += new System.EventHandler(this.btnFuncNormal_Click);
-            // 
-            // btnFuncDCM
-            // 
-            this.btnFuncDCM.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnFuncDCM.Location = new System.Drawing.Point(57, 3);
-            this.btnFuncDCM.Name = "btnFuncDCM";
-            this.btnFuncDCM.Size = new System.Drawing.Size(49, 42);
-            this.btnFuncDCM.TabIndex = 1;
-            this.btnFuncDCM.Text = "DCM";
-            this.btnFuncDCM.UseVisualStyleBackColor = true;
-            this.btnFuncDCM.Click += new System.EventHandler(this.btnFuncDCM_Click);
-            // 
             // FormAuto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1297,14 +1424,16 @@
             this.groupDB_UI.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
+            this.groupBoxMode.ResumeLayout(false);
+            this.tableLayoutPanel13.ResumeLayout(false);
             this.groupBoxFlushDBChecked.ResumeLayout(false);
             this.groupBoxFlushDBChecked.PerformLayout();
             this.groupBoxDcm.ResumeLayout(false);
             this.tableLayoutPanel10.ResumeLayout(false);
             this.tableLayoutPanel10.PerformLayout();
+            this.tableLayoutPanel16.ResumeLayout(false);
             this.groupboxbypass.ResumeLayout(false);
             this.groupboxbypass.PerformLayout();
-            this.tableLayoutPanel13.ResumeLayout(false);
             this.groupBoxOQChart.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chartOQC)).EndInit();
@@ -1316,7 +1445,13 @@
             this.tableLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel7.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel11.ResumeLayout(false);
+            this.panelChart.ResumeLayout(false);
+            this.groupBoxDCMChart.ResumeLayout(false);
+            this.tableLayoutPanel17.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chartDCM)).EndInit();
+            this.tableLayoutPanel18.ResumeLayout(false);
+            this.tableLayoutPanel18.PerformLayout();
+            this.tableLayoutPanelIQCOQCChart.ResumeLayout(false);
             this.tableLayoutPanel12.ResumeLayout(false);
             this.tableLayoutPanel12.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -1337,8 +1472,6 @@
             this.groupBoxIQC.ResumeLayout(false);
             this.groupBoxOQC.ResumeLayout(false);
             this.contextMenuStrip2.ResumeLayout(false);
-            this.groupBoxMode.ResumeLayout(false);
-            this.tableLayoutPanel16.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1398,7 +1531,7 @@
         private System.Windows.Forms.GroupBox groupBoxDcm;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
         public MaterialSkin.Controls.MaterialButton btnInputDataSourceDCM;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelIQCOQCChart;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
         public MaterialSkin.Controls.MaterialButton btnRollName;
         public MaterialSkin.Controls.MaterialButton btnNewRoll;
@@ -1429,5 +1562,13 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel16;
         private System.Windows.Forms.Button btnFuncDCM;
         private System.Windows.Forms.Button btnFuncNormal;
+        private System.Windows.Forms.Panel panelChart;
+        public System.Windows.Forms.GroupBox groupBoxDCMChart;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel17;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartDCM;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel18;
+        private System.Windows.Forms.Label lbTotal_DCM;
+        private System.Windows.Forms.Label lbDCM_NG;
+        private System.Windows.Forms.Label lbDCM_OK;
     }
 }

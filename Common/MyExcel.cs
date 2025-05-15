@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using DevExpress.XtraRichEdit.Model;
+using DocumentFormat.OpenXml.Drawing;
 
 namespace TanHungHa.Common
 {
@@ -71,6 +73,8 @@ namespace TanHungHa.Common
         //    }
         //    return false;
         //}
+        
+
         public bool SetTidForEpc(string epc, string tid, bool highlight = true)
         {
             Stopwatch sw = Stopwatch.StartNew();
@@ -85,7 +89,6 @@ namespace TanHungHa.Common
                 {
                     result = SetTidForEpcUIThread(epc, tid, highlight);
                 }));
-
                 sw.Stop(); // Kết thúc đếm thời gian
 
                 Console.WriteLine($"[Hàm vẽ excel UI] Time taken: {sw.ElapsedMilliseconds} ms");
@@ -101,7 +104,14 @@ namespace TanHungHa.Common
 
                 if (highlight)
                     sheet.Rows[rowIndex].FillColor = Color.LightGreen;
-
+                if (rowIndex > 5)
+                {
+                    spreadsheet.ActiveWorksheet.ScrollTo(rowIndex - 5, 0);
+                }
+                else
+                {
+                    spreadsheet.ActiveWorksheet.ScrollTo(0, 0);
+                }
                 return true;
             }
             return false;
@@ -153,5 +163,55 @@ namespace TanHungHa.Common
                 return false;
             }
         }
+        /// <summary>
+        /// Đếm số lượng dòng có dữ liệu (không rỗng) trong cột TID (cột D - index = 3),
+        /// bất kể các dòng đó nằm rải rác.
+        /// </summary>
+        /// <returns>Số dòng có dữ liệu trong cột TID.</returns>
+        public int CountRowsWithTid()
+        {
+            Worksheet sheet = spreadsheet.Document.Worksheets[0];
+            int rowCount = sheet.Rows.LastUsedIndex; // Lấy chỉ số dòng cuối cùng có sử dụng
+
+            int count = 0;
+            for (int row = 1; row <= rowCount; row++)
+            {
+                var cell = sheet.Cells[row, tidColumnIndex];
+                if (!cell.Value.IsEmpty && !string.IsNullOrWhiteSpace(cell.Value.TextValue))
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        public void LoadTidToHistory(HashSet<string> historySet)
+        {
+            Worksheet sheet = spreadsheet.Document.Worksheets[0];
+            if (historySet == null)
+                throw new ArgumentNullException(nameof(historySet));
+
+            int rowCount = sheet.Rows.LastUsedIndex;
+
+            for (int row = 1; row <= rowCount; row++)
+            {
+                var cell = sheet.Cells[row, tidColumnIndex];
+                if (!cell.Value.IsEmpty)
+                {
+                    string tid = cell.Value.TextValue?.Trim();
+                    if (!string.IsNullOrEmpty(tid))
+                    {
+                        historySet.Add(tid);
+                    }
+                }
+            }
+
+            Console.WriteLine($"[Count HashSet Data] DCM: {historySet.Count}");
+        }
+
+
+
+
+
     }
 }

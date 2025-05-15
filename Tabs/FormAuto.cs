@@ -47,6 +47,7 @@ namespace TanHungHa.Tabs
             // UpdateModeUI();
             SetupChart(chartIQC);
             SetupChart(chartOQC);
+            SetupChart(chartDCM);
         }
 
         public void UpdateModeUI()
@@ -132,6 +133,7 @@ namespace TanHungHa.Tabs
             MainProcess.isRunLoopProcess = false;
             MainProcess.isChartUpdateRunning = false;
             MainProcess.isRunLoopProcessDCM = false;
+            MainProcess.isChartUpdateRunningDamCaMau = false;
             MongoDBService.isFlushLoop = false;
 
             MyParam.runParam.ProgramStatus = ePRGSTATUS.Stoped;
@@ -300,7 +302,7 @@ namespace TanHungHa.Tabs
                 ChangeColor(groupBoxOQChart, true);
                 ChangeColor(groupBoxChartIQC, true);
 
-                MainProcess.RunLoopChartUpdate();
+                MainProcess.RunLoopChartUpdateDCM();
                 MainProcess.RunLoopProcessDCM();
 
                 if (!MyParam.commonParam.devParam.ignoreDataBase)
@@ -413,6 +415,7 @@ namespace TanHungHa.Tabs
                 //reset label IQCOQC
                 resetIQC();
                 resetOQC();
+                resetDCM();
                 StopProgram();
                 EnableBtn(btnReset, false);
                 if (MyParam.runParam.Func == eFunc.eFunctionDamCaMau)
@@ -458,6 +461,14 @@ namespace TanHungHa.Tabs
             countNG_OQC = 0;
             UpdateLabelOQC();
             //  MyParam.commonParam.myComportOQC.SendData(MyDefine.ResetIO_RFID);
+        }
+        void resetDCM()
+        {
+            lvDataModeDCM.Items.Clear();
+            UpdateChart(chartDCM, 0, 0);
+            countOK_DamCaMau = 0;
+            countNG_DamCaMau = 0;
+            UpdateLabelDCM();
         }
 
 
@@ -681,7 +692,33 @@ namespace TanHungHa.Tabs
         private int countNG_IQC = 0;
         private int countOK_OQC = 0;
         private int countNG_OQC = 0;
+        private int countOK_DamCaMau = 0;
+        private int countNG_DamCaMau = 0;
 
+
+        public void UpdateChartDCM_OK()
+        {
+            countOK_DamCaMau++;
+            UpdateChart(chartDCM, countOK_DamCaMau, countNG_DamCaMau);
+            UpdateLabelDCM();
+        }
+        public void UpdateChartDCM_NG()
+        {
+            countNG_DamCaMau++;
+            UpdateChart(chartDCM, countOK_DamCaMau, countNG_DamCaMau);
+            UpdateLabelDCM();
+        }
+        public void UpdateLabelDCM()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(UpdateLabelDCM));
+                return;
+            }
+            lbDCM_OK.Text = ($"OK: {countOK_DamCaMau.ToString()}");
+            lbDCM_NG.Text = ($"NG: {countNG_DamCaMau.ToString()}");
+            lbTotal_DCM.Text = ($"Total: {countOK_DamCaMau + countNG_DamCaMau}");
+        }
         public void UpdateChartOQC_OK()
         {
             countOK_OQC++;
@@ -909,11 +946,15 @@ namespace TanHungHa.Tabs
             {
                 tableLayoutPanelModeDCM.Visible = true;
                 splitContainer1.Visible = false;
+                groupBoxDCMChart.Visible = true;
+                tableLayoutPanelIQCOQCChart.Visible = false;
             }
             else if (func == eFunc.eFunctionNormal)
             {
                 tableLayoutPanelModeDCM.Visible = false;
                 splitContainer1.Visible = true;
+                groupBoxDCMChart.Visible = false;
+                tableLayoutPanelIQCOQCChart.Visible = true;
             }
         }
 
@@ -1012,9 +1053,10 @@ namespace TanHungHa.Tabs
 
                             var dbName = Regex.Replace(Path.GetFileNameWithoutExtension(ofd.FileName), @"[^a-zA-Z0-9_]", "_").ToUpper();
                             MyParam.runParam.DataBaseNameDamCaMau = dbName;
-                            string dbNameWrappedText = Regex.Replace(dbName, ".{20}", "$0\n"); // xuống dòng mỗi 20 ký tự
-                            btnRollName.Text = $"Name: {dbNameWrappedText}";
+                            UpdateLabelRollName(dbName);
+                            UpdateLabelDCMAfterLoadNewFileExcel();
                             MyParam.runParam.HistoryDamCaMauData.Clear();
+                            MyParam.commonParam.myExcel.LoadTidToHistory(MyParam.runParam.HistoryDamCaMauData);
                             MyLib.showDlgInfo("Tạo cuộn mới thành công");
                         }
                     }
@@ -1116,6 +1158,8 @@ namespace TanHungHa.Tabs
 
         private void btnFuncNormal_Click(object sender, EventArgs e)
         {
+            EnableBtn(btnFuncNormal, false);
+            EnableBtn(btnFuncDCM, true);
             FuncNormal();
         }
         public void FuncNormal()
@@ -1131,6 +1175,7 @@ namespace TanHungHa.Tabs
             groupBoxMode.Enabled = true;
 
             UpdateLabelRollName(MyParam.runParam.DataBaseName);
+         
         }
 
         public void UpdateLabelRollName(string name)
@@ -1140,11 +1185,13 @@ namespace TanHungHa.Tabs
                 Invoke(new Action<string>(UpdateLabelRollName), name);
                 return;
             }
-            string dbName = Regex.Replace(name, ".{20}", "$0\n"); // xuống dòng mỗi 20 ký tự
+            string dbName = Regex.Replace(name, ".{10}", "$0\n"); // xuống dòng mỗi 10 ký tự
             btnRollName.Text = $"Name: {dbName}";
         }
         private void btnFuncDCM_Click(object sender, EventArgs e) // Chạy chế độ Đạm Cà Mau
         {
+            EnableBtn(btnFuncDCM, false);
+            EnableBtn(btnFuncNormal, true);
             FuncDCM();
         }
         public void FuncDCM()
@@ -1166,6 +1213,7 @@ namespace TanHungHa.Tabs
                 StartBlinkButtonImportFileExcel();
                 MyParam.runParam.DataBaseNameDamCaMau = MyDefine.dataBaseNameDefault;
                 UpdateLabelRollName(MyParam.runParam.DataBaseNameDamCaMau);
+                
             }
             else
             {
@@ -1181,10 +1229,20 @@ namespace TanHungHa.Tabs
                 AddLog($"Load File Excel {MyParam.runParam.FileNameDamCaMau} thành công", eIndex.Index_IQC_OQC_Log);
                 UpdateLabelRollName(MyParam.runParam.DataBaseNameDamCaMau);
                 MyParam.commonParam.myExcel.LoadEpcFromExcel();
-
+                MyParam.commonParam.myExcel.LoadTidToHistory(MyParam.runParam.HistoryDamCaMauData);
+                UpdateLabelDCMAfterLoadNewFileExcel();
             }
+        }
+        void UpdateLabelDCMAfterLoadNewFileExcel()
+        {
+            int rowsWithTid = MyParam.commonParam.myExcel.CountRowsWithTid();
+            countOK_DamCaMau = rowsWithTid;
+            UpdateLabelDCM();
+            UpdateChart(chartDCM, countOK_DamCaMau, countNG_DamCaMau);
+        }
 
-
+        private void spreadsheetControl1_Click(object sender, EventArgs e)
+        {
 
         }
     }

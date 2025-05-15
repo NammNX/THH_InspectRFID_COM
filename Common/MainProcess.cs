@@ -444,9 +444,11 @@ namespace TanHungHa.Common
 
         private static ConcurrentQueue<eSerialDataType> chartIQCUpdateQueue = new ConcurrentQueue<eSerialDataType>();
         private static ConcurrentQueue<eSerialDataType> chartOQCUpdateQueue = new ConcurrentQueue<eSerialDataType>();
+        private static ConcurrentQueue<eSerialDataType> chartDamCaMauUpdateQueue = new ConcurrentQueue<eSerialDataType>();
 
         private static List<eSerialDataType> batchChartIQC = new List<eSerialDataType>();
         private static List<eSerialDataType> batchChartOQC = new List<eSerialDataType>();
+        private static List<eSerialDataType> batchChartDamCaMau = new List<eSerialDataType>();
 
 
         public MainProcess()
@@ -563,7 +565,7 @@ namespace TanHungHa.Common
                     }
 
                     AddLogAutoEPCTID(EPC, TID, dataComIQC.Timestamp, dataType, eIndex.Index_ModeDCM_Data);
-                    chartIQCUpdateQueue.Enqueue(dataType);
+                    chartDamCaMauUpdateQueue.Enqueue(dataType);
                     if (MyParam.autoForm.swFlushDB.Checked)
                         MyParam.commonParam.mongoDBService.AddToBuffer(EPC, TID, dataComIQC.Timestamp, dataType.ToString(), "IQC");
                 }
@@ -668,6 +670,8 @@ namespace TanHungHa.Common
         }
 
         public static bool isChartUpdateRunning = false;
+        public static bool isChartUpdateRunningDamCaMau = false;
+
         public static void StopLoopChartUpdate()
         {
             MyParam.taskLoops[(int)eTaskLoop.Task_LoopLogIQC].StopLoop();
@@ -694,7 +698,67 @@ namespace TanHungHa.Common
             {
                 MyLib.log($"Done task RunLoopLogUI!");
             });
+
             isChartUpdateRunning = true;
+        }
+        public static void RunLoopChartUpdateDCM()
+        {
+            if (isChartUpdateRunningDamCaMau)
+            {
+                MyLib.showDlgInfo("Loop Log UI is running!");
+                return;
+            }
+            //DamCaMau
+            MyParam.taskLoops[(int)eTaskLoop.Task_LoopLogDamCaMau].ResetToken();
+            MyParam.taskLoops[(int)eTaskLoop.Task_LoopLogDamCaMau].RunLoop(MyParam.commonParam.timeDelay.timeLoopChart, LoopProcessLoopChartUpdateDamCaMau).ContinueWith((a) =>
+            {
+                MyLib.log($"Done task RunLoopLogUI!");
+            });
+            isChartUpdateRunningDamCaMau = true;
+        }
+        public static void LoopProcessLoopChartUpdateDamCaMau()
+        {
+            MyParam.autoForm.UpdateLabelDataBase();
+
+            while (chartDamCaMauUpdateQueue.TryDequeue(out eSerialDataType dataType))
+            {
+                batchChartDamCaMau.Add(dataType);
+            }
+
+            if (batchChartDamCaMau.Count > 0)
+            {
+                int countOK = batchChartDamCaMau.Count(d => d == eSerialDataType.OK);
+                int countNG = batchChartDamCaMau.Count(d => d == eSerialDataType.NG);
+
+                try
+                {
+                    if (MyParam.autoForm.InvokeRequired)
+                    {
+                        MyParam.autoForm.Invoke(new Action(() =>
+                        {
+                            for (int i = 0; i < countOK; i++)
+                                MyParam.autoForm.UpdateChartDCM_OK();
+                            for (int i = 0; i < countNG; i++)
+                                MyParam.autoForm.UpdateChartDCM_NG();
+                        }));
+                    }
+                    else
+                    {
+                        for (int i = 0; i < countOK; i++)
+                            MyParam.autoForm.UpdateChartDCM_OK();
+                        for (int i = 0; i < countNG; i++)
+                            MyParam.autoForm.UpdateChartDCM_NG();
+                    }
+
+                    Console.WriteLine($"[DCM] Chart Updated - OK: {countOK}, NG: {countNG}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[DCM] Update Chart Exception: {ex.Message}");
+                }
+
+                batchChartDamCaMau.Clear();
+            }
         }
 
         public static void LoopProcessLoopChartUpdateIQC()
