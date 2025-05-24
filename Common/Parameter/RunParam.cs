@@ -57,11 +57,6 @@ namespace TanHungHa.Common
         [Browsable(false)]
         public string FullPathSaveFileExcel { get; set; }
 
-
-
-
-
-
         [Category("DataBase"), DescriptionAttribute("client")]
         public string MongoClient { get; set; }
         

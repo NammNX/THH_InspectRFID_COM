@@ -15,6 +15,10 @@ using System.Windows.Forms;
 using TanHungHa.Common.Parameter;
 using static TanHungHa.Common.MyComport;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
+
 
 
 
@@ -251,6 +255,30 @@ namespace TanHungHa.Common
                 DialogResult result = materialDialog.ShowDialog(MyParam.mainForm);
             }
 
+        }
+        public static void KillAllExcelProcesses()
+        {
+            var processes = Process.GetProcessesByName("EXCEL");
+
+            if (processes.Length == 0)
+            {
+                return;
+            }
+
+            foreach (var process in processes)
+            {
+                try
+                {
+                    process.Kill();
+                    process.WaitForExit();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Không thể đóng Excel (PID {process.Id}): {ex.Message}");
+                }
+            }
+
+            Console.WriteLine("Tất cả tiến trình Excel đã được đóng.");
         }
 
         public static void log(string message)
@@ -545,6 +573,7 @@ namespace TanHungHa.Common
                 listview.Items.Insert(0, newItem);
             }
         }
+        
 
 
         public static void ShowLogListview2(ListView listview,DateTime dateTime, string message,eSerialDataType typeData)

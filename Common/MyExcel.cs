@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Drawing;
 using DevExpress.XtraRichEdit.Model;
 using DocumentFormat.OpenXml.Drawing;
+using DevExpress.Internal.WinApi.Windows.UI.Notifications;
+using System.IO;
 
 namespace TanHungHa.Common
 {
@@ -75,25 +77,22 @@ namespace TanHungHa.Common
         //}
         
 
-        public bool SetTidForEpc(string epc, string tid, bool highlight = true)
+        public void SetTidForEpc(string epc, string tid, bool highlight = true)
         {
             Stopwatch sw = Stopwatch.StartNew();
             if (!spreadsheet.InvokeRequired)
             {
-                return SetTidForEpcUIThread(epc, tid, highlight);
+                 SetTidForEpcUIThread(epc, tid, highlight);
             }
             else
             {
-                bool result = false;
-                spreadsheet.Invoke(new Action(() =>
+                spreadsheet.BeginInvoke(new Action(() =>
                 {
-                    result = SetTidForEpcUIThread(epc, tid, highlight);
+                    SetTidForEpcUIThread(epc, tid, highlight);
                 }));
-                sw.Stop(); // Kết thúc đếm thời gian
-
-                Console.WriteLine($"[Hàm vẽ excel UI] Time taken: {sw.ElapsedMilliseconds} ms");
-                return result;
             }
+            sw.Stop(); // Kết thúc đếm thời gian
+            Console.WriteLine($"[Hàm vẽ excel UI] Time taken: {sw.ElapsedMilliseconds} ms");
         }
         private bool SetTidForEpcUIThread(string epc, string tid, bool highlight)
         {
@@ -149,12 +148,16 @@ namespace TanHungHa.Common
         /// <returns>True nếu lưu thành công, false nếu có lỗi.</returns>
         public bool SaveExcelToPath(string filePath)
         {
+            Stopwatch sw = Stopwatch.StartNew();
             try
             {
                 if (string.IsNullOrWhiteSpace(filePath))
                     throw new ArgumentException("Invalid file path.");
-
-                spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                string uniquePath = GetUniqueFilePath(filePath);
+                spreadsheet.SaveDocument(uniquePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+               // spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                sw.Stop();
+                Console.WriteLine($"[SaveExcelToPath] Save done in {sw.ElapsedMilliseconds} ms");
                 return true;
             }
             catch (Exception ex)
@@ -163,8 +166,24 @@ namespace TanHungHa.Common
                 return false;
             }
         }
+        public static string GetUniqueFilePath(string originalPath)
+        {
+            string dir = System.IO.Path.GetDirectoryName(originalPath);
+            string name = System.IO.Path.GetFileNameWithoutExtension(originalPath);
+            string ext = System.IO.Path.GetExtension(originalPath);
+
+            int i = 1;
+            string newPath = originalPath;
+            while (File.Exists(newPath))
+            {
+                newPath = System.IO.Path.Combine(dir, $"{name} ({i++}){ext}");
+            }
+
+            return newPath;
+        }
+
         /// <summary>
-        /// Đếm số lượng dòng có dữ liệu (không rỗng) trong cột TID (cột D - index = 3),
+        /// Đếm số lượng dòng có dữ liệu (không rỗng) trong cột TID ,
         /// bất kể các dòng đó nằm rải rác.
         /// </summary>
         /// <returns>Số dòng có dữ liệu trong cột TID.</returns>

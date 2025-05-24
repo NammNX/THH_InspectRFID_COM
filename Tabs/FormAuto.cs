@@ -17,6 +17,9 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Excel = Microsoft.Office.Interop.Excel;
+
+
 
 
 namespace TanHungHa.Tabs
@@ -92,9 +95,14 @@ namespace TanHungHa.Tabs
                 return;
             }
             if (MyParam.runParam.Func == eFunc.eFunctionDamCaMau)
-            {
-                KillAllExcelProcesses();
-                MyParam.autoForm.SaveFileExcel();
+            {  
+               MyLib.KillAllExcelProcesses();
+               var x =  MyParam.autoForm.SaveFileExcel();
+               if (!x)
+               {
+                    MyLib.showDlgError($"Đóng file Excel {MyParam.runParam.FileNameDamCaMau}, sau đó thử Stop lại");
+                    return;
+               }
             }
 
             this.Cursor = Cursors.WaitCursor;
@@ -134,7 +142,9 @@ namespace TanHungHa.Tabs
             MainProcess.isChartUpdateRunning = false;
             MainProcess.isRunLoopProcessDCM = false;
             MainProcess.isChartUpdateRunningDamCaMau = false;
+            MainProcess.isRunLoopProcessAutoSaveExcel = false;
             MongoDBService.isFlushLoop = false;
+
 
             MyParam.runParam.ProgramStatus = ePRGSTATUS.Stoped;
    
@@ -158,6 +168,7 @@ namespace TanHungHa.Tabs
             Console.WriteLine($"[SaveFileExcel] Time taken: {sw.ElapsedMilliseconds} ms");
             return x;
         }
+
         public bool LoadFileExcel()
         {
             try
@@ -178,30 +189,8 @@ namespace TanHungHa.Tabs
             }
             return true;
         }
-        public static void KillAllExcelProcesses()
-        {
-            var processes = Process.GetProcessesByName("EXCEL");
-
-            if (processes.Length == 0)
-            {
-                return;
-            }
-
-            foreach (var process in processes)
-            {
-                try
-                {
-                    process.Kill();
-                    process.WaitForExit();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Không thể đóng Excel (PID {process.Id}): {ex.Message}");
-                }
-            }
-
-            Console.WriteLine("Tất cả tiến trình Excel đã được đóng.");
-        }
+        
+        
 
 
 
@@ -304,6 +293,7 @@ namespace TanHungHa.Tabs
 
                 MainProcess.RunLoopChartUpdateDCM();
                 MainProcess.RunLoopProcessDCM();
+                MainProcess.RunLoopProcessAutoSaveExcel();
 
                 if (!MyParam.commonParam.devParam.ignoreDataBase)
                 {
@@ -1043,11 +1033,10 @@ namespace TanHungHa.Tabs
                         else // Load OK
                         {
                             SaveFileExcel();
-                            
                             StopBlinkButtonImportFileExcel();
                             EnableBtn(btnInit, true);
                             EnableBtn(btnReset, true);
-                            groupBoxDcm.Enabled = false;
+                            groupBoxDcm.Enabled = false; 
                           
                             MyParam.commonParam.myExcel.LoadEpcFromExcel();
 
@@ -1186,7 +1175,8 @@ namespace TanHungHa.Tabs
                 return;
             }
             string dbName = Regex.Replace(name, ".{10}", "$0\n"); // xuống dòng mỗi 10 ký tự
-            btnRollName.Text = $"Name: {dbName}";
+            btnRollName.Text = dbName;
+            
         }
         private void btnFuncDCM_Click(object sender, EventArgs e) // Chạy chế độ Đạm Cà Mau
         {

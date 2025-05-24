@@ -49,7 +49,7 @@ namespace TanHungHa.Common
 
 
         public const int NUM_FAIL_HEART_BEAR = 5;
-        public const int NUM_THREAD = 10;
+        public const int NUM_THREAD = 11;
         public const int MAX_QUEUE_DATA = 30;
         public const int NUM_DEVICES = 2;
 
