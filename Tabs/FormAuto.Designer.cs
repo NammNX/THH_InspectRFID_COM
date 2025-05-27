@@ -96,7 +96,7 @@
             this.btnNewRoll = new MaterialSkin.Controls.MaterialButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
-            this.lbSpeed = new System.Windows.Forms.Label();
+            this.lbSpeedIQC = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
@@ -134,6 +134,14 @@
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.clearLogToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.clearAllLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel19 = new System.Windows.Forms.TableLayoutPanel();
+            this.lbSpeedOQC = new System.Windows.Forms.Label();
+            this.tableLayoutPanelSpeedIQCOQC = new System.Windows.Forms.TableLayoutPanel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.groupBoxSpeedDCM = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel21 = new System.Windows.Forms.TableLayoutPanel();
+            this.lbSpeedDCM = new System.Windows.Forms.Label();
             this.tableLayoutPanel5.SuspendLayout();
             this.groupDB_UI.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -179,6 +187,12 @@
             this.groupBoxIQC.SuspendLayout();
             this.groupBoxOQC.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.tableLayoutPanel19.SuspendLayout();
+            this.tableLayoutPanelSpeedIQCOQC.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.groupBoxSpeedDCM.SuspendLayout();
+            this.tableLayoutPanel21.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel5
@@ -647,9 +661,9 @@
             this.groupBoxOQChart.Controls.Add(this.tableLayoutPanel8);
             this.groupBoxOQChart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxOQChart.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBoxOQChart.Location = new System.Drawing.Point(128, 3);
+            this.groupBoxOQChart.Location = new System.Drawing.Point(150, 3);
             this.groupBoxOQChart.Name = "groupBoxOQChart";
-            this.groupBoxOQChart.Size = new System.Drawing.Size(120, 549);
+            this.groupBoxOQChart.Size = new System.Drawing.Size(142, 518);
             this.groupBoxOQChart.TabIndex = 1;
             this.groupBoxOQChart.TabStop = false;
             this.groupBoxOQChart.Text = "OQC Chart";
@@ -666,7 +680,7 @@
             this.tableLayoutPanel8.RowCount = 2;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(114, 528);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(136, 497);
             this.tableLayoutPanel8.TabIndex = 0;
             // 
             // chartOQC
@@ -682,7 +696,7 @@
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chartOQC.Series.Add(series1);
-            this.chartOQC.Size = new System.Drawing.Size(108, 416);
+            this.chartOQC.Size = new System.Drawing.Size(130, 391);
             this.chartOQC.TabIndex = 0;
             this.chartOQC.Text = "chart1";
             // 
@@ -694,13 +708,13 @@
             this.tableLayoutPanel9.Controls.Add(this.lbOQC_NG, 0, 1);
             this.tableLayoutPanel9.Controls.Add(this.lbOQC_OK, 0, 0);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 425);
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 400);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 3;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.34F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(108, 100);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(130, 94);
             this.tableLayoutPanel9.TabIndex = 1;
             // 
             // lbOQC_Total
@@ -708,9 +722,9 @@
             this.lbOQC_Total.AutoSize = true;
             this.lbOQC_Total.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.lbOQC_Total.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbOQC_Total.Location = new System.Drawing.Point(3, 66);
+            this.lbOQC_Total.Location = new System.Drawing.Point(3, 62);
             this.lbOQC_Total.Name = "lbOQC_Total";
-            this.lbOQC_Total.Size = new System.Drawing.Size(102, 34);
+            this.lbOQC_Total.Size = new System.Drawing.Size(124, 32);
             this.lbOQC_Total.TabIndex = 3;
             this.lbOQC_Total.Text = "Total";
             this.lbOQC_Total.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -720,9 +734,9 @@
             this.lbOQC_NG.AutoSize = true;
             this.lbOQC_NG.BackColor = System.Drawing.Color.Red;
             this.lbOQC_NG.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbOQC_NG.Location = new System.Drawing.Point(3, 33);
+            this.lbOQC_NG.Location = new System.Drawing.Point(3, 31);
             this.lbOQC_NG.Name = "lbOQC_NG";
-            this.lbOQC_NG.Size = new System.Drawing.Size(102, 33);
+            this.lbOQC_NG.Size = new System.Drawing.Size(124, 31);
             this.lbOQC_NG.TabIndex = 2;
             this.lbOQC_NG.Text = "NG";
             this.lbOQC_NG.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -734,7 +748,7 @@
             this.lbOQC_OK.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbOQC_OK.Location = new System.Drawing.Point(3, 0);
             this.lbOQC_OK.Name = "lbOQC_OK";
-            this.lbOQC_OK.Size = new System.Drawing.Size(102, 33);
+            this.lbOQC_OK.Size = new System.Drawing.Size(124, 31);
             this.lbOQC_OK.TabIndex = 1;
             this.lbOQC_OK.Text = "OK";
             this.lbOQC_OK.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -748,7 +762,7 @@
             this.groupBoxChartIQC.ForeColor = System.Drawing.Color.Black;
             this.groupBoxChartIQC.Location = new System.Drawing.Point(3, 3);
             this.groupBoxChartIQC.Name = "groupBoxChartIQC";
-            this.groupBoxChartIQC.Size = new System.Drawing.Size(119, 549);
+            this.groupBoxChartIQC.Size = new System.Drawing.Size(141, 518);
             this.groupBoxChartIQC.TabIndex = 0;
             this.groupBoxChartIQC.TabStop = false;
             this.groupBoxChartIQC.Text = "IQC Chart";
@@ -765,7 +779,7 @@
             this.tableLayoutPanel6.RowCount = 2;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(113, 528);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(135, 497);
             this.tableLayoutPanel6.TabIndex = 1;
             // 
             // chartIQC
@@ -781,7 +795,7 @@
             series2.Legend = "Legend1";
             series2.Name = "Series1";
             this.chartIQC.Series.Add(series2);
-            this.chartIQC.Size = new System.Drawing.Size(107, 416);
+            this.chartIQC.Size = new System.Drawing.Size(129, 391);
             this.chartIQC.TabIndex = 0;
             this.chartIQC.Text = "chart1";
             // 
@@ -793,13 +807,13 @@
             this.tableLayoutPanel7.Controls.Add(this.lbNG_IQC, 0, 1);
             this.tableLayoutPanel7.Controls.Add(this.lbIQC_OK, 0, 0);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 425);
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 400);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 3;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.34F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(107, 100);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(129, 94);
             this.tableLayoutPanel7.TabIndex = 1;
             // 
             // lbTotal_IQC
@@ -807,9 +821,9 @@
             this.lbTotal_IQC.AutoSize = true;
             this.lbTotal_IQC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.lbTotal_IQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbTotal_IQC.Location = new System.Drawing.Point(3, 66);
+            this.lbTotal_IQC.Location = new System.Drawing.Point(3, 62);
             this.lbTotal_IQC.Name = "lbTotal_IQC";
-            this.lbTotal_IQC.Size = new System.Drawing.Size(101, 34);
+            this.lbTotal_IQC.Size = new System.Drawing.Size(123, 32);
             this.lbTotal_IQC.TabIndex = 2;
             this.lbTotal_IQC.Text = "Total";
             this.lbTotal_IQC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -819,9 +833,9 @@
             this.lbNG_IQC.AutoSize = true;
             this.lbNG_IQC.BackColor = System.Drawing.Color.Red;
             this.lbNG_IQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbNG_IQC.Location = new System.Drawing.Point(3, 33);
+            this.lbNG_IQC.Location = new System.Drawing.Point(3, 31);
             this.lbNG_IQC.Name = "lbNG_IQC";
-            this.lbNG_IQC.Size = new System.Drawing.Size(101, 33);
+            this.lbNG_IQC.Size = new System.Drawing.Size(123, 31);
             this.lbNG_IQC.TabIndex = 1;
             this.lbNG_IQC.Text = "NG";
             this.lbNG_IQC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -833,7 +847,7 @@
             this.lbIQC_OK.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbIQC_OK.Location = new System.Drawing.Point(3, 0);
             this.lbIQC_OK.Name = "lbIQC_OK";
-            this.lbIQC_OK.Size = new System.Drawing.Size(101, 33);
+            this.lbIQC_OK.Size = new System.Drawing.Size(123, 31);
             this.lbIQC_OK.TabIndex = 0;
             this.lbIQC_OK.Text = "OK";
             this.lbIQC_OK.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -845,12 +859,12 @@
             this.tableLayoutPanel3.Controls.Add(this.panelChart, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel12, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(885, 3);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(841, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 2;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 87F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(257, 644);
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.70186F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 82.29813F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(301, 644);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
             // panelChart
@@ -858,9 +872,9 @@
             this.panelChart.Controls.Add(this.groupBoxDCMChart);
             this.panelChart.Controls.Add(this.tableLayoutPanelIQCOQCChart);
             this.panelChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelChart.Location = new System.Drawing.Point(3, 86);
+            this.panelChart.Location = new System.Drawing.Point(3, 117);
             this.panelChart.Name = "panelChart";
-            this.panelChart.Size = new System.Drawing.Size(251, 555);
+            this.panelChart.Size = new System.Drawing.Size(295, 524);
             this.panelChart.TabIndex = 13;
             // 
             // groupBoxDCMChart
@@ -872,7 +886,7 @@
             this.groupBoxDCMChart.ForeColor = System.Drawing.Color.Black;
             this.groupBoxDCMChart.Location = new System.Drawing.Point(0, 0);
             this.groupBoxDCMChart.Name = "groupBoxDCMChart";
-            this.groupBoxDCMChart.Size = new System.Drawing.Size(251, 555);
+            this.groupBoxDCMChart.Size = new System.Drawing.Size(295, 524);
             this.groupBoxDCMChart.TabIndex = 2;
             this.groupBoxDCMChart.TabStop = false;
             this.groupBoxDCMChart.Text = "DamCaMau Chart";
@@ -889,7 +903,7 @@
             this.tableLayoutPanel17.RowCount = 2;
             this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel17.Size = new System.Drawing.Size(245, 534);
+            this.tableLayoutPanel17.Size = new System.Drawing.Size(289, 503);
             this.tableLayoutPanel17.TabIndex = 1;
             // 
             // chartDCM
@@ -905,7 +919,7 @@
             series3.Legend = "Legend1";
             series3.Name = "Series1";
             this.chartDCM.Series.Add(series3);
-            this.chartDCM.Size = new System.Drawing.Size(239, 421);
+            this.chartDCM.Size = new System.Drawing.Size(283, 396);
             this.chartDCM.TabIndex = 0;
             this.chartDCM.Text = "chart1";
             // 
@@ -917,13 +931,13 @@
             this.tableLayoutPanel18.Controls.Add(this.lbDCM_NG, 0, 1);
             this.tableLayoutPanel18.Controls.Add(this.lbDCM_OK, 0, 0);
             this.tableLayoutPanel18.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel18.Location = new System.Drawing.Point(3, 430);
+            this.tableLayoutPanel18.Location = new System.Drawing.Point(3, 405);
             this.tableLayoutPanel18.Name = "tableLayoutPanel18";
             this.tableLayoutPanel18.RowCount = 3;
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.34F));
-            this.tableLayoutPanel18.Size = new System.Drawing.Size(239, 101);
+            this.tableLayoutPanel18.Size = new System.Drawing.Size(283, 95);
             this.tableLayoutPanel18.TabIndex = 1;
             // 
             // lbTotal_DCM
@@ -931,9 +945,9 @@
             this.lbTotal_DCM.AutoSize = true;
             this.lbTotal_DCM.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.lbTotal_DCM.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbTotal_DCM.Location = new System.Drawing.Point(3, 66);
+            this.lbTotal_DCM.Location = new System.Drawing.Point(3, 62);
             this.lbTotal_DCM.Name = "lbTotal_DCM";
-            this.lbTotal_DCM.Size = new System.Drawing.Size(233, 35);
+            this.lbTotal_DCM.Size = new System.Drawing.Size(277, 33);
             this.lbTotal_DCM.TabIndex = 2;
             this.lbTotal_DCM.Text = "Total";
             this.lbTotal_DCM.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -943,9 +957,9 @@
             this.lbDCM_NG.AutoSize = true;
             this.lbDCM_NG.BackColor = System.Drawing.Color.Red;
             this.lbDCM_NG.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbDCM_NG.Location = new System.Drawing.Point(3, 33);
+            this.lbDCM_NG.Location = new System.Drawing.Point(3, 31);
             this.lbDCM_NG.Name = "lbDCM_NG";
-            this.lbDCM_NG.Size = new System.Drawing.Size(233, 33);
+            this.lbDCM_NG.Size = new System.Drawing.Size(277, 31);
             this.lbDCM_NG.TabIndex = 1;
             this.lbDCM_NG.Text = "NG";
             this.lbDCM_NG.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -957,7 +971,7 @@
             this.lbDCM_OK.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbDCM_OK.Location = new System.Drawing.Point(3, 0);
             this.lbDCM_OK.Name = "lbDCM_OK";
-            this.lbDCM_OK.Size = new System.Drawing.Size(233, 33);
+            this.lbDCM_OK.Size = new System.Drawing.Size(277, 31);
             this.lbDCM_OK.TabIndex = 0;
             this.lbDCM_OK.Text = "OK";
             this.lbDCM_OK.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -974,24 +988,25 @@
             this.tableLayoutPanelIQCOQCChart.Name = "tableLayoutPanelIQCOQCChart";
             this.tableLayoutPanelIQCOQCChart.RowCount = 1;
             this.tableLayoutPanelIQCOQCChart.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelIQCOQCChart.Size = new System.Drawing.Size(251, 555);
+            this.tableLayoutPanelIQCOQCChart.Size = new System.Drawing.Size(295, 524);
             this.tableLayoutPanelIQCOQCChart.TabIndex = 1;
             // 
             // tableLayoutPanel12
             // 
             this.tableLayoutPanel12.ColumnCount = 3;
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel12.Controls.Add(this.btnRollName, 2, 0);
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 23.10757F));
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 47.01195F));
             this.tableLayoutPanel12.Controls.Add(this.btnNewRoll, 1, 0);
-            this.tableLayoutPanel12.Controls.Add(this.groupBox1, 0, 0);
+            this.tableLayoutPanel12.Controls.Add(this.btnRollName, 2, 0);
+            this.tableLayoutPanel12.Controls.Add(this.panel2, 0, 0);
             this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel12.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel12.Name = "tableLayoutPanel12";
             this.tableLayoutPanel12.RowCount = 1;
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel12.Size = new System.Drawing.Size(251, 77);
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(295, 108);
             this.tableLayoutPanel12.TabIndex = 2;
             // 
             // btnRollName
@@ -1003,12 +1018,12 @@
             this.btnRollName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRollName.HighEmphasis = true;
             this.btnRollName.Icon = null;
-            this.btnRollName.Location = new System.Drawing.Point(129, 6);
+            this.btnRollName.Location = new System.Drawing.Point(160, 6);
             this.btnRollName.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnRollName.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnRollName.Name = "btnRollName";
             this.btnRollName.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnRollName.Size = new System.Drawing.Size(118, 65);
+            this.btnRollName.Size = new System.Drawing.Size(131, 96);
             this.btnRollName.TabIndex = 1;
             this.btnRollName.Text = "Empty";
             this.btnRollName.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
@@ -1024,12 +1039,12 @@
             this.btnNewRoll.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnNewRoll.HighEmphasis = true;
             this.btnNewRoll.Icon = null;
-            this.btnNewRoll.Location = new System.Drawing.Point(79, 6);
+            this.btnNewRoll.Location = new System.Drawing.Point(92, 6);
             this.btnNewRoll.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnNewRoll.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnNewRoll.Name = "btnNewRoll";
             this.btnNewRoll.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnNewRoll.Size = new System.Drawing.Size(42, 65);
+            this.btnNewRoll.Size = new System.Drawing.Size(60, 96);
             this.btnNewRoll.TabIndex = 0;
             this.btnNewRoll.Text = "New Roll";
             this.btnNewRoll.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -1045,41 +1060,41 @@
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(69, 71);
+            this.groupBox1.Size = new System.Drawing.Size(76, 45);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Speed";
+            this.groupBox1.Text = "Speed IQC";
             // 
             // tableLayoutPanel15
             // 
             this.tableLayoutPanel15.ColumnCount = 1;
             this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel15.Controls.Add(this.lbSpeed, 0, 0);
+            this.tableLayoutPanel15.Controls.Add(this.lbSpeedIQC, 0, 0);
             this.tableLayoutPanel15.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel15.Location = new System.Drawing.Point(3, 18);
             this.tableLayoutPanel15.Name = "tableLayoutPanel15";
             this.tableLayoutPanel15.RowCount = 1;
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel15.Size = new System.Drawing.Size(63, 50);
+            this.tableLayoutPanel15.Size = new System.Drawing.Size(70, 24);
             this.tableLayoutPanel15.TabIndex = 0;
             // 
-            // lbSpeed
+            // lbSpeedIQC
             // 
-            this.lbSpeed.AutoSize = true;
-            this.lbSpeed.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbSpeed.Location = new System.Drawing.Point(3, 0);
-            this.lbSpeed.Name = "lbSpeed";
-            this.lbSpeed.Size = new System.Drawing.Size(57, 50);
-            this.lbSpeed.TabIndex = 2;
-            this.lbSpeed.Text = "0 pcs/s";
-            this.lbSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbSpeedIQC.AutoSize = true;
+            this.lbSpeedIQC.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbSpeedIQC.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbSpeedIQC.Location = new System.Drawing.Point(3, 0);
+            this.lbSpeedIQC.Name = "lbSpeedIQC";
+            this.lbSpeedIQC.Size = new System.Drawing.Size(64, 24);
+            this.lbSpeedIQC.TabIndex = 2;
+            this.lbSpeedIQC.Text = "0 pcs/s";
+            this.lbSpeedIQC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 67F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 63.62946F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 23.31055F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 13F));
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel4, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 1, 0);
@@ -1104,7 +1119,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(876, 644);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(832, 644);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel14
@@ -1119,7 +1134,7 @@
             this.tableLayoutPanel14.Name = "tableLayoutPanel14";
             this.tableLayoutPanel14.RowCount = 1;
             this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel14.Size = new System.Drawing.Size(870, 123);
+            this.tableLayoutPanel14.Size = new System.Drawing.Size(826, 123);
             this.tableLayoutPanel14.TabIndex = 13;
             // 
             // groupBoxLogDB
@@ -1128,9 +1143,9 @@
             this.groupBoxLogDB.Controls.Add(this.lvLogDB);
             this.groupBoxLogDB.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxLogDB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBoxLogDB.Location = new System.Drawing.Point(438, 3);
+            this.groupBoxLogDB.Location = new System.Drawing.Point(416, 3);
             this.groupBoxLogDB.Name = "groupBoxLogDB";
-            this.groupBoxLogDB.Size = new System.Drawing.Size(429, 117);
+            this.groupBoxLogDB.Size = new System.Drawing.Size(407, 117);
             this.groupBoxLogDB.TabIndex = 3;
             this.groupBoxLogDB.TabStop = false;
             this.groupBoxLogDB.Text = "Log Data Base";
@@ -1158,7 +1173,7 @@
             this.lvLogDB.MouseState = MaterialSkin.MouseState.OUT;
             this.lvLogDB.Name = "lvLogDB";
             this.lvLogDB.OwnerDraw = true;
-            this.lvLogDB.Size = new System.Drawing.Size(423, 100);
+            this.lvLogDB.Size = new System.Drawing.Size(401, 100);
             this.lvLogDB.TabIndex = 11;
             this.lvLogDB.UseCompatibleStateImageBehavior = false;
             this.lvLogDB.View = System.Windows.Forms.View.Details;
@@ -1181,7 +1196,7 @@
             this.groupBoxLogIQC_OQC.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBoxLogIQC_OQC.Location = new System.Drawing.Point(3, 3);
             this.groupBoxLogIQC_OQC.Name = "groupBoxLogIQC_OQC";
-            this.groupBoxLogIQC_OQC.Size = new System.Drawing.Size(429, 117);
+            this.groupBoxLogIQC_OQC.Size = new System.Drawing.Size(407, 117);
             this.groupBoxLogIQC_OQC.TabIndex = 2;
             this.groupBoxLogIQC_OQC.TabStop = false;
             this.groupBoxLogIQC_OQC.Text = "Log IQC - OQC";
@@ -1209,7 +1224,7 @@
             this.lvLogIQC_OQC.MouseState = MaterialSkin.MouseState.OUT;
             this.lvLogIQC_OQC.Name = "lvLogIQC_OQC";
             this.lvLogIQC_OQC.OwnerDraw = true;
-            this.lvLogIQC_OQC.Size = new System.Drawing.Size(423, 100);
+            this.lvLogIQC_OQC.Size = new System.Drawing.Size(401, 100);
             this.lvLogIQC_OQC.TabIndex = 10;
             this.lvLogIQC_OQC.UseCompatibleStateImageBehavior = false;
             this.lvLogIQC_OQC.View = System.Windows.Forms.View.Details;
@@ -1231,7 +1246,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(870, 509);
+            this.panel1.Size = new System.Drawing.Size(826, 509);
             this.panel1.TabIndex = 14;
             // 
             // tableLayoutPanelModeDCM
@@ -1246,7 +1261,7 @@
             this.tableLayoutPanelModeDCM.RowCount = 2;
             this.tableLayoutPanelModeDCM.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanelModeDCM.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelModeDCM.Size = new System.Drawing.Size(870, 509);
+            this.tableLayoutPanelModeDCM.Size = new System.Drawing.Size(826, 509);
             this.tableLayoutPanelModeDCM.TabIndex = 13;
             this.tableLayoutPanelModeDCM.Visible = false;
             // 
@@ -1264,7 +1279,7 @@
             this.lvDataModeDCM.HideSelection = false;
             this.lvDataModeDCM.Location = new System.Drawing.Point(3, 257);
             this.lvDataModeDCM.Name = "lvDataModeDCM";
-            this.lvDataModeDCM.Size = new System.Drawing.Size(864, 249);
+            this.lvDataModeDCM.Size = new System.Drawing.Size(820, 249);
             this.lvDataModeDCM.TabIndex = 1;
             this.lvDataModeDCM.UseCompatibleStateImageBehavior = false;
             this.lvDataModeDCM.View = System.Windows.Forms.View.Details;
@@ -1308,7 +1323,7 @@
             this.spreadsheetControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.spreadsheetControl1.Location = new System.Drawing.Point(3, 3);
             this.spreadsheetControl1.Name = "spreadsheetControl1";
-            this.spreadsheetControl1.Size = new System.Drawing.Size(864, 248);
+            this.spreadsheetControl1.Size = new System.Drawing.Size(820, 248);
             this.spreadsheetControl1.TabIndex = 0;
             this.spreadsheetControl1.Text = "spreadsheetControl1";
             this.spreadsheetControl1.Click += new System.EventHandler(this.spreadsheetControl1_Click);
@@ -1327,7 +1342,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBoxOQC);
-            this.splitContainer1.Size = new System.Drawing.Size(870, 509);
+            this.splitContainer1.Size = new System.Drawing.Size(826, 509);
             this.splitContainer1.SplitterDistance = 262;
             this.splitContainer1.TabIndex = 12;
             // 
@@ -1339,7 +1354,7 @@
             this.groupBoxIQC.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBoxIQC.Location = new System.Drawing.Point(0, 0);
             this.groupBoxIQC.Name = "groupBoxIQC";
-            this.groupBoxIQC.Size = new System.Drawing.Size(870, 262);
+            this.groupBoxIQC.Size = new System.Drawing.Size(826, 262);
             this.groupBoxIQC.TabIndex = 0;
             this.groupBoxIQC.TabStop = false;
             this.groupBoxIQC.Text = "IQC Data";
@@ -1358,7 +1373,7 @@
             this.lvIQC.HideSelection = false;
             this.lvIQC.Location = new System.Drawing.Point(3, 18);
             this.lvIQC.Name = "lvIQC";
-            this.lvIQC.Size = new System.Drawing.Size(864, 241);
+            this.lvIQC.Size = new System.Drawing.Size(820, 241);
             this.lvIQC.TabIndex = 0;
             this.lvIQC.UseCompatibleStateImageBehavior = false;
             this.lvIQC.View = System.Windows.Forms.View.Details;
@@ -1391,7 +1406,7 @@
             this.groupBoxOQC.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBoxOQC.Location = new System.Drawing.Point(0, 0);
             this.groupBoxOQC.Name = "groupBoxOQC";
-            this.groupBoxOQC.Size = new System.Drawing.Size(870, 243);
+            this.groupBoxOQC.Size = new System.Drawing.Size(826, 243);
             this.groupBoxOQC.TabIndex = 1;
             this.groupBoxOQC.TabStop = false;
             this.groupBoxOQC.Text = "OQC Data";
@@ -1410,7 +1425,7 @@
             this.lvOQC.HideSelection = false;
             this.lvOQC.Location = new System.Drawing.Point(3, 18);
             this.lvOQC.Name = "lvOQC";
-            this.lvOQC.Size = new System.Drawing.Size(864, 222);
+            this.lvOQC.Size = new System.Drawing.Size(820, 222);
             this.lvOQC.TabIndex = 1;
             this.lvOQC.UseCompatibleStateImageBehavior = false;
             this.lvOQC.View = System.Windows.Forms.View.Details;
@@ -1456,6 +1471,107 @@
             this.clearAllLogToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.clearAllLogToolStripMenuItem.Text = "Clear All Log";
             this.clearAllLogToolStripMenuItem.Click += new System.EventHandler(this.clearAllLogToolStripMenuItem_Click);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.groupBox2.Controls.Add(this.tableLayoutPanel19);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox2.Location = new System.Drawing.Point(3, 54);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(76, 45);
+            this.groupBox2.TabIndex = 3;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Speed OQC";
+            // 
+            // tableLayoutPanel19
+            // 
+            this.tableLayoutPanel19.ColumnCount = 1;
+            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel19.Controls.Add(this.lbSpeedOQC, 0, 0);
+            this.tableLayoutPanel19.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel19.Location = new System.Drawing.Point(3, 18);
+            this.tableLayoutPanel19.Name = "tableLayoutPanel19";
+            this.tableLayoutPanel19.RowCount = 1;
+            this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel19.Size = new System.Drawing.Size(70, 24);
+            this.tableLayoutPanel19.TabIndex = 0;
+            // 
+            // lbSpeedOQC
+            // 
+            this.lbSpeedOQC.AutoSize = true;
+            this.lbSpeedOQC.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbSpeedOQC.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbSpeedOQC.Location = new System.Drawing.Point(3, 0);
+            this.lbSpeedOQC.Name = "lbSpeedOQC";
+            this.lbSpeedOQC.Size = new System.Drawing.Size(64, 24);
+            this.lbSpeedOQC.TabIndex = 2;
+            this.lbSpeedOQC.Text = "0 pcs/s";
+            this.lbSpeedOQC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanelSpeedIQCOQC
+            // 
+            this.tableLayoutPanelSpeedIQCOQC.ColumnCount = 1;
+            this.tableLayoutPanelSpeedIQCOQC.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelSpeedIQCOQC.Controls.Add(this.groupBox1, 0, 0);
+            this.tableLayoutPanelSpeedIQCOQC.Controls.Add(this.groupBox2, 0, 1);
+            this.tableLayoutPanelSpeedIQCOQC.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelSpeedIQCOQC.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanelSpeedIQCOQC.Name = "tableLayoutPanelSpeedIQCOQC";
+            this.tableLayoutPanelSpeedIQCOQC.RowCount = 2;
+            this.tableLayoutPanelSpeedIQCOQC.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelSpeedIQCOQC.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanelSpeedIQCOQC.Size = new System.Drawing.Size(82, 102);
+            this.tableLayoutPanelSpeedIQCOQC.TabIndex = 12;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.groupBoxSpeedDCM);
+            this.panel2.Controls.Add(this.tableLayoutPanelSpeedIQCOQC);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(3, 3);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(82, 102);
+            this.panel2.TabIndex = 12;
+            // 
+            // groupBoxSpeedDCM
+            // 
+            this.groupBoxSpeedDCM.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.groupBoxSpeedDCM.Controls.Add(this.tableLayoutPanel21);
+            this.groupBoxSpeedDCM.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxSpeedDCM.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxSpeedDCM.Location = new System.Drawing.Point(0, 0);
+            this.groupBoxSpeedDCM.Name = "groupBoxSpeedDCM";
+            this.groupBoxSpeedDCM.Size = new System.Drawing.Size(82, 102);
+            this.groupBoxSpeedDCM.TabIndex = 13;
+            this.groupBoxSpeedDCM.TabStop = false;
+            this.groupBoxSpeedDCM.Text = "Speed";
+            // 
+            // tableLayoutPanel21
+            // 
+            this.tableLayoutPanel21.ColumnCount = 1;
+            this.tableLayoutPanel21.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel21.Controls.Add(this.lbSpeedDCM, 0, 0);
+            this.tableLayoutPanel21.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel21.Location = new System.Drawing.Point(3, 18);
+            this.tableLayoutPanel21.Name = "tableLayoutPanel21";
+            this.tableLayoutPanel21.RowCount = 1;
+            this.tableLayoutPanel21.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel21.Size = new System.Drawing.Size(76, 81);
+            this.tableLayoutPanel21.TabIndex = 0;
+            // 
+            // lbSpeedDCM
+            // 
+            this.lbSpeedDCM.AutoSize = true;
+            this.lbSpeedDCM.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbSpeedDCM.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbSpeedDCM.Location = new System.Drawing.Point(3, 0);
+            this.lbSpeedDCM.Name = "lbSpeedDCM";
+            this.lbSpeedDCM.Size = new System.Drawing.Size(70, 81);
+            this.lbSpeedDCM.TabIndex = 2;
+            this.lbSpeedDCM.Text = "0 pcs/s";
+            this.lbSpeedDCM.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FormAuto
             // 
@@ -1523,6 +1639,14 @@
             this.groupBoxIQC.ResumeLayout(false);
             this.groupBoxOQC.ResumeLayout(false);
             this.contextMenuStrip2.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.tableLayoutPanel19.ResumeLayout(false);
+            this.tableLayoutPanel19.PerformLayout();
+            this.tableLayoutPanelSpeedIQCOQC.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.groupBoxSpeedDCM.ResumeLayout(false);
+            this.tableLayoutPanel21.ResumeLayout(false);
+            this.tableLayoutPanel21.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1608,7 +1732,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader16;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel15;
-        private System.Windows.Forms.Label lbSpeed;
+        private System.Windows.Forms.Label lbSpeedIQC;
         private System.Windows.Forms.GroupBox groupBoxMode;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel16;
         private System.Windows.Forms.Button btnFuncDCM;
@@ -1624,5 +1748,13 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
         private System.Windows.Forms.GroupBox groupBoxAutoSaveExcel;
         public MaterialSkin.Controls.MaterialSwitch swAutoSaveFileExcel;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelSpeedIQCOQC;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel19;
+        private System.Windows.Forms.Label lbSpeedOQC;
+        private System.Windows.Forms.GroupBox groupBoxSpeedDCM;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel21;
+        private System.Windows.Forms.Label lbSpeedDCM;
     }
 }

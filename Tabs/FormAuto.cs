@@ -805,6 +805,7 @@ namespace TanHungHa.Tabs
                 MyParam.runParam.HistoryIQCData.Clear();
                 MyParam.runParam.HistoryOQCData.Clear();
                 EnableBtn(btnInit, true);
+                EnableBtn(btnStart, false);
                 MyLib.showDlgInfo("Tạo cuộn mới thành công");
 
             }
@@ -938,6 +939,8 @@ namespace TanHungHa.Tabs
                 splitContainer1.Visible = false;
                 groupBoxDCMChart.Visible = true;
                 tableLayoutPanelIQCOQCChart.Visible = false;
+                groupBoxSpeedDCM.Visible = true;
+                tableLayoutPanelSpeedIQCOQC.Visible = false;
             }
             else if (func == eFunc.eFunctionNormal)
             {
@@ -945,6 +948,8 @@ namespace TanHungHa.Tabs
                 splitContainer1.Visible = true;
                 groupBoxDCMChart.Visible = false;
                 tableLayoutPanelIQCOQCChart.Visible = true;
+                groupBoxSpeedDCM.Visible = false;
+                tableLayoutPanelSpeedIQCOQC.Visible = true;
             }
         }
 
@@ -1058,15 +1063,37 @@ namespace TanHungHa.Tabs
             }
         }
        
-        private System.Windows.Forms.Timer checkTimer;
-        private DateTime lastUpdateTime;
-        private void CheckTimer_Tick(object sender, EventArgs e)
+        private System.Windows.Forms.Timer checkTimerIQC;
+        private DateTime lastUpdateTimeIQC;
+        private System.Windows.Forms.Timer checkTimerOQC;
+        private DateTime lastUpdateTimeOQC;
+        private System.Windows.Forms.Timer checkTimerDCM;
+        private DateTime lastUpdateTimeDCM;
+        private void CheckTimer_Tick_IQC(object sender, EventArgs e)
         {
             // Nếu không có sự thay đổi trong 2 giây, gán lại label = 0
-            if ((DateTime.Now - lastUpdateTime).TotalSeconds >= 2)
+            if ((DateTime.Now - lastUpdateTimeIQC).TotalSeconds >= 2)
             {
-                lbSpeed.Text = "0 pcs/s";
-                checkTimer.Stop(); // Dừng timer khi không cần kiểm tra nữa
+                lbSpeedIQC.Text = "0 pcs/s";
+                checkTimerIQC.Stop(); // Dừng timer khi không cần kiểm tra nữa
+            }
+        }
+        private void CheckTimer_Tick_OQC(object sender, EventArgs e)
+        {
+            // Nếu không có sự thay đổi trong 2 giây, gán lại label = 0
+            if ((DateTime.Now - lastUpdateTimeOQC).TotalSeconds >= 2)
+            {
+                lbSpeedOQC.Text = "0 pcs/s";
+                checkTimerOQC.Stop(); // Dừng timer khi không cần kiểm tra nữa
+            }
+        }
+        private void CheckTimer_Tick_DCM(object sender, EventArgs e)
+        {
+            // Nếu không có sự thay đổi trong 2 giây, gán lại label = 0
+            if ((DateTime.Now - lastUpdateTimeDCM).TotalSeconds >= 2)
+            {
+                lbSpeedDCM.Text = "0 pcs/s";
+                checkTimerDCM.Stop(); // Dừng timer khi không cần kiểm tra nữa
             }
         }
         private static string GetLastDataAfterColon(string raw)
@@ -1087,29 +1114,71 @@ namespace TanHungHa.Tabs
             // Dữ liệu sau dấu : cuối cùng
             return raw.Substring(lastColonIndex + 1).Trim();
         }
-        public void UpdateLabelSpeed(string data)
+        public void UpdateLabelSpeedIQC(string data)
         {
             if (InvokeRequired)
             {
-                Invoke(new Action<string>(UpdateLabelSpeed), data);
+                Invoke(new Action<string>(UpdateLabelSpeedIQC), data);
                 return;
             }
 
             var speed = GetLastDataAfterColon(data);
 
-            lbSpeed.Text = $"{speed} pcs/s";
-            lastUpdateTime = DateTime.Now;
+            lbSpeedIQC.Text = $"{speed} pcs/s";
+            lastUpdateTimeIQC = DateTime.Now;
 
-            if (checkTimer == null)
+            if (checkTimerIQC == null)
             {
-                checkTimer = new System.Windows.Forms.Timer();
-                checkTimer.Interval = 1000;
-                checkTimer.Tick += CheckTimer_Tick;
+                checkTimerIQC = new System.Windows.Forms.Timer();
+                checkTimerIQC.Interval = 1000;
+                checkTimerIQC.Tick += CheckTimer_Tick_IQC;
             }
 
-            if (!checkTimer.Enabled)
+            if (!checkTimerIQC.Enabled)
             {
-                checkTimer.Start();
+                checkTimerIQC.Start();
+            }
+        }
+        public void UpdateLabelSpeedOQC(string data)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<string>(UpdateLabelSpeedOQC), data);
+                return;
+            }
+            var speed = GetLastDataAfterColon(data);
+            lbSpeedOQC.Text = $"{speed} pcs/s";
+            lastUpdateTimeOQC = DateTime.Now;
+            if (checkTimerOQC == null)
+            {
+                checkTimerOQC = new System.Windows.Forms.Timer();
+                checkTimerOQC.Interval = 1000;
+                checkTimerOQC.Tick += CheckTimer_Tick_OQC;
+            }
+            if (!checkTimerOQC.Enabled)
+            {
+                checkTimerOQC.Start();
+            }
+        }
+        public void UpdateLabelSpeedDCM(string data)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<string>(UpdateLabelSpeedDCM), data);
+                return;
+            }
+            var speed = GetLastDataAfterColon(data);
+            lbSpeedDCM.Text = $"{speed} pcs/s";
+            lastUpdateTimeDCM = DateTime.Now;
+            if (checkTimerDCM == null)
+            {
+                checkTimerDCM = new System.Windows.Forms.Timer();
+                checkTimerDCM.Interval = 1000;
+                checkTimerDCM.Tick += CheckTimer_Tick_DCM;
+            }
+            if (!checkTimerDCM.Enabled)
+            {
+                checkTimerDCM.Start();
             }
         }
         private System.Windows.Forms.Timer blinkTimer;
