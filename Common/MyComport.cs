@@ -150,19 +150,22 @@ namespace TanHungHa.Common
                             {
                                 // Đọc dữ liệu từ cổng COM
                                 string dataComport = serialPort.ReadLine();
-
+                                
                                 // Nếu có dữ liệu và không rỗng
                                 if (!string.IsNullOrEmpty(dataComport))
                                 {
-                                    eSerialDataType typeData;
+                                    dataComport = dataComport.Replace("\r","").Replace("\n","").Trim();
+                                    eSerialDataType typeData = eSerialDataType.Unknown;
                                     // Kiểm tra nếu dữ liệu có lỗi (NG) hay không
-                                    if (dataComport.Replace("\r", "").Replace("\n", "").Trim().Length <= MyParam.commonParam.devParam.LengthNG)
+                                    if (dataComport.Length <= MyParam.commonParam.devParam.LengthNG)
                                     {
                                         typeData = eSerialDataType.NG;
+                                        Console.WriteLine($"NG---------{dataComport}------{dataComport.Length.ToString()}");
                                     }
                                     else
                                     {
                                         typeData = eSerialDataType.OK;
+                                        Console.WriteLine($"OK---------{dataComport}------{dataComport.Length.ToString()}");
                                     }
 
                                     // Đóng gói dữ liệu và đưa vào queue
