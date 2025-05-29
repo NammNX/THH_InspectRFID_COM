@@ -422,5 +422,19 @@ namespace TanHungHa.Common
             var collection = collectionName == "IQC" ? iqcCollection : oqcCollection;
             return collection.Find(filter).ToList();
         }
+        public List<string> GetAllDatabaseNames()
+        {
+            try
+            {
+                return _client.ListDatabaseNames().ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi khi lấy danh sách database: " + ex.Message);
+                MyLib.showDlgError("Lỗi khi lấy danh sách database: " + ex.Message);
+                return new List<string>();
+            }
+        }
+
     }
 }

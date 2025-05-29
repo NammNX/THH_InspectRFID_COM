@@ -167,7 +167,7 @@ namespace TanHungHa.Common
                     MyParam.autoForm.UpdateLabelSpeedDCM(dataComIQC.Data);
                     var (EPC, TID) = ProcessDataEPCTID(dataComIQC.Data);
                     var dataType = dataComIQC.Type;
-                    // Kiểm tra xem dữ liệu đã tồn tại trong danh sách lịch sử chưa
+                   
                     if (dataType == eSerialDataType.OK)
                     {
                         // Kiểm tra xem dữ liệu đã tồn tại trong danh sách lịch sử chưa

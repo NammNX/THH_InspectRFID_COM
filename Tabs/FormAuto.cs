@@ -150,23 +150,61 @@ namespace TanHungHa.Tabs
    
             this.Cursor = Cursors.Default;
         }
-        public bool SaveFileExcel()
+        
+        public bool SaveFileExcel(FileExistsAction action = FileExistsAction.Overwrite)
         {
             Stopwatch sw = Stopwatch.StartNew();
             // Đường dẫn đầy đủ tới file
             string folderPath = MyParam.runParam.PathFolderSaveFileExcel;
             string fullPath = System.IO.Path.Combine(folderPath, MyParam.runParam.FileNameDamCaMau);
 
+
             if (!Directory.Exists(folderPath))
             {
                 Directory.CreateDirectory(folderPath);
             }
+            bool shouldSave = true;
 
-            var x = MyParam.commonParam.myExcel.SaveExcelToPath(fullPath);
-            MyParam.runParam.FullPathSaveFileExcel = fullPath;
+            if (File.Exists(fullPath))
+            {
+                switch (action)
+                {
+                    case FileExistsAction.Question:
+                        MaterialDialog materialDialog = new MaterialDialog(this, "File exists", $"File {MyParam.runParam.FileNameDamCaMau} đã tồn tại, bạn có muốn ghi đè không?", "Yes", true, "No");
+                        DialogResult result = materialDialog.ShowDialog(this);
+                        if (result == DialogResult.OK) //ghi đè
+                        {
+                            shouldSave = true;
+
+                        }
+                        else 
+                        {
+                            MyLib.showDlgInfo($"Kiểm tra đường dẫn {fullPath}");
+                            Process.Start("explorer.exe", MyParam.runParam.PathFolderSaveFileExcel);
+                            shouldSave = false;
+                        }
+                        break;
+                    case FileExistsAction.Overwrite:
+                        shouldSave = true;
+                        break;
+                }
+            }
+            if (shouldSave)
+            {
+                MyParam.commonParam.myExcel.SaveExcelToPath(fullPath);
+                MyParam.runParam.FullPathSaveFileExcel = fullPath;
+            }
             sw.Stop(); // Kết thúc đếm thời gian
             Console.WriteLine($"[SaveFileExcel] Time taken: {sw.ElapsedMilliseconds} ms");
-            return x;
+            return shouldSave;
+
+        }
+        public enum FileExistsAction
+        {
+            Question,  // Hỏi người dùng
+            Overwrite,  // Ghi đè (mặc định)
+            CreateNew,  // Tạo file mới với timestamp
+            Cancel      // Hủy thao tác
         }
 
         public bool LoadFileExcel()
@@ -790,6 +828,7 @@ namespace TanHungHa.Tabs
 
         private void btnNewRoll_Click(object sender, EventArgs e)
         {
+
             string result = ShowInputDialog("Tên File", "Tạo tên File cuộn mới");
             if (!string.IsNullOrWhiteSpace(result))
             {
@@ -797,6 +836,21 @@ namespace TanHungHa.Tabs
                 if (result.IndexOfAny(invalidChars) >= 0)
                 {
                     MyLib.showDlgError("Tên cuộn không hợp lệ, Không dùng dấu cách hoặc kí tự đặc biệt để đặt tên");
+                    return;
+                }
+                var x = MyParam.commonParam.mongoDBService.ConnectMongoDb($"{MyParam.runParam.MongoClient}?connectTimeoutMS={MyParam.runParam.ConnectTimeOut}&socketTimeoutMS=10000&serverSelectionTimeoutMS=5000");
+                if (x)
+                {
+                    var allDataBaseName = MyParam.commonParam.mongoDBService.GetAllDatabaseNames();
+                    if (allDataBaseName.Contains(result.ToUpper()))
+                    {
+                        MyLib.showDlgError($"Tên cuộn {result.ToUpper()} đã tồn tại, vui lòng chọn tên khác");
+                        return;
+                    }
+                }
+                else
+                {
+                    MyLib.showDlgError("Kết nối đến MongoDB thất bại, vui lòng kiểm tra lại");
                     return;
                 }
                 btnRollName.Text = result.ToUpper();
@@ -998,24 +1052,37 @@ namespace TanHungHa.Tabs
         //}
         private bool IsValidExcelTemplate(SpreadsheetControl spreadsheet)
         {
-            Worksheet sheet = spreadsheet.Document.Worksheets[0]; // Sheet đầu tiên
+            try
+            {
+                Worksheet sheet = spreadsheet.Document.Worksheets[0];
 
-            // Lấy các tiêu đề dòng đầu (hàng 0 = hàng 1 trong Excel)
-            string col1 = sheet.Cells["A1"].Value.TextValue.Trim();
-            string col2 = sheet.Cells["B1"].Value.TextValue.Trim();
-            string col3 = sheet.Cells["C1"].Value.TextValue.Trim();
-            string col4 = sheet.Cells["D1"].Value.TextValue.Trim();
-            string col5 = sheet.Cells["E1"].Value.TextValue.Trim();
+                // Lấy các tiêu đề với null-safe operator
+                string col1 = sheet.Cells["A1"].Value?.TextValue?.Trim() ?? "";
+                string col2 = sheet.Cells["B1"].Value?.TextValue?.Trim() ?? "";
+                string col3 = sheet.Cells["C1"].Value?.TextValue?.Trim() ?? "";
+                string col4 = sheet.Cells["D1"].Value?.TextValue?.Trim() ?? "";
+                string col5 = sheet.Cells["E1"].Value?.TextValue?.Trim() ?? "";
 
-            // So sánh với tiêu đề mẫu
-            return col1 == "STT"
-                && col2 == "Mã Qrcode"
-                && col3 == "EPC"
-                && col4 == "TID"
-                && col5 == "10 ký tự in dưới QRCode";
+                // So sánh với tiêu đề mẫu
+                return col1 == MyParam.commonParam.devParam.col1
+                    && col2 == MyParam.commonParam.devParam.col2
+                    && col3 == MyParam.commonParam.devParam.col3
+                    && col4 == MyParam.commonParam.devParam.col4
+                    && col5 == MyParam.commonParam.devParam.col5;
+            }
+            catch
+            {
+                return false;
+            }
         }
         private void btnInputDataSourceDCM_Click(object sender, EventArgs e)
         {
+            var bconnectDB = MyParam.commonParam.mongoDBService.ConnectMongoDb($"{MyParam.runParam.MongoClient}?connectTimeoutMS={MyParam.runParam.ConnectTimeOut}&socketTimeoutMS=10000&serverSelectionTimeoutMS=5000");
+            if (!bconnectDB)
+            {
+                MyLib.showDlgError("Kết nối đến MongoDB thất bại, vui lòng kiểm tra lại");
+                return;
+            }
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
                 ofd.Filter = "Excel Files|*.xlsx;*.xls";
@@ -1037,7 +1104,13 @@ namespace TanHungHa.Tabs
                         }
                         else // Load OK
                         {
-                            SaveFileExcel();
+                            var x = SaveFileExcel(FileExistsAction.Question);
+                            if(!x)
+                            {
+                                spreadsheetControl1.CreateNewDocument();
+                                MyParam.runParam.FileNameDamCaMau = string.Empty;
+                                return;
+                            }
                             StopBlinkButtonImportFileExcel();
                             EnableBtn(btnInit, true);
                             EnableBtn(btnReset, true);
@@ -1046,6 +1119,12 @@ namespace TanHungHa.Tabs
                             MyParam.commonParam.myExcel.LoadEpcFromExcel();
 
                             var dbName = Regex.Replace(Path.GetFileNameWithoutExtension(ofd.FileName), @"[^a-zA-Z0-9_]", "_").ToUpper();
+                            
+                            var allDataBaseName = MyParam.commonParam.mongoDBService.GetAllDatabaseNames();
+                            if (allDataBaseName.Contains(dbName))
+                            {
+                                dbName = dbName + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                            }
                             MyParam.runParam.DataBaseNameDamCaMau = dbName;
                             UpdateLabelRollName(dbName);
                             UpdateLabelDCMAfterLoadNewFileExcel();

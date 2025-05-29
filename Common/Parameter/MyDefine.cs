@@ -35,6 +35,14 @@ namespace TanHungHa.Common
 
         public const string dataBaseNameDefault  = "Default";
 
+        // file excel master
+        public const string col1 = "STT";
+        public const string col2 = "Mã Qrcode";
+        public const string col3 = "EPC";
+        public const string col4 = "TID";
+        public const string col5 = "10 ký tự in dưới QRCode";
+
+
 
         // control Module RFID of Mr.TruTho
         public const string ResetIO_RFID = "r";

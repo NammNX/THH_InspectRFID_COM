@@ -153,9 +153,9 @@ namespace TanHungHa.Common
             {
                 if (string.IsNullOrWhiteSpace(filePath))
                     throw new ArgumentException("Invalid file path.");
-                string uniquePath = GetUniqueFilePath(filePath);
-                spreadsheet.SaveDocument(uniquePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
-               // spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+               // string uniquePath = GetUniqueFilePath(filePath);
+               // spreadsheet.SaveDocument(uniquePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
                 sw.Stop();
                 Console.WriteLine($"[SaveExcelToPath] Save done in {sw.ElapsedMilliseconds} ms");
                 return true;

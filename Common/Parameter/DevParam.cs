@@ -40,6 +40,16 @@ namespace TanHungHa.Common
         [Category("Common Param"), DescriptionAttribute("If not used OQC, set to True, else set to False")]
         public bool ignoreOQC { get; set; }
 
+        [Category("Excel DCM"), DescriptionAttribute("Template col1 file excel DCM")]
+        public string col1 { get; set; } 
+        [Category("Excel DCM"), DescriptionAttribute("Template col2 file excel DCM")]
+        public string col2 { get; set; } 
+        [Category("Excel DCM"), DescriptionAttribute("Template col3 file excel DCM")]
+        public string col3 { get; set; }
+        [Category("Excel DCM"), DescriptionAttribute("Template col4 file excel DCM")]
+        public string col4 { get; set; }
+        [Category("Excel DCM"), DescriptionAttribute("Template col5 file excel DCM")]
+        public string col5 { get; set; }
 
         [Category("Layout"), DescriptionAttribute("Layout size when zoom out")]
         public Size LayoutMax { get; set; }
@@ -75,7 +85,12 @@ namespace TanHungHa.Common
            
             maxLine = 1000;
             hideDate = true;
-           
+            col1 = MyDefine.col1;
+            col2 = MyDefine.col2;
+            col3 = MyDefine.col3;
+            col4 = MyDefine.col4;
+            col5 = MyDefine.col5;
+
         }
     }
 
