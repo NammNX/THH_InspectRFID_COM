@@ -8,22 +8,20 @@ namespace TanHungHa.Common.Parameter
 {
     public class TimeDelay
     {
-        public int timeOut { get; set; }
+        
         public int timeLoopCOM { get; set; }
         public int timeAutoSaveExcel { get; set; }
         public int timeLoopChart { get; set; }
         public int delayHeatbeat { get; set; }
-        public int delayTimeout { get; set; }
+        
 
 
         public TimeDelay()
         {
             timeLoopCOM = 5;
             timeLoopChart = 1000;
-            timeOut = 1000;
             delayHeatbeat = 1000;
             timeAutoSaveExcel = 10000;
-            delayTimeout = 5000;
         }
     }
 }
