@@ -10,6 +10,8 @@ namespace TanHungHa.Common.Parameter
     {
         
         public int timeLoopCOM { get; set; }
+        public int timeLoopWriteExcel { get; set; }
+        public int timeLoopShowListView { get; set; }
         public int timeAutoSaveExcel { get; set; }
         public int timeLoopChart { get; set; }
         public int delayHeatbeat { get; set; }
@@ -18,6 +20,8 @@ namespace TanHungHa.Common.Parameter
 
         public TimeDelay()
         {
+            timeLoopWriteExcel = 10;
+            timeLoopShowListView = 10;
             timeLoopCOM = 5;
             timeLoopChart = 1000;
             delayHeatbeat = 1000;

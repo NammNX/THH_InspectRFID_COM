@@ -18,6 +18,8 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 using DevExpress.XtraRichEdit.Commands;
+using System.Collections;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
 
@@ -46,9 +48,10 @@ namespace TanHungHa.Common
     }
     public class LogItem
     {
-        public DateTime Timestamp { get; set; }
-        public string Message { get; set; }
-        public eSerialDataType DataType { get; set; }
+        public DateTime Time { get; set; }
+        public string EPC { get; set; }
+        public string TID { get; set; }
+        public eSerialDataType Type { get; set; }
     }
 
     public class MainProcess
@@ -57,9 +60,7 @@ namespace TanHungHa.Common
         public static StepControl MainIQC_StepCtrl = new StepControl();
         public static StepControl MainOQC_StepCtrl = new StepControl();
         public string TAG = null;
-        public static List<LogItem> logIQCList = new List<LogItem>();
-        public static List<LogItem> logOQCList = new List<LogItem>();
-
+        
         private static ConcurrentQueue<eSerialDataType> chartIQCUpdateQueue = new ConcurrentQueue<eSerialDataType>();
         private static ConcurrentQueue<eSerialDataType> chartOQCUpdateQueue = new ConcurrentQueue<eSerialDataType>();
         private static ConcurrentQueue<eSerialDataType> chartDamCaMauUpdateQueue = new ConcurrentQueue<eSerialDataType>();
@@ -67,6 +68,11 @@ namespace TanHungHa.Common
         private static List<eSerialDataType> batchChartIQC = new List<eSerialDataType>();
         private static List<eSerialDataType> batchChartOQC = new List<eSerialDataType>();
         private static List<eSerialDataType> batchChartDamCaMau = new List<eSerialDataType>();
+
+        //public static BlockingCollection<(string EPC, string TID)> ExcelWriteQueue = new BlockingCollection<(string, string)>();
+        public static ConcurrentQueue<(string EPC, string TID)> ExcelWriteQueue = new ConcurrentQueue<(string, string)>();
+        public static ConcurrentQueue<(string EPC, string TID, DateTime Timestamp, eSerialDataType Type, eIndex Index)> ListViewLogQueue = new ConcurrentQueue<(string, string, DateTime, eSerialDataType, eIndex)>();
+       
 
 
         public MainProcess()
@@ -112,6 +118,102 @@ namespace TanHungHa.Common
             }
             isRunLoopProcess = true;
         }
+
+        public static bool isRunLoopWriteExcel = false;
+        public static void RunLoopWriteExcel()
+        {
+            if (isRunLoopWriteExcel)
+            {
+                MyLib.showDlgInfo("Loop WriteExcel is running!");
+                return;
+            }
+            // write excel
+            MyParam.taskLoops[(int)eTaskLoop.Task_LoopWriteExcel].ResetToken();
+            MyParam.taskLoops[(int)eTaskLoop.Task_LoopWriteExcel].RunLoop(MyParam.commonParam.timeDelay.timeLoopWriteExcel, LoopProcessWriteExcel).ContinueWith((a) =>
+            {
+                MyLib.log($"Done task Process WriteExcel!");
+            });
+        }
+        public static bool isRunLoopShowListView = false;
+        public static void RunLoopShowListView()
+        {
+            if (isRunLoopShowListView)
+            {
+                MyLib.showDlgInfo("Loop ShowListView is running!");
+                return;
+            }
+            // write excel
+            MyParam.taskLoops[(int)eTaskLoop.Task_LoopShowListViewDCM].ResetToken();
+            MyParam.taskLoops[(int)eTaskLoop.Task_LoopShowListViewDCM].RunLoop(MyParam.commonParam.timeDelay.timeLoopShowListView, LoopProcessShowListViewDCM).ContinueWith((a) =>
+            {
+                MyLib.log($"Done task Process ShowListView!");
+            });
+        }
+        public static void LoopProcessShowListViewDCM()
+        {
+            try
+            {
+                while (ListViewLogQueue.TryDequeue(out var log))
+                {
+                    AddLogAutoEPCTID(log.EPC, log.TID, log.Timestamp, log.Type, log.Index);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("[LoopProcessShowListViewDCM] Error: " + ex.Message);
+            }
+        }
+
+
+        //public static void LoopProcessShowListViewDCM()
+        //{
+        //    try
+        //    {
+        //        if (!ListViewLogQueue.IsEmpty)
+        //        {
+        //            var batch = new List<(string EPC, string TID, DateTime Timestamp, eSerialDataType Type, eIndex Index)>();
+        //            while (ListViewLogQueue.TryDequeue(out var item))
+        //            {
+        //                batch.Add(item);
+        //                if (batch.Count >= 5) break;
+        //            }
+
+        //            if (batch.Count > 0)
+        //            {
+        //                foreach (var log in batch)
+        //                {
+        //                    AddLogAutoEPCTID(log.EPC, log.TID, log.Timestamp, log.Type, log.Index);
+
+        //                }
+        //            }
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("[FlushListView] Error: " + ex.Message);
+        //    }
+        //}
+
+        public static void LoopProcessWriteExcel()
+        {
+           
+            if (ExcelWriteQueue.TryDequeue(out var item))
+            {
+                
+                try
+                {
+                    MyParam.commonParam.myExcel.SetTidForEpc(item.EPC, item.TID);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("[ExcelWriteQueue] Error: " + ex.Message);
+                }
+               
+              
+            }
+        }
+
         public static bool isRunLoopProcessDCM = false;
         public static void RunLoopProcessDCM()
         {
@@ -124,7 +226,7 @@ namespace TanHungHa.Common
             MyParam.taskLoops[(int)eTaskLoop.Task_DCM].RunLoop(MyParam.commonParam.timeDelay.timeLoopCOM, LoopProcessDCM).ContinueWith((a) =>
             {
                 MyLib.log($"Done task Task_DCM!");
-            });         
+            });
             isRunLoopProcessDCM = true;
         }
         public static bool isRunLoopProcessAutoSaveExcel = false;
@@ -143,9 +245,9 @@ namespace TanHungHa.Common
             });
             isRunLoopProcessAutoSaveExcel = true;
         }
-         public static void LoopProcessAutoSaveExcel()
+        public static void LoopProcessAutoSaveExcel()
         {
-            if(MyParam.autoForm.swAutoSaveFileExcel.Checked == false)
+            if (MyParam.autoForm.swAutoSaveFileExcel.Checked == false)
             {
                 return;
             }
@@ -155,59 +257,80 @@ namespace TanHungHa.Common
 
         public static void LoopProcessDCM()
         {
-           
-            while (MyParam.commonParam.myComportIQC.GetQueueCount() > 0)
-            {
-                Stopwatch sw = Stopwatch.StartNew();
 
-                var dataComIQC = MyParam.commonParam.myComportIQC.GetDataCom();
-                if (dataComIQC != null)
+            //while (MyParam.commonParam.myComportIQC.GetQueueCount() > 0)
+            //{
+
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            var dataComIQC = MyParam.commonParam.myComportIQC.GetDataCom();
+            if (dataComIQC == null)
+            {
+                stopwatch.Stop();
+                return;
+            }
+            if (dataComIQC != null)
+            {
+               
+                dataComIQC.Data = dataComIQC.Data.TrimEnd(new char[] { '\r', '\n' });
+                MyParam.autoForm.UpdateLabelSpeedDCM(dataComIQC.Data);
+                var (EPC, TID) = ProcessDataEPCTID(dataComIQC.Data);
+                var dataType = dataComIQC.Type;
+
+                if (dataType == eSerialDataType.OK)
                 {
-                    dataComIQC.Data = dataComIQC.Data.TrimEnd(new char[] { '\r', '\n' });
-                    MyParam.autoForm.UpdateLabelSpeedDCM(dataComIQC.Data);
-                    var (EPC, TID) = ProcessDataEPCTID(dataComIQC.Data);
-                    var dataType = dataComIQC.Type;
-                   
-                    if (dataType == eSerialDataType.OK)
+                    // Kiểm tra xem dữ liệu đã tồn tại trong danh sách lịch sử chưa
+                    if (MyParam.runParam.HistoryDamCaMauData.Contains(EPC) || MyParam.runParam.HistoryDamCaMauData.Contains(TID))
                     {
-                        // Kiểm tra xem dữ liệu đã tồn tại trong danh sách lịch sử chưa
-                        if (MyParam.runParam.HistoryDamCaMauData.Contains(EPC) || MyParam.runParam.HistoryDamCaMauData.Contains(TID))
+                        dataType = eSerialDataType.Duplicate;
+                        ListViewLogQueue.Enqueue((EPC, TID, dataComIQC.Timestamp, dataType, eIndex.Index_ModeDCM_Data));
+                        stopwatch.Stop();
+                        // Log thời gian thực thi (trường hợp duplicate)
+                        Console.WriteLine($"LoopProcessDCM execution time (duplicate): {stopwatch.ElapsedMilliseconds} ms");
+
+                        // EnqueueLogListViewDCM(EPC, TID, dataComIQC.Timestamp, dataType);
+                        //AddLogAutoEPCTID(EPC, TID, dataComIQC.Timestamp, dataType, eIndex.Index_ModeDCM_Data);
+                        return;
+                    }
+                    else
+                    {
+                        var EPC_Ascii = HexToAscii(EPC);
+
+                        var isContainEPC = MyParam.commonParam.myExcel.ContainsEpc(EPC_Ascii);
+                        if (isContainEPC) // EPC có trong danh sách Excel
                         {
-                            dataType = eSerialDataType.Duplicate;
-                            AddLogAutoEPCTID(EPC, TID, dataComIQC.Timestamp, dataType, eIndex.Index_ModeDCM_Data);
-                            continue;
+                            // MyParam.commonParam.myExcel.SetTidForEpc(EPC_Ascii, TID);
+                            ExcelWriteQueue.Enqueue((EPC_Ascii, TID)); // Thêm vào queue để ghi vào Excel
+                            dataType = eSerialDataType.OK;
+                            MyParam.runParam.HistoryDamCaMauData.Add(EPC);
+                            MyParam.runParam.HistoryDamCaMauData.Add(TID);
+                          
                         }
-                        else
+                        else    // EPC không có trong danh sách Excel
                         {
-                            var EPC_Ascii = HexToAscii(EPC);
-                            var isContainEPC = MyParam.commonParam.myExcel.ContainsEpc(EPC_Ascii);
-                            if (isContainEPC) // EPC có trong danh sách Excel
-                            {
-                                MyParam.commonParam.myExcel.SetTidForEpc(EPC_Ascii, TID);
-                                dataType = eSerialDataType.OK;
-                                MyParam.runParam.HistoryDamCaMauData.Add(EPC);
-                                MyParam.runParam.HistoryDamCaMauData.Add(TID);
-                            }
-                            else    // EPC không có trong danh sách Excel
-                            {
-                                dataType = eSerialDataType.Unknown;
-                                MyParam.commonParam.myComportIQC.SendData(MyDefine.StopMachine);
-                                MyLib.showDlgError("EPC không tồn tại trong danh sách Excel");
-                                AddLogAutoEPCTID(EPC, TID, dataComIQC.Timestamp, dataType, eIndex.Index_ModeDCM_Data);
-                                continue;
-                            }
+                            dataType = eSerialDataType.Unknown;
+                            MyParam.commonParam.myComportIQC.SendData(MyDefine.StopMachine);
+                            MyLib.showDlgError("EPC không tồn tại trong danh sách Excel");
+                            ListViewLogQueue.Enqueue((EPC, TID, dataComIQC.Timestamp, dataType, eIndex.Index_ModeDCM_Data));
+                           // EnqueueLogListViewDCM(EPC, TID, dataComIQC.Timestamp, dataType);
+                            // AddLogAutoEPCTID(EPC, TID, dataComIQC.Timestamp, dataType, eIndex.Index_ModeDCM_Data);
+                            return;
                         }
                     }
-
-                    AddLogAutoEPCTID(EPC, TID, dataComIQC.Timestamp, dataType, eIndex.Index_ModeDCM_Data);
-                    chartDamCaMauUpdateQueue.Enqueue(dataType);
-                    if (MyParam.autoForm.swFlushDB.Checked)
-                        MyParam.commonParam.mongoDBService.AddToBuffer(EPC, TID, dataComIQC.Timestamp, dataType.ToString(), "IQC");
                 }
-                sw.Stop(); // Kết thúc đếm thời gian
-                Console.WriteLine($"[ProcessDCM] Time taken: {sw.ElapsedMilliseconds} ms");
+
+                ListViewLogQueue.Enqueue((EPC, TID, dataComIQC.Timestamp, dataType, eIndex.Index_ModeDCM_Data));
+               // EnqueueLogListViewDCM(EPC, TID, dataComIQC.Timestamp, dataType);
+                // AddLogAutoEPCTID(EPC, TID, dataComIQC.Timestamp, dataType, eIndex.Index_ModeDCM_Data);
+                chartDamCaMauUpdateQueue.Enqueue(dataType);
+                if (MyParam.autoForm.swFlushDB.Checked)
+                    MyParam.commonParam.mongoDBService.AddToBuffer(EPC, TID, dataComIQC.Timestamp, dataType.ToString(), "IQC");
             }
+            stopwatch.Stop();
+            Console.WriteLine($"LoopProcessDCM execution time: {stopwatch.ElapsedMilliseconds} ms");
+            Console.WriteLine($"Count Queue: {MyParam.commonParam.myComportIQC.GetQueueCount().ToString()}");
+
         }
+        
         //public static void LoopProcessDCM1() // mode cũ lấy từng data EPC/TID
         //{
         //    // Lặp và xử lý dữ liệu trong queue IQC cho đến khi queue trống
@@ -484,8 +607,8 @@ namespace TanHungHa.Common
             }
         }
 
-     
-        
+
+
         private static eSerialDataType EPC_IQC_Type = eSerialDataType.Unknown;
         private static eSerialDataType EPC_OQC_Type = eSerialDataType.Unknown;
 
@@ -494,7 +617,7 @@ namespace TanHungHa.Common
         private static string lastEPC_IQCFull = null;
         private static string lastEPC_OQC_Full = null;
 
-       
+
         public static bool CheckMode()
         {
             if (MyParam.runParam.Mode == eMode.None)
@@ -517,14 +640,14 @@ namespace TanHungHa.Common
 
         public static void LoopProcessIQC()
         {
-           
+
             while (MyParam.commonParam.myComportIQC.GetQueueCount() > 0)
             {
                 var dataComIQC = MyParam.commonParam.myComportIQC.GetDataCom();
                 if (dataComIQC != null)
                 {
                     dataComIQC.Data = dataComIQC.Data.TrimEnd(new char[] { '\r', '\n' });
-                    MyParam.autoForm.UpdateLabelSpeedIQC(dataComIQC.Data); 
+                    MyParam.autoForm.UpdateLabelSpeedIQC(dataComIQC.Data);
                     switch (MyParam.runParam.Mode)
                     {
                         case eMode.eOnlyTID:
@@ -684,7 +807,7 @@ namespace TanHungHa.Common
             {
                 if (span.Length > 9)
                 {
-                    span = span.Slice(5,span.Length-9);
+                    span = span.Slice(5, span.Length - 9);
                 }
             }
             else if (span[0] == 'R')
@@ -740,7 +863,7 @@ namespace TanHungHa.Common
                 return span.ToString();
             }
 
-            
+
 
             return span.ToString();
         }
@@ -804,7 +927,7 @@ namespace TanHungHa.Common
 
                             var (EPC, TID) = ProcessDataEPCTID(dataComOQC.Data);
                             var dataType = dataComOQC.Type;
-                            // Kiểm tra xem dữ liệu đã tồn tại trong danh sách lịch sử chưa
+
                             if (dataType == eSerialDataType.OK)
                             {
                                 // Kiểm tra xem dữ liệu đã tồn tại trong danh sách lịch sử chưa
@@ -826,13 +949,26 @@ namespace TanHungHa.Common
                             if (MyParam.autoForm.swFlushDB.Checked)
                                 MyParam.commonParam.mongoDBService.AddToBuffer(EPC, TID, dataComOQC.Timestamp, dataType.ToString(), "OQC");
 
-                            break;      
+                            break;
                     }
                 }
             }
         }
 
-       
+        public static void AddLogAutoEPCTID_Vitual(string EPC, string TID, DateTime dateTime, eSerialDataType dataType, eIndex index = eIndex.Index_IQC_Data)
+        {
+            //if (!MyParam.autoForm.IsHandleCreated) return;
+            switch (index)
+            {
+                case eIndex.Index_ModeDCM_Data:
+                    MyLib.ShowLogListviewEPCTID_Vitual(MyParam.autoForm.lvDataModeDCM, MyLib.DCM_LogItems, dateTime, EPC, TID, dataType);
+                    break;
+                default:
+                    break;
+            }
+            // MyLib.log(message, SvLogger.LogType.SEQUENCE);
+        }
+
         public static void AddLogAutoEPCTID(string EPC, string TID, DateTime dateTime, eSerialDataType dataType, eIndex index = eIndex.Index_IQC_Data)
         {
             //if (!MyParam.autoForm.IsHandleCreated) return;
@@ -940,6 +1076,7 @@ namespace TanHungHa.Common
             {
                 MyParam.mainForm.statusStrip1.BeginInvoke(new Action(() =>
                 {
+                    MyParam.mainForm.sttVer.Text = MyDefine.VERSION;
                     MyParam.mainForm.sttRAM.Text = $"(RAM: {RamInfo})";
                     MyParam.mainForm.sttIQC.Text = IQC;
                     MyParam.mainForm.sttOQC.Text = OQC;

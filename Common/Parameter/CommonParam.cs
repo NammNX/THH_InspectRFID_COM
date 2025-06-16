@@ -1,15 +1,11 @@
-﻿using log4net;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TanHungHa.Common.Parameter
 {
-    
+
     public class CommonParam
     {
         private static CommonParam _instance;
@@ -34,7 +30,7 @@ namespace TanHungHa.Common.Parameter
         public DevParam devParam { get; set; }
         public MongoDBService mongoDBService { get; set; }
         public MyExcel myExcel { get; set; }
-    
+
 
         public TimeDelay timeDelay { get; set; }
         [JsonIgnore]

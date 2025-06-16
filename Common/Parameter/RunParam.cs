@@ -1,11 +1,7 @@
-﻿using MongoDB.Driver;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Windows.Forms;
 
 
 namespace TanHungHa.Common
@@ -46,7 +42,7 @@ namespace TanHungHa.Common
         [Category("Device"), DescriptionAttribute("COM OQC")]
         public string COM_OQC { get; set; }
         [Category("Device"), DescriptionAttribute("Baudrate")]
-        public int Baudrate  { get; set; }
+        public int Baudrate { get; set; }
 
         [Category("Device"), DescriptionAttribute("Folder Save File Excel Mode Dam Ca Mau")]
         public string PathFolderSaveFileExcel { get; set; }
@@ -59,7 +55,7 @@ namespace TanHungHa.Common
 
         [Category("DataBase"), DescriptionAttribute("client")]
         public string MongoClient { get; set; }
-        
+
         [Category("DataBase"), DescriptionAttribute("Connect TimeOut")]
         public int ConnectTimeOut { get; set; }
         [Category("DataBase"), DescriptionAttribute("Time between each flush, in milliseconds")]
@@ -86,7 +82,7 @@ namespace TanHungHa.Common
         [JsonIgnore]
         [Browsable(false)]
         public ePRGSTATUS ProgramStatus = ePRGSTATUS.Start_Up;
-       
+
         RunParam()
         {
             COM_IQC = "COM1";

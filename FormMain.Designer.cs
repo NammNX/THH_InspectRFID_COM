@@ -41,23 +41,24 @@
             this.panelManual = new System.Windows.Forms.Panel();
             this.tabPageManager = new System.Windows.Forms.TabPage();
             this.panelManager = new System.Windows.Forms.Panel();
-            this.tabPageInfo = new System.Windows.Forms.TabPage();
-            this.panelInfo = new System.Windows.Forms.Panel();
             this.tabPageLog = new System.Windows.Forms.TabPage();
             this.panelLog = new System.Windows.Forms.Panel();
+            this.tabPageInfo = new System.Windows.Forms.TabPage();
+            this.panelInfo = new System.Windows.Forms.Panel();
             this.tabPageExit = new System.Windows.Forms.TabPage();
             this.menuIconList = new System.Windows.Forms.ImageList(this.components);
             this.tabPageTeaching = new System.Windows.Forms.TabPage();
             this.panelTeaching = new System.Windows.Forms.Panel();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.sttVer = new System.Windows.Forms.ToolStripStatusLabel();
             this.materialTabControl1.SuspendLayout();
             this.tabPageAuto.SuspendLayout();
             this.panelAuto.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tabPageManual.SuspendLayout();
             this.tabPageManager.SuspendLayout();
-            this.tabPageInfo.SuspendLayout();
             this.tabPageLog.SuspendLayout();
+            this.tabPageInfo.SuspendLayout();
             this.tabPageTeaching.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -106,6 +107,7 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sttVer,
             this.sttIQC,
             this.sttOQC,
             this.sttRAM});
@@ -173,26 +175,6 @@
             this.panelManager.Size = new System.Drawing.Size(1260, 612);
             this.panelManager.TabIndex = 1;
             // 
-            // tabPageInfo
-            // 
-            this.tabPageInfo.Controls.Add(this.panelInfo);
-            this.tabPageInfo.ImageKey = "info_white_24dp.png";
-            this.tabPageInfo.Location = new System.Drawing.Point(4, 31);
-            this.tabPageInfo.Name = "tabPageInfo";
-            this.tabPageInfo.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageInfo.Size = new System.Drawing.Size(1266, 618);
-            this.tabPageInfo.TabIndex = 5;
-            this.tabPageInfo.Text = "Info";
-            this.tabPageInfo.UseVisualStyleBackColor = true;
-            // 
-            // panelInfo
-            // 
-            this.panelInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelInfo.Location = new System.Drawing.Point(3, 3);
-            this.panelInfo.Name = "panelInfo";
-            this.panelInfo.Size = new System.Drawing.Size(1260, 612);
-            this.panelInfo.TabIndex = 1;
-            // 
             // tabPageLog
             // 
             this.tabPageLog.Controls.Add(this.panelLog);
@@ -212,6 +194,26 @@
             this.panelLog.Name = "panelLog";
             this.panelLog.Size = new System.Drawing.Size(1260, 612);
             this.panelLog.TabIndex = 1;
+            // 
+            // tabPageInfo
+            // 
+            this.tabPageInfo.Controls.Add(this.panelInfo);
+            this.tabPageInfo.ImageKey = "info_white_24dp.png";
+            this.tabPageInfo.Location = new System.Drawing.Point(4, 31);
+            this.tabPageInfo.Name = "tabPageInfo";
+            this.tabPageInfo.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageInfo.Size = new System.Drawing.Size(1266, 618);
+            this.tabPageInfo.TabIndex = 5;
+            this.tabPageInfo.Text = "Info";
+            this.tabPageInfo.UseVisualStyleBackColor = true;
+            // 
+            // panelInfo
+            // 
+            this.panelInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelInfo.Location = new System.Drawing.Point(3, 3);
+            this.panelInfo.Name = "panelInfo";
+            this.panelInfo.Size = new System.Drawing.Size(1260, 612);
+            this.panelInfo.TabIndex = 1;
             // 
             // tabPageExit
             // 
@@ -284,6 +286,12 @@
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // sttVer
+            // 
+            this.sttVer.Name = "sttVer";
+            this.sttVer.Size = new System.Drawing.Size(23, 17);
+            this.sttVer.Text = "Ver";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -305,8 +313,8 @@
             this.statusStrip1.PerformLayout();
             this.tabPageManual.ResumeLayout(false);
             this.tabPageManager.ResumeLayout(false);
-            this.tabPageInfo.ResumeLayout(false);
             this.tabPageLog.ResumeLayout(false);
+            this.tabPageInfo.ResumeLayout(false);
             this.tabPageTeaching.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -334,6 +342,7 @@
         public System.Windows.Forms.ToolStripStatusLabel sttIQC;
         public System.Windows.Forms.ToolStripStatusLabel sttOQC;
         public System.Windows.Forms.ToolStripStatusLabel sttRAM;
+        public System.Windows.Forms.ToolStripStatusLabel sttVer;
     }
 }
 

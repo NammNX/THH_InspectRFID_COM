@@ -18,12 +18,15 @@ using System.IO;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
+using TanHungHa.PopUp;
+using static TanHungHa.Common.MyComport;
 
 
 
 
 namespace TanHungHa.Tabs
 {
+
     public partial class FormAuto : MaterialForm
     {
         private static FormAuto _instance;
@@ -43,6 +46,7 @@ namespace TanHungHa.Tabs
             }
             return _instance;
         }
+        private static List<LogItem> logList = new List<LogItem>();
 
         public FormAuto()
         {
@@ -51,7 +55,53 @@ namespace TanHungHa.Tabs
             SetupChart(chartIQC);
             SetupChart(chartOQC);
             SetupChart(chartDCM);
+            
         }
+        public static void InitVirtualListView(ListView listView)
+        {
+            listView.RetrieveVirtualItem += (s, e) =>
+            {
+                if (e.ItemIndex >= 0 && e.ItemIndex < logList.Count)
+                {
+                    var log = logList[e.ItemIndex];
+                    var item = new ListViewItem(log.Time.ToString("HH:mm:ss"));
+                    item.SubItems.Add(log.EPC);
+                    item.SubItems.Add(log.TID);
+                    item.SubItems.Add(log.Type.ToString());
+
+                    switch (log.Type)
+                    {
+                        case eSerialDataType.NG:
+                            item.BackColor = Color.Red;
+                            item.ForeColor = Color.White;
+                            break;
+                        case eSerialDataType.Duplicate:
+                            item.BackColor = Color.Orange;
+                            item.ForeColor = Color.Black;
+                            break;
+                        case eSerialDataType.Unknown:
+                            item.BackColor = Color.Black;
+                            item.ForeColor = Color.White;
+                            break;
+                    }
+
+                    e.Item = item;
+                }
+            };
+        }
+        public void AddLogBatchToList(List<LogItem> batch)
+        {
+            logList.InsertRange(0, batch);
+
+            // Giới hạn số dòng tối đa
+           
+            if (logList.Count > MyParam.commonParam.devParam.maxLine)
+                logList.RemoveRange(MyParam.commonParam.devParam.maxLine, logList.Count - MyParam.commonParam.devParam.maxLine);
+
+            lvDataModeDCM.VirtualListSize = logList.Count;
+            lvDataModeDCM.Invalidate();
+        }
+
 
         public void UpdateModeUI()
         {
@@ -85,6 +135,7 @@ namespace TanHungHa.Tabs
                     break;
             }
         }
+
         public void StopProgram()
         {
             if ((MyParam.commonParam.myComportIQC.GetQueueCount() > 0) || (MyParam.commonParam.myComportOQC.GetQueueCount() > 0)
@@ -121,8 +172,9 @@ namespace TanHungHa.Tabs
             ChangeColor(groupBoxChartIQC, false);
             ChangeColor(groupBoxOQChart, false);
             swByPass.Enabled = false;
+            swFlushDB.Enabled = true;
 
-           
+
 
             if (MyParam.runParam.ProgramStatus == ePRGSTATUS.Started)
             {
@@ -143,7 +195,10 @@ namespace TanHungHa.Tabs
             MainProcess.isRunLoopProcessDCM = false;
             MainProcess.isChartUpdateRunningDamCaMau = false;
             MainProcess.isRunLoopProcessAutoSaveExcel = false;
+            MainProcess.isRunLoopWriteExcel = false;
+            MainProcess.isRunLoopShowListView = false;
             MongoDBService.isFlushLoop = false;
+
 
 
             MyParam.runParam.ProgramStatus = ePRGSTATUS.Stoped;
@@ -332,15 +387,12 @@ namespace TanHungHa.Tabs
                 MainProcess.RunLoopChartUpdateDCM();
                 MainProcess.RunLoopProcessDCM();
                 MainProcess.RunLoopProcessAutoSaveExcel();
+                MainProcess.RunLoopWriteExcel();
+                MainProcess.RunLoopShowListView();
 
                 if (!MyParam.commonParam.devParam.ignoreDataBase)
                 {
-                    swFlushDB.Checked = true;
                     MyParam.commonParam.mongoDBService.RunFlushLoop();
-                }
-                else
-                {
-                    swFlushDB.Checked = false;
                 }
                 MainProcess.MainIQC_StepCtrl.SetStep(eProcessing.ReceiveData);
                 //MainProcess.MainOQC_StepCtrl.SetStep(eProcessing.ReceiveData);
@@ -395,12 +447,7 @@ namespace TanHungHa.Tabs
 
                 if (!MyParam.commonParam.devParam.ignoreDataBase)
                 {
-                    swFlushDB.Checked = true;
                     MyParam.commonParam.mongoDBService.RunFlushLoop();
-                }
-                else
-                {
-                    swFlushDB.Checked = false;
                 }
                 MainProcess.MainIQC_StepCtrl.SetStep(eProcessing.ReceiveData);
                 MainProcess.MainOQC_StepCtrl.SetStep(eProcessing.ReceiveData);
@@ -555,6 +602,7 @@ namespace TanHungHa.Tabs
                         StartProgram();
                     }
                     groupBoxDcm.Enabled = false;
+                    swFlushDB.Enabled = false;
                     break;
 
                 case "btnReset":
@@ -1312,7 +1360,8 @@ namespace TanHungHa.Tabs
             groupBoxMode.Enabled = true;
 
             UpdateLabelRollName(MyParam.runParam.DataBaseName);
-         
+            swFlushDB.Checked = true;
+
         }
 
         public void UpdateLabelRollName(string name)
@@ -1335,6 +1384,7 @@ namespace TanHungHa.Tabs
         public void FuncDCM()
         {
             MyParam.commonParam.myExcel.SetSpreadSheet(spreadsheetControl1);
+            swFlushDB.Checked = false;
             var x = LoadFileExcel();
             if (!x)
             {
@@ -1351,7 +1401,6 @@ namespace TanHungHa.Tabs
                 StartBlinkButtonImportFileExcel();
                 MyParam.runParam.DataBaseNameDamCaMau = MyDefine.dataBaseNameDefault;
                 UpdateLabelRollName(MyParam.runParam.DataBaseNameDamCaMau);
-                
             }
             else
             {
@@ -1369,6 +1418,7 @@ namespace TanHungHa.Tabs
                 MyParam.commonParam.myExcel.LoadEpcFromExcel();
                 MyParam.commonParam.myExcel.LoadTidToHistory(MyParam.runParam.HistoryDamCaMauData);
                 UpdateLabelDCMAfterLoadNewFileExcel();
+               
             }
         }
         void UpdateLabelDCMAfterLoadNewFileExcel()
@@ -1382,6 +1432,69 @@ namespace TanHungHa.Tabs
         private void spreadsheetControl1_Click(object sender, EventArgs e)
         {
 
+        }
+        private FormListTIDEmpty _formListTIDEmpty = null;
+        private FormChangeItem _formChangeItem = null;
+        private void cbbFindRoll_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int rollIndex = cbbFindRoll.SelectedIndex;
+            int startRow = rollIndex * 3000 + 1;
+            int endRow = startRow + 3000;
+
+            var emptyCells = GetEmptyCellsInColumnD(startRow, endRow);
+
+            // Nếu popup cũ còn mở thì đóng lại
+            if (_formListTIDEmpty != null && !_formListTIDEmpty.IsDisposed)
+            {
+                _formListTIDEmpty.Close();
+            }
+            // Mở popup mới
+            _formListTIDEmpty = new FormListTIDEmpty(emptyCells, spreadsheetControl1);
+          //  _formListTIDEmpty.Location = new Point(this.Location.X + this.Width, this.Location.Y);
+            _formListTIDEmpty.Show();
+            _formListTIDEmpty.FormClosed += (s, args) => _formListTIDEmpty = null;
+        }
+        private List<string> GetEmptyCellsInColumnD(int startRow, int endRow)
+        {
+            Worksheet sheet = spreadsheetControl1.Document.Worksheets[0];
+            List<string> emptyCells = new List<string>();
+
+            for (int row = startRow; row < endRow; row++)
+            {
+                Cell cell = sheet.Cells[row, 3]; // 3 tương ứng cột D
+                if (cell.Value.IsEmpty)
+                {
+                    emptyCells.Add(cell.GetReferenceA1());
+                }
+            }
+
+            return emptyCells;
+        }
+
+        private void btnReplaceItem_Click(object sender, EventArgs e)
+        {
+            // Nếu popup cũ còn mở thì đóng lại
+            if (_formChangeItem != null && !_formChangeItem.IsDisposed)
+            {
+                _formChangeItem.Close();
+            }
+            // Mở popup mới
+            _formChangeItem = new FormChangeItem(spreadsheetControl1);
+          //  _formChangeItem.Location = new Point(this.Location.X + this.Width, this.Location.Y);
+            _formChangeItem.Show();
+            _formChangeItem.FormClosed += (s, args) => _formChangeItem = null;
+        }
+
+        private void swFlushDB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (swFlushDB.Checked)
+            {
+                MyParam.commonParam.devParam.ignoreDataBase = false;
+            }
+            else
+            {
+                MyParam.commonParam.devParam.ignoreDataBase = true;
+            }
         }
     }
 }

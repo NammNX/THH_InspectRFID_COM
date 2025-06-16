@@ -12,20 +12,22 @@ using DevExpress.XtraRichEdit.Model;
 using DocumentFormat.OpenXml.Drawing;
 using DevExpress.Internal.WinApi.Windows.UI.Notifications;
 using System.IO;
+using System.Collections.Concurrent;
 
 namespace TanHungHa.Common
 {
     public class MyExcel
     {
         private SpreadsheetControl spreadsheet;
-        private readonly Dictionary<string, int> epcRowMap = new Dictionary<string, int>();
-
+        private readonly ConcurrentDictionary<string, int> epcRowMap = new ConcurrentDictionary<string, int>();
+        private Worksheet sheet;
         // Cấu hình cột
         private readonly int epcColumnIndex = 2; // Cột C
         private readonly int tidColumnIndex = 3; // Cột D
+        private readonly int QrCodeColumnIndex = 4; // Cột E
         public MyExcel()
         {
-
+            
         }
 
         /// <summary>
@@ -41,7 +43,7 @@ namespace TanHungHa.Common
         public void LoadEpcFromExcel()
         {
             epcRowMap.Clear();
-            Worksheet sheet = spreadsheet.Document.Worksheets[0];
+            sheet = spreadsheet.Document.Worksheets[0];
             CellRange usedRange = sheet.GetUsedRange();
 
             int startRow = usedRange.TopRowIndex;
@@ -76,13 +78,12 @@ namespace TanHungHa.Common
         //    return false;
         //}
         
-
         public void SetTidForEpc(string epc, string tid, bool highlight = true)
         {
-            Stopwatch sw = Stopwatch.StartNew();
+
             if (!spreadsheet.InvokeRequired)
             {
-                 SetTidForEpcUIThread(epc, tid, highlight);
+                SetTidForEpcUIThread(epc, tid, highlight);
             }
             else
             {
@@ -91,14 +92,15 @@ namespace TanHungHa.Common
                     SetTidForEpcUIThread(epc, tid, highlight);
                 }));
             }
-            sw.Stop(); // Kết thúc đếm thời gian
-            Console.WriteLine($"[Hàm vẽ excel UI] Time taken: {sw.ElapsedMilliseconds} ms");
+            //Kết thúc đếm thời gian
+            
         }
         private bool SetTidForEpcUIThread(string epc, string tid, bool highlight)
         {
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
             if (epcRowMap.TryGetValue(epc, out int rowIndex))
             {
-                Worksheet sheet = spreadsheet.Document.Worksheets[0];
+                sheet = spreadsheet.Document.Worksheets[0];
                 sheet.Cells[rowIndex, tidColumnIndex].Value = tid;
 
                 if (highlight)
@@ -111,6 +113,9 @@ namespace TanHungHa.Common
                 {
                     spreadsheet.ActiveWorksheet.ScrollTo(0, 0);
                 }
+                stopwatch.Stop();
+                Console.WriteLine($"[---Hàm vẽ excel UI---] Time taken: {stopwatch.ElapsedMilliseconds} ms");
+                
                 return true;
             }
             return false;
@@ -130,7 +135,7 @@ namespace TanHungHa.Common
         /// </summary>
         public void ClearWorksheet()
         {
-            Worksheet sheet = spreadsheet.Document.Worksheets[0];
+            sheet = spreadsheet.Document.Worksheets[0];
             CellRange usedRange = sheet.GetUsedRange();
             sheet.Clear(usedRange);
         }
@@ -146,6 +151,8 @@ namespace TanHungHa.Common
         /// </summary>
         /// <param name="filePath">Đường dẫn muốn lưu file, ví dụ: "C:\\Data\\output.xlsx"</param>
         /// <returns>True nếu lưu thành công, false nếu có lỗi.</returns>
+        /// 
+
         public bool SaveExcelToPath(string filePath)
         {
             Stopwatch sw = Stopwatch.StartNew();
@@ -153,34 +160,36 @@ namespace TanHungHa.Common
             {
                 if (string.IsNullOrWhiteSpace(filePath))
                     throw new ArgumentException("Invalid file path.");
-               // string uniquePath = GetUniqueFilePath(filePath);
-               // spreadsheet.SaveDocument(uniquePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
-                spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+
+             
+
+                // Đảm bảo gọi SaveDocument trên UI thread
+                if (spreadsheet.InvokeRequired)
+                {
+                    spreadsheet.BeginInvoke(new Action(() =>
+                    {
+                        spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                    }));
+                }
+                else
+                {
+                    spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                }
+
                 sw.Stop();
                 Console.WriteLine($"[SaveExcelToPath] Save done in {sw.ElapsedMilliseconds} ms");
                 return true;
             }
             catch (Exception ex)
             {
-                MyLib.showDlgError($"[SaveExcelToPath] Error saving Excel file: {ex.Message}");
+                Console.WriteLine($"----------------------[SaveExcelToPath] Error saving Excel file:\n{ex.Message}\n\nPath: {filePath}-------------------------");
                 return false;
             }
         }
-        public static string GetUniqueFilePath(string originalPath)
-        {
-            string dir = System.IO.Path.GetDirectoryName(originalPath);
-            string name = System.IO.Path.GetFileNameWithoutExtension(originalPath);
-            string ext = System.IO.Path.GetExtension(originalPath);
 
-            int i = 1;
-            string newPath = originalPath;
-            while (File.Exists(newPath))
-            {
-                newPath = System.IO.Path.Combine(dir, $"{name} ({i++}){ext}");
-            }
 
-            return newPath;
-        }
+       
+        
 
         /// <summary>
         /// Đếm số lượng dòng có dữ liệu (không rỗng) trong cột TID ,
@@ -189,7 +198,7 @@ namespace TanHungHa.Common
         /// <returns>Số dòng có dữ liệu trong cột TID.</returns>
         public int CountRowsWithTid()
         {
-            Worksheet sheet = spreadsheet.Document.Worksheets[0];
+            sheet = spreadsheet.Document.Worksheets[0];
             int rowCount = sheet.Rows.LastUsedIndex; // Lấy chỉ số dòng cuối cùng có sử dụng
 
             int count = 0;
@@ -206,7 +215,7 @@ namespace TanHungHa.Common
 
         public void LoadTidToHistory(HashSet<string> historySet)
         {
-            Worksheet sheet = spreadsheet.Document.Worksheets[0];
+            sheet = spreadsheet.Document.Worksheets[0];
             if (historySet == null)
                 throw new ArgumentNullException(nameof(historySet));
 
@@ -226,6 +235,55 @@ namespace TanHungHa.Common
             }
 
             Console.WriteLine($"[Count HashSet Data] DCM: {historySet.Count}");
+        }
+        /// <summary>
+        /// Tìm tất cả các dòng chứa giá trị tương ứng trong cột TID (D) hoặc cột E.
+        /// </summary>
+        /// <param name="value">Giá trị cần tìm (không phân biệt hoa thường, bỏ khoảng trắng đầu/cuối).</param>
+        /// <returns>Danh sách chỉ số dòng (bắt đầu từ 0) tìm thấy dữ liệu.</returns>
+        public List<int> FindRowsByValueInTidOrQrCode(string value)
+        { 
+
+            if (string.IsNullOrWhiteSpace(value))
+                return new List<int>();
+
+            string target = value.Trim().ToLower();
+            List<int> matchedRows = new List<int>();
+
+            sheet = spreadsheet.Document.Worksheets[0];
+            int rowCount = sheet.Rows.LastUsedIndex;
+
+            for (int row = 1; row <= rowCount; row++)
+            {
+                string valD = sheet.Cells[row, tidColumnIndex].Value.TextValue?.Trim().ToLower();
+                string valE = sheet.Cells[row, QrCodeColumnIndex].Value.TextValue?.Trim().ToLower(); // Cột E
+
+                if ((valD != null && valD.Contains(target)) || (valE != null && valE.Contains(target)))
+                {
+                    matchedRows.Add(row);
+                }
+            }
+
+            // Scroll đến dòng đầu tiên tìm thấy
+            if (matchedRows.Count == 1)
+            {
+                int scrollRow = matchedRows[0] > 5 ? matchedRows[0] - 5 : 0;
+
+                if (!spreadsheet.InvokeRequired)
+                {
+                    spreadsheet.ActiveWorksheet.ScrollTo(scrollRow, 0);
+                }
+                else
+                {
+                    spreadsheet.BeginInvoke(new Action(() =>
+                    {
+                        spreadsheet.ActiveWorksheet.ScrollTo(scrollRow, 0);
+                    }));
+                }
+                spreadsheet.SelectedCell = sheet.Cells[matchedRows[0], tidColumnIndex]; // hoặc QrCodeColumnIndex
+            }
+
+            return matchedRows;
         }
 
 

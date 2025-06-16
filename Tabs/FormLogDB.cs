@@ -212,7 +212,7 @@ namespace TanHungHa.Tabs
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-           if((cbbListRoll.SelectedIndex == -1)&&(cbbFindRollByName.SelectedIndex == -1))
+            if((cbbListRoll.SelectedIndex == -1)&&(cbbFindRollByName.SelectedIndex == -1))
             {
                 MyLib.showDlgError("Chưa chọn cuộn hàng cần kiểm tra");
                 return;
@@ -511,6 +511,9 @@ namespace TanHungHa.Tabs
         {
             txtFindRollByName.Text = "";
         }
+
+        
+        
     }
     }
 

@@ -375,3 +375,7 @@ ApplicationPackage/*
 /Data/Alignment
 /ApplicationPackage - ThongNT
 /ApplicationPackage -NamNx
+
+# Ignore all archive files
+.7z
+.zip

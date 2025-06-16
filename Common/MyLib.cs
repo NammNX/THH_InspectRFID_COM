@@ -24,8 +24,12 @@ using System.Diagnostics;
 
 namespace TanHungHa.Common
 {
+
     public static class MyLib
     {
+        public static List<LogItem> IQC_LogItems = new List<LogItem>();
+        public static List<LogItem> OQC_LogItems = new List<LogItem>();
+        public static List<LogItem> DCM_LogItems = new List<LogItem>();
 
         #region Fake keyboard
         [DllImport("USER32.DLL")]
@@ -84,6 +88,42 @@ namespace TanHungHa.Common
         }
 
 
+
+        public static void ShowLogListviewEPCTID_Vitual(ListView listview, List<LogItem> logList, DateTime dateTime, string EPC, string TID, eSerialDataType typeData)
+        {
+            var newLog = new LogItem
+            {
+                Time = dateTime,
+                EPC = EPC,
+                TID = TID,
+                Type = typeData
+            };
+
+            if (listview.InvokeRequired)
+            {
+                listview.BeginInvoke(new Action(() =>
+                {
+                    AddLogItemVirtual(listview, logList, newLog);
+                }));
+            }
+            else
+            {
+                AddLogItemVirtual(listview, logList, newLog);
+            }
+        }
+
+        private static void AddLogItemVirtual(ListView listview, List<LogItem> logList, LogItem item)
+        {
+            int maxLine = MyParam.commonParam.devParam.maxLine;
+
+            logList.Insert(0, item); // chèn đầu danh sách (vì bạn đang hiển thị từ dòng mới nhất)
+
+            if (logList.Count > maxLine)
+                logList.RemoveAt(logList.Count - 1); // xóa cuối danh sách
+
+            listview.VirtualListSize = logList.Count;
+            listview.Invalidate(); // yêu cầu vẽ lại
+        }
         
 
         public static bool fileIsExists(string file_name)
@@ -508,71 +548,117 @@ namespace TanHungHa.Common
                 listview.Items.Insert(0, newItem);
             }
         }
-
         public static void ShowLogListviewEPCTID(ListView listview, DateTime dateTime, string EPC, string TID, eSerialDataType typeData)
         {
             string timeStr = dateTime.ToString("HH:mm:ss");
-            if (listview.InvokeRequired)
+
+            void AddItem()
             {
-                listview.BeginInvoke(new Action(() =>
+                // Xóa đúng 1 dòng cuối nếu đã đạt số dòng tối đa
+                if (listview.Items.Count >= MyParam.commonParam.devParam.maxLine)
                 {
-                    if (listview.Items.Count >= MyParam.commonParam.devParam.maxLine)
-                    {
-                        listview.Items.Clear();
-                    }
+                    listview.Items.RemoveAt(listview.Items.Count - 1);
+                }
 
-                    
-                    ListViewItem newItem = new ListViewItem(new string[] { $"{timeStr}", $"{EPC}",$"{TID}", $"{typeData.ToString()}" });
+                // Tạo item mới
+                ListViewItem newItem = new ListViewItem(new string[] { timeStr, EPC, TID, typeData.ToString() });
 
-                   
-                    if (typeData == eSerialDataType.NG)
-                    {
+                switch (typeData)
+                {
+                    case eSerialDataType.NG:
                         newItem.BackColor = Color.Red;
-                        newItem.ForeColor = Color.White; 
-                    }
-                    if (typeData == eSerialDataType.Duplicate)
-                    {
+                        newItem.ForeColor = Color.White;
+                        break;
+                    case eSerialDataType.Duplicate:
                         newItem.BackColor = Color.Orange;
                         newItem.ForeColor = Color.Black;
-                    }
-                    if(typeData == eSerialDataType.Unknown)
-                    {
+                        break;
+                    case eSerialDataType.Unknown:
                         newItem.BackColor = Color.Black;
                         newItem.ForeColor = Color.White;
-                    }
+                        break;
+                }
 
+                listview.Items.Insert(0, newItem);
+            }
 
-                    listview.Items.Insert(0, newItem);
-                }));
+            if (listview.InvokeRequired)
+            {
+                listview.BeginInvoke((Action)(() => AddItem()));
             }
             else
             {
-                if (listview.Items.Count >= MyParam.commonParam.devParam.maxLine)
-                {
-                    listview.Items.Clear();
-                }
-
-
-                ListViewItem newItem = new ListViewItem(new string[] { $"{timeStr}", $"{EPC}", $"{TID}", $"{typeData.ToString()}" });
-
-                if (typeData == eSerialDataType.NG)
-                {
-                    newItem.BackColor = Color.Red;
-                    newItem.ForeColor = Color.White;
-                }
-                if (typeData == eSerialDataType.Duplicate)
-                {
-                    newItem.BackColor = Color.Orange;
-                    newItem.ForeColor = Color.Black;
-                }
-                if (typeData == eSerialDataType.Unknown)
-                {
-                    newItem.BackColor = Color.Black;
-                    newItem.ForeColor = Color.White;
-                }
-                listview.Items.Insert(0, newItem);
+                AddItem();
             }
         }
+
+
+        //public static void ShowLogListviewEPCTID(ListView listview, DateTime dateTime, string EPC, string TID, eSerialDataType typeData)
+        //{
+        //    string timeStr = dateTime.ToString("HH:mm:ss");
+        //    if (listview.InvokeRequired)
+        //    {
+        //        listview.BeginInvoke(new Action(() =>
+        //        {
+        //            if (listview.Items.Count >= MyParam.commonParam.devParam.maxLine)
+        //            {
+        //                listview.Items.Clear();
+        //            }
+
+                    
+        //            ListViewItem newItem = new ListViewItem(new string[] { $"{timeStr}", $"{EPC}",$"{TID}", $"{typeData.ToString()}" });
+
+                   
+        //            if (typeData == eSerialDataType.NG)
+        //            {
+        //                newItem.BackColor = Color.Red;
+        //                newItem.ForeColor = Color.White; 
+        //            }
+        //            if (typeData == eSerialDataType.Duplicate)
+        //            {
+        //                newItem.BackColor = Color.Orange;
+        //                newItem.ForeColor = Color.Black;
+        //            }
+        //            if(typeData == eSerialDataType.Unknown)
+        //            {
+        //                newItem.BackColor = Color.Black;
+        //                newItem.ForeColor = Color.White;
+        //            }
+
+
+        //            listview.Items.Insert(0, newItem);
+        //           // listview.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+        //        }));
+        //    }
+        //    else
+        //    {
+        //        if (listview.Items.Count >= MyParam.commonParam.devParam.maxLine)
+        //        {
+        //            listview.Items.Clear();
+        //        }
+
+
+        //        ListViewItem newItem = new ListViewItem(new string[] { $"{timeStr}", $"{EPC}", $"{TID}", $"{typeData.ToString()}" });
+
+        //        if (typeData == eSerialDataType.NG)
+        //        {
+        //            newItem.BackColor = Color.Red;
+        //            newItem.ForeColor = Color.White;
+        //        }
+        //        if (typeData == eSerialDataType.Duplicate)
+        //        {
+        //            newItem.BackColor = Color.Orange;
+        //            newItem.ForeColor = Color.Black;
+        //        }
+        //        if (typeData == eSerialDataType.Unknown)
+        //        {
+        //            newItem.BackColor = Color.Black;
+        //            newItem.ForeColor = Color.White;
+        //        }
+        //        listview.Items.Insert(0, newItem);
+        //       // listview.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+        //    }
+        //}
         
 
 

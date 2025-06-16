@@ -25,7 +25,9 @@ namespace TanHungHa.Common
         Task_FlushBuffersOQC,
         Task_LoopLogIQC,
         Task_LoopLogOQC,
-        Task_LoopLogDamCaMau
+        Task_LoopLogDamCaMau,
+        Task_LoopWriteExcel,
+        Task_LoopShowListViewDCM
     }
 
 
