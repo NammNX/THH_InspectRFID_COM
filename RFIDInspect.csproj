@@ -362,6 +362,12 @@
     <Compile Include="PopUp\FormListTIDEmpty.Designer.cs">
       <DependentUpon>FormListTIDEmpty.cs</DependentUpon>
     </Compile>
+    <Compile Include="PopUp\FormSpeedWarning.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PopUp\FormSpeedWarning.Designer.cs">
+      <DependentUpon>FormSpeedWarning.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tabs\FormAuto.cs">
@@ -427,6 +433,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PopUp\FormListTIDEmpty.resx">
       <DependentUpon>FormListTIDEmpty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PopUp\FormSpeedWarning.resx">
+      <DependentUpon>FormSpeedWarning.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -27,7 +27,7 @@ namespace TanHungHa.Common
         private readonly int QrCodeColumnIndex = 4; // Cột E
         public MyExcel()
         {
-            
+
         }
 
         /// <summary>
@@ -77,48 +77,107 @@ namespace TanHungHa.Common
         //    }
         //    return false;
         //}
-        
-        public void SetTidForEpc(string epc, string tid, bool highlight = true)
+
+        public void SetTidForEpc(string epc, string tid)
         {
 
             if (!spreadsheet.InvokeRequired)
             {
-                SetTidForEpcUIThread(epc, tid, highlight);
+                SetTidForEpcUIThread(epc, tid);
             }
             else
             {
                 spreadsheet.BeginInvoke(new Action(() =>
                 {
-                    SetTidForEpcUIThread(epc, tid, highlight);
+                    SetTidForEpcUIThread(epc, tid);
                 }));
             }
             //Kết thúc đếm thời gian
-            
+
         }
-        private bool SetTidForEpcUIThread(string epc, string tid, bool highlight)
+        private void SetTidForEpcUIThread(string epc, string tid)
         {
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
             if (epcRowMap.TryGetValue(epc, out int rowIndex))
             {
                 sheet = spreadsheet.Document.Worksheets[0];
                 sheet.Cells[rowIndex, tidColumnIndex].Value = tid;
+                sheet.Rows[rowIndex].FillColor = Color.LightGreen;
 
-                if (highlight)
-                    sheet.Rows[rowIndex].FillColor = Color.LightGreen;
-                if (rowIndex > 5)
-                {
-                    spreadsheet.ActiveWorksheet.ScrollTo(rowIndex - 5, 0);
-                }
-                else
-                {
-                    spreadsheet.ActiveWorksheet.ScrollTo(0, 0);
-                }
-                stopwatch.Stop();
-                Console.WriteLine($"[---Hàm vẽ excel UI---] Time taken: {stopwatch.ElapsedMilliseconds} ms");
-                
-                return true;
+                ScrollExcel(rowIndex);
+                CheckMissItem(rowIndex);
+                //if (rowIndex > 5)
+                //{
+                //    spreadsheet.ActiveWorksheet.ScrollTo(rowIndex - 5, 0);
+                //}
+                //else
+                //{
+                //    spreadsheet.ActiveWorksheet.ScrollTo(0, 0);
+                //}
+
+                //if (MyParam.autoForm.swCheckMissItem.Enabled)
+                //{
+                //    if (int.TryParse(MyParam.autoForm.SpeedDCM, out int speed))
+                //    {
+                //        if (speed < 5)
+                //        {
+                //            lastTidRowIndex = null;
+                //        }
+                //        else if (speed >= 5)
+                //        {
+                //            if (!IsRowAdjacentToPrevious(rowIndex))
+                //            {
+                //                MyLib.showDlgWarning($"Phát hiện có tem trống từ {rowIndex} đến {lastTidRowIndex}, Kiểm tra lại");
+                //                MyParam.commonParam.myComportIQC.SendData(MyDefine.StopMachine);
+                //            }
+                //        }
+                //    }
+                //}
             }
-            return false;
+            stopwatch.Stop();
+            Console.WriteLine($"[---Hàm vẽ excel UI---] Time taken: {stopwatch.ElapsedMilliseconds} ms");
+        }
+        private void CheckMissItem(int rowIndex)
+        {
+            if (!MyParam.autoForm.swCheckMissItem.Checked)
+                return;
+
+            if (int.TryParse(MyParam.autoForm.SpeedDCM, out int speed))
+            {
+                if (speed < MyParam.commonParam.devParam.SpeedCheckMissItem)
+                {
+                    lastTidRowIndex = null;
+                    return;
+                }
+                int? _lastTidRowIndex = lastTidRowIndex;
+                if (!IsRowAdjacentToPrevious(rowIndex))
+                {
+                    MyLib.showDlgWarning($"Phát hiện có tem trống, Kiểm tra vị trí từ {rowIndex} đến {_lastTidRowIndex}");
+                    MyParam.commonParam.myComportIQC.SendData(MyDefine.StopMachine);
+                }
+                
+            }
+
+        }
+
+        private DateTime lastScrollTime = DateTime.MinValue;
+        private const int SCROLL_THROTTLE_MS = 1500;
+        private void ScrollExcel(int rowIndex)
+        {
+            var now = DateTime.Now;
+            if ((now - lastScrollTime).TotalMilliseconds < SCROLL_THROTTLE_MS)
+                return; 
+
+            lastScrollTime = now;
+
+            if (rowIndex > 5)
+            {
+                spreadsheet.ActiveWorksheet.ScrollTo(rowIndex - 5, 0);
+            }
+            else
+            {
+                spreadsheet.ActiveWorksheet.ScrollTo(0, 0);
+            }
         }
 
         /// <summary>
@@ -161,7 +220,7 @@ namespace TanHungHa.Common
                 if (string.IsNullOrWhiteSpace(filePath))
                     throw new ArgumentException("Invalid file path.");
 
-             
+
 
                 // Đảm bảo gọi SaveDocument trên UI thread
                 if (spreadsheet.InvokeRequired)
@@ -188,8 +247,8 @@ namespace TanHungHa.Common
         }
 
 
-       
-        
+
+
 
         /// <summary>
         /// Đếm số lượng dòng có dữ liệu (không rỗng) trong cột TID ,
@@ -242,7 +301,7 @@ namespace TanHungHa.Common
         /// <param name="value">Giá trị cần tìm (không phân biệt hoa thường, bỏ khoảng trắng đầu/cuối).</param>
         /// <returns>Danh sách chỉ số dòng (bắt đầu từ 0) tìm thấy dữ liệu.</returns>
         public List<int> FindRowsByValueInTidOrQrCode(string value)
-        { 
+        {
 
             if (string.IsNullOrWhiteSpace(value))
                 return new List<int>();
@@ -286,7 +345,30 @@ namespace TanHungHa.Common
             return matchedRows;
         }
 
-
+        private int? lastTidRowIndex = null;
+        /// <summary>
+        /// Kiểm tra xem dòng hiện tại có liền kề dòng trước đó đã gán TID hay không.
+        /// Nếu đúng sẽ cập nhật dòng cuối và trả về true, nếu sai trả false.
+        /// </summary>
+        /// <param name="currentRowIndex">Dòng hiện tại (bắt đầu từ 0)</param>
+        /// <returns>True nếu liền kề, false nếu không</returns>
+        public bool IsRowAdjacentToPrevious(int currentRowIndex)
+        {
+            if (!lastTidRowIndex.HasValue)
+            {
+                // Trường hợp lần đầu tiên gán ⇒ luôn hợp lệ
+                lastTidRowIndex = currentRowIndex;
+                return true;
+            }
+            int diff = Math.Abs(currentRowIndex - lastTidRowIndex.Value);
+            lastTidRowIndex = currentRowIndex;
+            if (diff == 1)
+            {
+                return true;
+            }
+            // Không liền kề
+            return false;
+        }
 
 
 

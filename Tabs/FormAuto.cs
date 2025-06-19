@@ -1196,6 +1196,7 @@ namespace TanHungHa.Tabs
         private DateTime lastUpdateTimeOQC;
         private System.Windows.Forms.Timer checkTimerDCM;
         private DateTime lastUpdateTimeDCM;
+        public string SpeedDCM { get; set; }
         private void CheckTimer_Tick_IQC(object sender, EventArgs e)
         {
             // Nếu không có sự thay đổi trong 2 giây, gán lại label = 0
@@ -1216,9 +1217,15 @@ namespace TanHungHa.Tabs
         }
         private void CheckTimer_Tick_DCM(object sender, EventArgs e)
         {
-            // Nếu không có sự thay đổi trong 2 giây, gán lại label = 0
-            if ((DateTime.Now - lastUpdateTimeDCM).TotalSeconds >= 2)
+            // Nếu không có sự thay đổi trong 1,5 giây, gán lại label = 0
+            if ((DateTime.Now - lastUpdateTimeDCM).TotalSeconds >= 1.5)
             {
+                if (warningForm != null && !warningForm.IsDisposed)
+                {
+                    warningForm.Close(); // Tự động ẩn đi khi tốc độ ổn định
+                    warningForm = null;
+                }
+                SpeedDCM = "0"; // Reset tốc độ
                 lbSpeedDCM.Text = "0 pcs/s";
                 checkTimerDCM.Stop(); // Dừng timer khi không cần kiểm tra nữa
             }
@@ -1287,6 +1294,8 @@ namespace TanHungHa.Tabs
                 checkTimerOQC.Start();
             }
         }
+        private FormSpeedWarning warningForm = null;
+
         public void UpdateLabelSpeedDCM(string data)
         {
             if (InvokeRequired)
@@ -1294,9 +1303,29 @@ namespace TanHungHa.Tabs
                 Invoke(new Action<string>(UpdateLabelSpeedDCM), data);
                 return;
             }
-            var speed = GetLastDataAfterColon(data);
-            lbSpeedDCM.Text = $"{speed} pcs/s";
+            SpeedDCM = GetLastDataAfterColon(data);
+            lbSpeedDCM.Text = $"{SpeedDCM} pcs/s";
             lastUpdateTimeDCM = DateTime.Now;
+            if (double.TryParse(SpeedDCM, out double _speed))
+            {
+                if (_speed > MyParam.commonParam.devParam.MaxSpeedModeDCM)
+                {
+                    if (warningForm == null || warningForm.IsDisposed)
+                    {
+                        warningForm = new FormSpeedWarning();
+                        warningForm.Show();
+                    }
+                }
+                else
+                {
+                    if (warningForm != null && !warningForm.IsDisposed)
+                    {
+                        warningForm.Close(); // Tự động ẩn đi khi tốc độ ổn định
+                        warningForm = null;
+                    }
+                }
+            }
+
             if (checkTimerDCM == null)
             {
                 checkTimerDCM = new System.Windows.Forms.Timer();

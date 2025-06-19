@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TanHungHa.Common
 {
@@ -12,16 +9,16 @@ namespace TanHungHa.Common
     {
         //public static DateTime expried_time = new DateTime(2024, 8, 13, 9, 0, 0);
         public const string VERSION = @"Ver 2.0.0.160625";
-        
+
         public const int HEIGHT_OF_ROW = 50;
-        
+
         public const int MIN_ROW = 1;
         public const int MAX_ROW = 5;
-        
+
         public const int ROUND_DIGIT = 5;
         public const int RATIO = 1000;
-        
-       
+
+
 
 
         public static readonly string title = "RFID Inspection";
@@ -33,7 +30,7 @@ namespace TanHungHa.Common
         public const string treenodeTheme = "Theme";
         public const string treenodeDev = "Developer";
 
-        public const string dataBaseNameDefault  = "Default";
+        public const string dataBaseNameDefault = "Default";
 
         // file excel master
         public const string col1 = "STT";
@@ -61,10 +58,10 @@ namespace TanHungHa.Common
         public const int MAX_QUEUE_DATA = 30;
         public const int NUM_DEVICES = 2;
 
-        public static int[] baudrates = new int[] { 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200 } ;
-        public static int[] dataSize = new int[] { 7,8 };
+        public static int[] baudrates = new int[] { 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200 };
+        public static int[] dataSize = new int[] { 7, 8 };
 
-        
+
 
         public static readonly string workingDirectory = Environment.CurrentDirectory;
         public static readonly string projectDirectory = Directory.GetParent(workingDirectory).Parent.FullName;
@@ -78,21 +75,21 @@ namespace TanHungHa.Common
 
 
         public static readonly string file_config = String.Format($"{workingDirectory}\\Configs\\config_param.json");
-        public static readonly string file_uiParam= String.Format($"{workingDirectory}\\Configs\\uiParameter.json");
-        public static readonly string file_runParam= String.Format($"{workingDirectory}\\Configs\\runParameter.json");
-        public static readonly string file_model= String.Format($"{workingDirectory}\\Configs\\models.json");
-        
-        //public static readonly string path_solution= String.Format($"{workingDirectory}\\Data\\TapeAlignment.sol");
-       
+        public static readonly string file_uiParam = String.Format($"{workingDirectory}\\Configs\\uiParameter.json");
+        public static readonly string file_runParam = String.Format($"{workingDirectory}\\Configs\\runParameter.json");
+        public static readonly string file_model = String.Format($"{workingDirectory}\\Configs\\models.json");
 
-        public static readonly string file_cameraParam= String.Format($"{workingDirectory}\\Configs\\camParameter.json");
+        //public static readonly string path_solution= String.Format($"{workingDirectory}\\Data\\TapeAlignment.sol");
+
+
+        public static readonly string file_cameraParam = String.Format($"{workingDirectory}\\Configs\\camParameter.json");
         public static readonly string file_excel = String.Format($"{workingDirectory}\\Data\\ImportData.xlsx");
 
         public static readonly string file_config_format_data = String.Format($"{workingDirectory}\\Data\\configs\\format_data.json");
         public static readonly string file_config_common_param = String.Format($"{workingDirectory}\\Data\\configs\\common_param.json");
         public static readonly string file_config_filter_window = String.Format($"{workingDirectory}\\Data\\configs\\filter_window.json");
-        
-        
+
+
 
         public static readonly string key_thh = @"https://tanhungha.com.vn/";
         public static readonly string hash_key = "";

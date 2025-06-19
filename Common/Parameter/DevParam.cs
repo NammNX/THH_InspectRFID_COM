@@ -39,6 +39,10 @@ namespace TanHungHa.Common
         public bool ignoreIQC { get; set; }
         [Category("Common Param"), DescriptionAttribute("If not used OQC, set to True, else set to False")]
         public bool ignoreOQC { get; set; }
+        [Category("Common Param"), DescriptionAttribute("Max Speed Mode DCM")]
+        public int MaxSpeedModeDCM { get; set; }
+        [Category("Common Param"), DescriptionAttribute("Speed Enable Mode Check Miss Item")]
+        public int SpeedCheckMissItem { get; set; } 
 
         [Category("Excel DCM"), DescriptionAttribute("Template col1 file excel DCM")]
         public string col1 { get; set; } 
@@ -67,11 +71,12 @@ namespace TanHungHa.Common
         {
             get; set;
         }
-
        
 
 
-      
+
+
+
 
         //--------------------------------------------
         DevParam()
@@ -80,6 +85,8 @@ namespace TanHungHa.Common
             ignoreIQC = false;
             ignoreOQC = false;
             LengthNG = 5;
+            MaxSpeedModeDCM = 10;
+            SpeedCheckMissItem = 5;
             LayoutMax = new Size(100, 1500);
             LayoutMin = new Size(400, 1050);
            

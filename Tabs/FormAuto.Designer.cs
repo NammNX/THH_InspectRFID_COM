@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.lbOQCbuffer = new System.Windows.Forms.Label();
             this.lbIQCbuffer = new System.Windows.Forms.Label();
@@ -48,13 +48,16 @@
             this.btnStart = new MaterialSkin.Controls.MaterialButton();
             this.groupDB_UI = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel23 = new System.Windows.Forms.TableLayoutPanel();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.swCheckMissItem = new MaterialSkin.Controls.MaterialSwitch();
+            this.groupBoxFlushDBChecked = new System.Windows.Forms.GroupBox();
+            this.swFlushDB = new MaterialSkin.Controls.MaterialSwitch();
             this.groupBoxMode = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
             this.btnOnlyTID = new System.Windows.Forms.Button();
             this.btnOnlyEPC = new System.Windows.Forms.Button();
             this.btnEPCTID = new System.Windows.Forms.Button();
-            this.groupBoxFlushDBChecked = new System.Windows.Forms.GroupBox();
-            this.swFlushDB = new MaterialSkin.Controls.MaterialSwitch();
             this.btnInit = new MaterialSkin.Controls.MaterialButton();
             this.groupBoxDcm = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
@@ -150,9 +153,11 @@
             this.tableLayoutPanel5.SuspendLayout();
             this.groupDB_UI.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
+            this.tableLayoutPanel23.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBoxFlushDBChecked.SuspendLayout();
             this.groupBoxMode.SuspendLayout();
             this.tableLayoutPanel13.SuspendLayout();
-            this.groupBoxFlushDBChecked.SuspendLayout();
             this.groupBoxDcm.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
             this.tableLayoutPanel16.SuspendLayout();
@@ -360,9 +365,9 @@
             // 
             this.tableLayoutPanel4.ColumnCount = 1;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel23, 0, 7);
             this.tableLayoutPanel4.Controls.Add(this.groupBoxMode, 0, 5);
             this.tableLayoutPanel4.Controls.Add(this.groupDB_UI, 0, 8);
-            this.tableLayoutPanel4.Controls.Add(this.groupBoxFlushDBChecked, 0, 7);
             this.tableLayoutPanel4.Controls.Add(this.btnStop, 0, 2);
             this.tableLayoutPanel4.Controls.Add(this.btnStart, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.btnInit, 0, 0);
@@ -385,6 +390,86 @@
             this.tableLayoutPanel4.Size = new System.Drawing.Size(166, 644);
             this.tableLayoutPanel4.TabIndex = 2;
             this.tableLayoutPanel4.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel4_Paint);
+            // 
+            // tableLayoutPanel23
+            // 
+            this.tableLayoutPanel23.ColumnCount = 2;
+            this.tableLayoutPanel23.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel23.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel23.Controls.Add(this.groupBox4, 0, 0);
+            this.tableLayoutPanel23.Controls.Add(this.groupBoxFlushDBChecked, 1, 0);
+            this.tableLayoutPanel23.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel23.Location = new System.Drawing.Point(3, 456);
+            this.tableLayoutPanel23.Name = "tableLayoutPanel23";
+            this.tableLayoutPanel23.RowCount = 1;
+            this.tableLayoutPanel23.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel23.Size = new System.Drawing.Size(160, 51);
+            this.tableLayoutPanel23.TabIndex = 1;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.groupBox4.Controls.Add(this.swCheckMissItem);
+            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox4.Location = new System.Drawing.Point(3, 3);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(74, 45);
+            this.groupBox4.TabIndex = 10;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Check Miss";
+            // 
+            // swCheckMissItem
+            // 
+            this.swCheckMissItem.AutoSize = true;
+            this.swCheckMissItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.swCheckMissItem.Checked = true;
+            this.swCheckMissItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.swCheckMissItem.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.swCheckMissItem.Depth = 0;
+            this.swCheckMissItem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.swCheckMissItem.Location = new System.Drawing.Point(3, 16);
+            this.swCheckMissItem.Margin = new System.Windows.Forms.Padding(0);
+            this.swCheckMissItem.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.swCheckMissItem.MouseState = MaterialSkin.MouseState.HOVER;
+            this.swCheckMissItem.Name = "swCheckMissItem";
+            this.swCheckMissItem.Ripple = true;
+            this.swCheckMissItem.Size = new System.Drawing.Size(68, 26);
+            this.swCheckMissItem.TabIndex = 0;
+            this.swCheckMissItem.UseVisualStyleBackColor = false;
+            // 
+            // groupBoxFlushDBChecked
+            // 
+            this.groupBoxFlushDBChecked.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.groupBoxFlushDBChecked.Controls.Add(this.swFlushDB);
+            this.groupBoxFlushDBChecked.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxFlushDBChecked.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxFlushDBChecked.Location = new System.Drawing.Point(83, 3);
+            this.groupBoxFlushDBChecked.Name = "groupBoxFlushDBChecked";
+            this.groupBoxFlushDBChecked.Size = new System.Drawing.Size(74, 45);
+            this.groupBoxFlushDBChecked.TabIndex = 9;
+            this.groupBoxFlushDBChecked.TabStop = false;
+            this.groupBoxFlushDBChecked.Text = "Flush DB";
+            // 
+            // swFlushDB
+            // 
+            this.swFlushDB.AutoSize = true;
+            this.swFlushDB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.swFlushDB.Checked = true;
+            this.swFlushDB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.swFlushDB.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.swFlushDB.Depth = 0;
+            this.swFlushDB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.swFlushDB.Location = new System.Drawing.Point(3, 16);
+            this.swFlushDB.Margin = new System.Windows.Forms.Padding(0);
+            this.swFlushDB.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.swFlushDB.MouseState = MaterialSkin.MouseState.HOVER;
+            this.swFlushDB.Name = "swFlushDB";
+            this.swFlushDB.Ripple = true;
+            this.swFlushDB.Size = new System.Drawing.Size(68, 26);
+            this.swFlushDB.TabIndex = 0;
+            this.swFlushDB.UseVisualStyleBackColor = false;
+            this.swFlushDB.CheckedChanged += new System.EventHandler(this.swFlushDB_CheckedChanged);
             // 
             // groupBoxMode
             // 
@@ -448,39 +533,6 @@
             this.btnEPCTID.Text = "EPC\r\n/TID";
             this.btnEPCTID.UseVisualStyleBackColor = true;
             this.btnEPCTID.Click += new System.EventHandler(this.btnEPCTID_Click);
-            // 
-            // groupBoxFlushDBChecked
-            // 
-            this.groupBoxFlushDBChecked.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.groupBoxFlushDBChecked.Controls.Add(this.swFlushDB);
-            this.groupBoxFlushDBChecked.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxFlushDBChecked.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBoxFlushDBChecked.Location = new System.Drawing.Point(3, 456);
-            this.groupBoxFlushDBChecked.Name = "groupBoxFlushDBChecked";
-            this.groupBoxFlushDBChecked.Size = new System.Drawing.Size(160, 51);
-            this.groupBoxFlushDBChecked.TabIndex = 9;
-            this.groupBoxFlushDBChecked.TabStop = false;
-            this.groupBoxFlushDBChecked.Text = "Flush DB";
-            // 
-            // swFlushDB
-            // 
-            this.swFlushDB.AutoSize = true;
-            this.swFlushDB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.swFlushDB.Checked = true;
-            this.swFlushDB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.swFlushDB.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.swFlushDB.Depth = 0;
-            this.swFlushDB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.swFlushDB.Location = new System.Drawing.Point(3, 16);
-            this.swFlushDB.Margin = new System.Windows.Forms.Padding(0);
-            this.swFlushDB.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.swFlushDB.MouseState = MaterialSkin.MouseState.HOVER;
-            this.swFlushDB.Name = "swFlushDB";
-            this.swFlushDB.Ripple = true;
-            this.swFlushDB.Size = new System.Drawing.Size(154, 32);
-            this.swFlushDB.TabIndex = 0;
-            this.swFlushDB.UseVisualStyleBackColor = false;
-            this.swFlushDB.CheckedChanged += new System.EventHandler(this.swFlushDB_CheckedChanged);
             // 
             // btnInit
             // 
@@ -610,10 +662,11 @@
             // 
             this.groupBoxAutoSaveExcel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.groupBoxAutoSaveExcel.Controls.Add(this.swAutoSaveFileExcel);
+            this.groupBoxAutoSaveExcel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxAutoSaveExcel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBoxAutoSaveExcel.Location = new System.Drawing.Point(83, 3);
             this.groupBoxAutoSaveExcel.Name = "groupBoxAutoSaveExcel";
-            this.groupBoxAutoSaveExcel.Size = new System.Drawing.Size(68, 45);
+            this.groupBoxAutoSaveExcel.Size = new System.Drawing.Size(74, 45);
             this.groupBoxAutoSaveExcel.TabIndex = 14;
             this.groupBoxAutoSaveExcel.TabStop = false;
             this.groupBoxAutoSaveExcel.Text = "Auto Save";
@@ -631,7 +684,7 @@
             this.swAutoSaveFileExcel.MouseState = MaterialSkin.MouseState.HOVER;
             this.swAutoSaveFileExcel.Name = "swAutoSaveFileExcel";
             this.swAutoSaveFileExcel.Ripple = true;
-            this.swAutoSaveFileExcel.Size = new System.Drawing.Size(62, 26);
+            this.swAutoSaveFileExcel.Size = new System.Drawing.Size(68, 26);
             this.swAutoSaveFileExcel.TabIndex = 12;
             this.swAutoSaveFileExcel.UseVisualStyleBackColor = true;
             // 
@@ -639,10 +692,11 @@
             // 
             this.groupboxbypass.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.groupboxbypass.Controls.Add(this.swByPass);
+            this.groupboxbypass.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupboxbypass.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupboxbypass.Location = new System.Drawing.Point(3, 3);
             this.groupboxbypass.Name = "groupboxbypass";
-            this.groupboxbypass.Size = new System.Drawing.Size(67, 45);
+            this.groupboxbypass.Size = new System.Drawing.Size(74, 45);
             this.groupboxbypass.TabIndex = 13;
             this.groupboxbypass.TabStop = false;
             this.groupboxbypass.Text = "By Pass";
@@ -659,7 +713,7 @@
             this.swByPass.MouseState = MaterialSkin.MouseState.HOVER;
             this.swByPass.Name = "swByPass";
             this.swByPass.Ripple = true;
-            this.swByPass.Size = new System.Drawing.Size(61, 26);
+            this.swByPass.Size = new System.Drawing.Size(68, 26);
             this.swByPass.TabIndex = 12;
             this.swByPass.UseVisualStyleBackColor = true;
             this.swByPass.CheckedChanged += new System.EventHandler(this.swByPass_CheckedChanged);
@@ -694,17 +748,17 @@
             // 
             // chartOQC
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chartOQC.ChartAreas.Add(chartArea4);
+            chartArea1.Name = "ChartArea1";
+            this.chartOQC.ChartAreas.Add(chartArea1);
             this.chartOQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend4.Name = "Legend1";
-            this.chartOQC.Legends.Add(legend4);
+            legend1.Name = "Legend1";
+            this.chartOQC.Legends.Add(legend1);
             this.chartOQC.Location = new System.Drawing.Point(3, 3);
             this.chartOQC.Name = "chartOQC";
-            series4.ChartArea = "ChartArea1";
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.chartOQC.Series.Add(series4);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chartOQC.Series.Add(series1);
             this.chartOQC.Size = new System.Drawing.Size(130, 391);
             this.chartOQC.TabIndex = 0;
             this.chartOQC.Text = "chart1";
@@ -793,17 +847,17 @@
             // 
             // chartIQC
             // 
-            chartArea5.Name = "ChartArea1";
-            this.chartIQC.ChartAreas.Add(chartArea5);
+            chartArea2.Name = "ChartArea1";
+            this.chartIQC.ChartAreas.Add(chartArea2);
             this.chartIQC.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend5.Name = "Legend1";
-            this.chartIQC.Legends.Add(legend5);
+            legend2.Name = "Legend1";
+            this.chartIQC.Legends.Add(legend2);
             this.chartIQC.Location = new System.Drawing.Point(3, 3);
             this.chartIQC.Name = "chartIQC";
-            series5.ChartArea = "ChartArea1";
-            series5.Legend = "Legend1";
-            series5.Name = "Series1";
-            this.chartIQC.Series.Add(series5);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chartIQC.Series.Add(series2);
             this.chartIQC.Size = new System.Drawing.Size(129, 391);
             this.chartIQC.TabIndex = 0;
             this.chartIQC.Text = "chart1";
@@ -917,17 +971,17 @@
             // 
             // chartDCM
             // 
-            chartArea6.Name = "ChartArea1";
-            this.chartDCM.ChartAreas.Add(chartArea6);
+            chartArea3.Name = "ChartArea1";
+            this.chartDCM.ChartAreas.Add(chartArea3);
             this.chartDCM.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend6.Name = "Legend1";
-            this.chartDCM.Legends.Add(legend6);
+            legend3.Name = "Legend1";
+            this.chartDCM.Legends.Add(legend3);
             this.chartDCM.Location = new System.Drawing.Point(3, 3);
             this.chartDCM.Name = "chartDCM";
-            series6.ChartArea = "ChartArea1";
-            series6.Legend = "Legend1";
-            series6.Name = "Series1";
-            this.chartDCM.Series.Add(series6);
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.chartDCM.Series.Add(series3);
             this.chartDCM.Size = new System.Drawing.Size(283, 396);
             this.chartDCM.TabIndex = 0;
             this.chartDCM.Text = "chart1";
@@ -1662,14 +1716,14 @@
             // clearLogToolStripMenuItem1
             // 
             this.clearLogToolStripMenuItem1.Name = "clearLogToolStripMenuItem1";
-            this.clearLogToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.clearLogToolStripMenuItem1.Size = new System.Drawing.Size(141, 22);
             this.clearLogToolStripMenuItem1.Text = "Clear Log";
             this.clearLogToolStripMenuItem1.Click += new System.EventHandler(this.clearLogToolStripMenuItem1_Click);
             // 
             // clearAllLogToolStripMenuItem
             // 
             this.clearAllLogToolStripMenuItem.Name = "clearAllLogToolStripMenuItem";
-            this.clearAllLogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.clearAllLogToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.clearAllLogToolStripMenuItem.Text = "Clear All Log";
             this.clearAllLogToolStripMenuItem.Click += new System.EventHandler(this.clearAllLogToolStripMenuItem_Click);
             // 
@@ -1688,10 +1742,13 @@
             this.groupDB_UI.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
-            this.groupBoxMode.ResumeLayout(false);
-            this.tableLayoutPanel13.ResumeLayout(false);
+            this.tableLayoutPanel23.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.groupBoxFlushDBChecked.ResumeLayout(false);
             this.groupBoxFlushDBChecked.PerformLayout();
+            this.groupBoxMode.ResumeLayout(false);
+            this.tableLayoutPanel13.ResumeLayout(false);
             this.groupBoxDcm.ResumeLayout(false);
             this.tableLayoutPanel10.ResumeLayout(false);
             this.tableLayoutPanel10.PerformLayout();
@@ -1865,5 +1922,8 @@
         private MaterialSkin.Controls.MaterialButton btnReplaceItem;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.ComboBox cbbFindRoll;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel23;
+        private System.Windows.Forms.GroupBox groupBox4;
+        public MaterialSkin.Controls.MaterialSwitch swCheckMissItem;
     }
 }
