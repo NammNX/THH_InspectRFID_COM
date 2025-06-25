@@ -55,6 +55,9 @@ namespace TanHungHa.Common
         [Category("Excel DCM"), DescriptionAttribute("Template col5 file excel DCM")]
         public string col5 { get; set; }
 
+        [Category("Excel DCM"), DescriptionAttribute("Width TID Column")]
+        public int WidthTidColumn { get; set; }
+
         [Category("Layout"), DescriptionAttribute("Layout size when zoom out")]
         public Size LayoutMax { get; set; }
         [Category("Layout"), DescriptionAttribute("Layout size when zoom in")]
@@ -87,6 +90,7 @@ namespace TanHungHa.Common
             LengthNG = 5;
             MaxSpeedModeDCM = 10;
             SpeedCheckMissItem = 5;
+            WidthTidColumn = 700;
             LayoutMax = new Size(100, 1500);
             LayoutMin = new Size(400, 1050);
            

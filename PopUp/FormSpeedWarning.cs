@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TanHungHa.Common;
 
 namespace TanHungHa.PopUp
 {
@@ -16,7 +17,7 @@ namespace TanHungHa.PopUp
         public FormSpeedWarning()
         {
             InitializeComponent();
-            btnWarning.Text = "⚠ Tốc độ vượt quá giới hạn! Vui lòng giảm xuống ≤ 10 pcs/s";
+            btnWarning.Text = $"⚠ Tốc độ vượt quá giới hạn! Vui lòng giảm xuống ≤ {MyParam.commonParam.devParam.MaxSpeedModeDCM} pcs/s";
         }
     }
 }

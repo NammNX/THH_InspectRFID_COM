@@ -208,7 +208,6 @@ namespace TanHungHa.Tabs
         
         public bool SaveFileExcel(FileExistsAction action = FileExistsAction.Overwrite)
         {
-            Stopwatch sw = Stopwatch.StartNew();
             // Đường dẫn đầy đủ tới file
             string folderPath = MyParam.runParam.PathFolderSaveFileExcel;
             string fullPath = System.IO.Path.Combine(folderPath, MyParam.runParam.FileNameDamCaMau);
@@ -249,8 +248,6 @@ namespace TanHungHa.Tabs
                 MyParam.commonParam.myExcel.SaveExcelToPath(fullPath);
                 MyParam.runParam.FullPathSaveFileExcel = fullPath;
             }
-            sw.Stop(); // Kết thúc đếm thời gian
-            Console.WriteLine($"[SaveFileExcel] Time taken: {sw.ElapsedMilliseconds} ms");
             return shouldSave;
 
         }

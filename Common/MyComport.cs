@@ -359,7 +359,7 @@ namespace TanHungHa.Common
                 return false;
             try
             {
-                serialPort.Write(string.Format($"{prefix}{data+"\n"}{suffix}"));
+                serialPort.Write(string.Format($"{prefix}{data}{suffix}"));
             }
             catch (Exception e)
             {

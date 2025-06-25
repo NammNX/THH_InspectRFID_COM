@@ -36,6 +36,8 @@ namespace TanHungHa.Common
         public void SetSpreadSheet(SpreadsheetControl spr)
         {
             spreadsheet = spr ?? throw new ArgumentNullException(nameof(spr));
+            
+
         }
         /// <summary>
         /// Gọi hàm này sau khi LoadDocument
@@ -44,6 +46,8 @@ namespace TanHungHa.Common
         {
             epcRowMap.Clear();
             sheet = spreadsheet.Document.Worksheets[0];
+            sheet.Columns.AutoFit(0, sheet.Columns.LastUsedIndex);
+            sheet.Columns[tidColumnIndex].Width = MyParam.commonParam.devParam.WidthTidColumn;
             CellRange usedRange = sheet.GetUsedRange();
 
             int startRow = usedRange.TopRowIndex;
@@ -105,43 +109,16 @@ namespace TanHungHa.Common
                 sheet.Rows[rowIndex].FillColor = Color.LightGreen;
 
                 ScrollExcel(rowIndex);
-                CheckMissItem(rowIndex);
-                //if (rowIndex > 5)
-                //{
-                //    spreadsheet.ActiveWorksheet.ScrollTo(rowIndex - 5, 0);
-                //}
-                //else
-                //{
-                //    spreadsheet.ActiveWorksheet.ScrollTo(0, 0);
-                //}
-
-                //if (MyParam.autoForm.swCheckMissItem.Enabled)
-                //{
-                //    if (int.TryParse(MyParam.autoForm.SpeedDCM, out int speed))
-                //    {
-                //        if (speed < 5)
-                //        {
-                //            lastTidRowIndex = null;
-                //        }
-                //        else if (speed >= 5)
-                //        {
-                //            if (!IsRowAdjacentToPrevious(rowIndex))
-                //            {
-                //                MyLib.showDlgWarning($"Phát hiện có tem trống từ {rowIndex} đến {lastTidRowIndex}, Kiểm tra lại");
-                //                MyParam.commonParam.myComportIQC.SendData(MyDefine.StopMachine);
-                //            }
-                //        }
-                //    }
-                //}
+                if (MyParam.autoForm.swCheckMissItem.Checked)
+                {
+                    CheckMissItem(rowIndex);
+                }
             }
             stopwatch.Stop();
             Console.WriteLine($"[---Hàm vẽ excel UI---] Time taken: {stopwatch.ElapsedMilliseconds} ms");
         }
         private void CheckMissItem(int rowIndex)
         {
-            if (!MyParam.autoForm.swCheckMissItem.Checked)
-                return;
-
             if (int.TryParse(MyParam.autoForm.SpeedDCM, out int speed))
             {
                 if (speed < MyParam.commonParam.devParam.SpeedCheckMissItem)
@@ -152,27 +129,26 @@ namespace TanHungHa.Common
                 int? _lastTidRowIndex = lastTidRowIndex;
                 if (!IsRowAdjacentToPrevious(rowIndex))
                 {
-                    MyLib.showDlgWarning($"Phát hiện có tem trống, Kiểm tra vị trí từ {rowIndex} đến {_lastTidRowIndex}");
                     MyParam.commonParam.myComportIQC.SendData(MyDefine.StopMachine);
+                    MyLib.showDlgWarning($"Phát hiện có tem trống, Kiểm tra vị trí từ {rowIndex} đến {_lastTidRowIndex}");
+                    
                 }
-                
             }
-
         }
 
         private DateTime lastScrollTime = DateTime.MinValue;
         private const int SCROLL_THROTTLE_MS = 1500;
         private void ScrollExcel(int rowIndex)
         {
-            var now = DateTime.Now;
+            DateTime now = DateTime.Now;
             if ((now - lastScrollTime).TotalMilliseconds < SCROLL_THROTTLE_MS)
                 return; 
 
             lastScrollTime = now;
 
-            if (rowIndex > 5)
+            if (rowIndex > 8)
             {
-                spreadsheet.ActiveWorksheet.ScrollTo(rowIndex - 5, 0);
+                spreadsheet.ActiveWorksheet.ScrollTo(rowIndex - 8, 0);
             }
             else
             {
@@ -214,7 +190,6 @@ namespace TanHungHa.Common
 
         public bool SaveExcelToPath(string filePath)
         {
-            Stopwatch sw = Stopwatch.StartNew();
             try
             {
                 if (string.IsNullOrWhiteSpace(filePath))
@@ -234,9 +209,6 @@ namespace TanHungHa.Common
                 {
                     spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
                 }
-
-                sw.Stop();
-                Console.WriteLine($"[SaveExcelToPath] Save done in {sw.ElapsedMilliseconds} ms");
                 return true;
             }
             catch (Exception ex)
