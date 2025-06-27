@@ -13,6 +13,7 @@ using DocumentFormat.OpenXml.Drawing;
 using DevExpress.Internal.WinApi.Windows.UI.Notifications;
 using System.IO;
 using System.Collections.Concurrent;
+using TanHungHa.PopUp;
 
 namespace TanHungHa.Common
 {
@@ -117,10 +118,16 @@ namespace TanHungHa.Common
             stopwatch.Stop();
             Console.WriteLine($"[---Hàm vẽ excel UI---] Time taken: {stopwatch.ElapsedMilliseconds} ms");
         }
+        private FormCheckMissItems checkMissItemForm = null;
         private void CheckMissItem(int rowIndex)
         {
             if (int.TryParse(MyParam.autoForm.SpeedDCM, out int speed))
             {
+                
+                if (checkMissItemForm?.RemoveRowIfExists(rowIndex) == true)
+                {
+                    return;
+                }
                 if (speed < MyParam.commonParam.devParam.SpeedCheckMissItem)
                 {
                     lastTidRowIndex = null;
@@ -130,8 +137,25 @@ namespace TanHungHa.Common
                 if (!IsRowAdjacentToPrevious(rowIndex))
                 {
                     MyParam.commonParam.myComportIQC.SendData(MyDefine.StopMachine);
-                    MyLib.showDlgWarning($"Phát hiện có tem trống, Kiểm tra vị trí từ {rowIndex} đến {_lastTidRowIndex}");
-                    
+                    // Tính danh sách các dòng bị thiếu
+                    List<int> missingRows = new List<int>();
+                    if (_lastTidRowIndex.HasValue)
+                    {
+                        int start = Math.Min(_lastTidRowIndex.Value, rowIndex);
+                        int end = Math.Max(_lastTidRowIndex.Value, rowIndex);
+
+                        for (int i = start + 1; i < end; i++)
+                        {
+                            missingRows.Add(i);
+                        }
+                    }
+                    if (checkMissItemForm == null || checkMissItemForm.IsDisposed)
+                    {
+                        checkMissItemForm = new FormCheckMissItems(spreadsheet);
+                        checkMissItemForm.Show();
+                    }
+
+                    checkMissItemForm.UpdateMissingRows(missingRows);
                 }
             }
         }

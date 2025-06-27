@@ -247,7 +247,7 @@ namespace TanHungHa.Common
         }
         public static void LoopProcessAutoSaveExcel()
         {
-            if (MyParam.autoForm.swAutoSaveFileExcel.Checked == false)
+            if (!MyParam.autoForm.swAutoSaveFileExcel.Checked)
             {
                 return;
             }

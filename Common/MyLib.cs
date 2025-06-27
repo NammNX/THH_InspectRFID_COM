@@ -216,12 +216,14 @@ namespace TanHungHa.Common
                 {
                     MaterialDialog materialDialog = new MaterialDialog(MyParam.mainForm, "Error", message, "OK");
                     DialogResult result = materialDialog.ShowDialog(MyParam.mainForm);
+
                 }));
             }
             else
             {
                 MaterialDialog materialDialog = new MaterialDialog(MyParam.mainForm, "Error", message, "OK");
                 DialogResult result = materialDialog.ShowDialog(MyParam.mainForm);
+
             }
 
 
@@ -241,6 +243,7 @@ namespace TanHungHa.Common
                 {
                     MaterialDialog materialDialog = new MaterialDialog(MyParam.mainForm, "Warning", message, "OK");
                     DialogResult result = materialDialog.ShowDialog(MyParam.mainForm);
+
                 }));
             }
             else
@@ -264,12 +267,15 @@ namespace TanHungHa.Common
                 {
                     MaterialDialog materialDialog = new MaterialDialog(MyParam.mainForm, "Info", message, "OK");
                     DialogResult result = materialDialog.ShowDialog(MyParam.mainForm);
+
                 }));
             }
             else
             {
                 MaterialDialog materialDialog = new MaterialDialog(MyParam.mainForm, "Info", message, "OK");
                 DialogResult result = materialDialog.ShowDialog(MyParam.mainForm);
+
+
             }
         }
 

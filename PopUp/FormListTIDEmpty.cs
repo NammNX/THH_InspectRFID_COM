@@ -25,18 +25,13 @@ namespace TanHungHa.PopUp
 
             _spreadsheet = spreadsheet;
             _sheet = spreadsheet.Document.Worksheets[0];
-
            
             listBoxTidEmpty.Items.Clear();
             listBoxTidEmpty.Items.AddRange(emptyCells.Cast<object>().ToArray());
 
-           
             listBoxTidEmpty.SelectedIndexChanged += ListBox_SelectedIndexChanged;
-
-            // Cấu hình form (nếu là form rời)
-           // this.Text = "Danh sách ô trống";
             this.Size = new Size(200, 400);
-           // this.StartPosition = FormStartPosition.Manual; // Cho phép đặt vị trí tùy ý
+          
         }
 
 

@@ -63,7 +63,7 @@
             this.btnWarning.NoAccentTextColor = System.Drawing.Color.Empty;
             this.btnWarning.Size = new System.Drawing.Size(345, 139);
             this.btnWarning.TabIndex = 0;
-            this.btnWarning.Text = "materialButton1";
+            this.btnWarning.Text = "SpeedWarning";
             this.btnWarning.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             this.btnWarning.UseAccentColor = false;
             this.btnWarning.UseVisualStyleBackColor = false;
