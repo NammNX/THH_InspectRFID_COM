@@ -62,7 +62,7 @@ namespace TanHungHa.Tabs
             // Gán giá trị phần trăm cho cột OK
             int idxOK = chart.Series["OK"].Points.AddXY("", percentOK);
             var pointOK = chart.Series["OK"].Points[idxOK];
-            pointOK.Label = $"{percentOK:F1}%";
+            pointOK.Label = $"{percentOK:F3}%";
             pointOK.LabelForeColor = Color.White;
             pointOK.Font = new Font("Arial", 10, FontStyle.Bold);
             pointOK.LabelBackColor = Color.Green;
@@ -71,7 +71,7 @@ namespace TanHungHa.Tabs
             // Gán giá trị phần trăm cho cột NG
             int idxNG = chart.Series["NG"].Points.AddXY("", percentNG);
             var pointNG = chart.Series["NG"].Points[idxNG];
-            pointNG.Label = $"{percentNG:F1}%";
+            pointNG.Label = $"{percentNG:F3}%";
             pointNG.LabelForeColor = Color.White;
             pointNG.Font = new Font("Arial", 10, FontStyle.Bold);
             pointNG.LabelBackColor = Color.Red;

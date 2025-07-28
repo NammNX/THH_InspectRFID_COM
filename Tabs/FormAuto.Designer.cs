@@ -220,11 +220,11 @@
             this.tableLayoutPanel5.Location = new System.Drawing.Point(2, 15);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 5;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 23.65591F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 23.65591F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.376344F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 23.65591F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 23.65591F));
             this.tableLayoutPanel5.Size = new System.Drawing.Size(158, 113);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
@@ -234,9 +234,9 @@
             this.lbOQCbuffer.BackColor = System.Drawing.Color.White;
             this.lbOQCbuffer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbOQCbuffer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbOQCbuffer.Location = new System.Drawing.Point(3, 88);
+            this.lbOQCbuffer.Location = new System.Drawing.Point(3, 84);
             this.lbOQCbuffer.Name = "lbOQCbuffer";
-            this.lbOQCbuffer.Size = new System.Drawing.Size(152, 25);
+            this.lbOQCbuffer.Size = new System.Drawing.Size(152, 29);
             this.lbOQCbuffer.TabIndex = 4;
             this.lbOQCbuffer.Text = "OQC buffer";
             this.lbOQCbuffer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -247,9 +247,9 @@
             this.lbIQCbuffer.BackColor = System.Drawing.Color.White;
             this.lbIQCbuffer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbIQCbuffer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbIQCbuffer.Location = new System.Drawing.Point(3, 66);
+            this.lbIQCbuffer.Location = new System.Drawing.Point(3, 58);
             this.lbIQCbuffer.Name = "lbIQCbuffer";
-            this.lbIQCbuffer.Size = new System.Drawing.Size(152, 22);
+            this.lbIQCbuffer.Size = new System.Drawing.Size(152, 26);
             this.lbIQCbuffer.TabIndex = 3;
             this.lbIQCbuffer.Text = "IQC buffer";
             this.lbIQCbuffer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -260,9 +260,9 @@
             this.lbOQCflushed.BackColor = System.Drawing.Color.White;
             this.lbOQCflushed.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbOQCflushed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbOQCflushed.Location = new System.Drawing.Point(3, 22);
+            this.lbOQCflushed.Location = new System.Drawing.Point(3, 26);
             this.lbOQCflushed.Name = "lbOQCflushed";
-            this.lbOQCflushed.Size = new System.Drawing.Size(152, 22);
+            this.lbOQCflushed.Size = new System.Drawing.Size(152, 26);
             this.lbOQCflushed.TabIndex = 1;
             this.lbOQCflushed.Text = "OQC flushed";
             this.lbOQCflushed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -275,7 +275,7 @@
             this.lbIQCflushed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbIQCflushed.Location = new System.Drawing.Point(3, 0);
             this.lbIQCflushed.Name = "lbIQCflushed";
-            this.lbIQCflushed.Size = new System.Drawing.Size(152, 22);
+            this.lbIQCflushed.Size = new System.Drawing.Size(152, 26);
             this.lbIQCflushed.TabIndex = 0;
             this.lbIQCflushed.Text = "IQC flushed";
             this.lbIQCflushed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

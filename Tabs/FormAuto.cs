@@ -340,6 +340,7 @@ namespace TanHungHa.Tabs
                     swByPass.Enabled = true;
                     MyParam.commonParam.myComportIQC.ClearDataRev();
                     MyParam.commonParam.myComportOQC.ClearDataRev();
+                   
                 }
                 else
                 {
@@ -520,8 +521,8 @@ namespace TanHungHa.Tabs
         {
             lvIQC.Items.Clear();
             UpdateChart(chartIQC, 0, 0);
-            countOK_IQC = 0;
-            countNG_IQC = 0;
+            MyParam.runParam.countOK_IQC = 0;
+            MyParam.runParam.countNG_IQC = 0;
             UpdateLabelIQC();
             //  MyParam.commonParam.myComportIQC.SendData(MyDefine.ResetIO_RFID);
         }
@@ -529,8 +530,8 @@ namespace TanHungHa.Tabs
         {
             lvOQC.Items.Clear();
             UpdateChart(chartOQC, 0, 0);
-            countOK_OQC = 0;
-            countNG_OQC = 0;
+            MyParam.runParam.countOK_OQC = 0;
+            MyParam.runParam.countNG_OQC = 0;
             UpdateLabelOQC();
             //  MyParam.commonParam.myComportOQC.SendData(MyDefine.ResetIO_RFID);
         }
@@ -673,7 +674,7 @@ namespace TanHungHa.Tabs
             // Gán giá trị phần trăm cho cột OK
             int idxOK = chart.Series["OK"].Points.AddXY("", percentOK);
             var pointOK = chart.Series["OK"].Points[idxOK];
-            pointOK.Label = $"{percentOK:F1}%";
+            pointOK.Label = $"{percentOK:F3}%";
             pointOK.LabelForeColor = Color.White;
             pointOK.Font = new Font("Arial", 10, FontStyle.Bold);
             pointOK.LabelBackColor = Color.Green;
@@ -682,7 +683,7 @@ namespace TanHungHa.Tabs
             // Gán giá trị phần trăm cho cột NG
             int idxNG = chart.Series["NG"].Points.AddXY("", percentNG);
             var pointNG = chart.Series["NG"].Points[idxNG];
-            pointNG.Label = $"{percentNG:F1}%";
+            pointNG.Label = $"{percentNG:F3}%";
             pointNG.LabelForeColor = Color.White;
             pointNG.Font = new Font("Arial", 10, FontStyle.Bold);
             pointNG.LabelBackColor = Color.Red;
@@ -761,10 +762,10 @@ namespace TanHungHa.Tabs
             }
             MyLib.log(message, SvLogger.LogType.SEQUENCE);
         }
-        private int countOK_IQC = 0;
-        private int countNG_IQC = 0;
-        private int countOK_OQC = 0;
-        private int countNG_OQC = 0;
+        //private int countOK_IQC = 0;
+        //private int countNG_IQC = 0;
+        //private int countOK_OQC = 0;
+        //private int countNG_OQC = 0;
         private int countOK_DamCaMau = 0;
         private int countNG_DamCaMau = 0;
 
@@ -794,14 +795,14 @@ namespace TanHungHa.Tabs
         }
         public void UpdateChartOQC_OK()
         {
-            countOK_OQC++;
-            UpdateChart(chartOQC, countOK_OQC, countNG_OQC);
+            MyParam.runParam.countOK_OQC++;
+            UpdateChart(chartOQC, MyParam.runParam.countOK_OQC, MyParam.runParam.countNG_OQC);
             UpdateLabelOQC();
         }
         public void UpdateChartOQC_NG()
         {
-            countNG_OQC++;
-            UpdateChart(chartOQC, countOK_OQC, countNG_OQC);
+            MyParam.runParam.countNG_OQC++;
+            UpdateChart(chartOQC, MyParam.runParam.countOK_OQC, MyParam.runParam.countNG_OQC);
             UpdateLabelOQC();
         }
 
@@ -812,22 +813,22 @@ namespace TanHungHa.Tabs
                 Invoke(new Action(UpdateLabelOQC));
                 return;
             }
-            lbOQC_OK.Text = ($"OK: {countOK_OQC.ToString()}");
-            lbOQC_NG.Text = ($"NG: {countNG_OQC.ToString()}");
-            lbOQC_Total.Text = ($"Total: {countOK_OQC + countNG_OQC}");
+            lbOQC_OK.Text = ($"OK: {MyParam.runParam.countOK_OQC.ToString()}");
+            lbOQC_NG.Text = ($"NG: {MyParam.runParam.countNG_OQC.ToString()}");
+            lbOQC_Total.Text = ($"Total: {MyParam.runParam.countOK_OQC + MyParam.runParam.countNG_OQC}");
 
         }
 
         public void UpdateChartIQC_OK()
         {
-            countOK_IQC++;
-            UpdateChart(chartIQC, countOK_IQC, countNG_IQC);
+            MyParam.runParam.countOK_IQC++;
+            UpdateChart(chartIQC, MyParam.runParam.countOK_IQC, MyParam.runParam.countNG_IQC);
             UpdateLabelIQC();
         }
         public void UpdateChartIQC_NG()
         {
-            countNG_IQC++;
-            UpdateChart(chartIQC, countOK_IQC, countNG_IQC);
+            MyParam.runParam.countNG_IQC++;
+            UpdateChart(chartIQC, MyParam.runParam.countOK_IQC, MyParam.runParam.countNG_IQC);
             UpdateLabelIQC();
         }
 
@@ -838,9 +839,9 @@ namespace TanHungHa.Tabs
                 Invoke(new Action(UpdateLabelIQC));
                 return;
             }
-            lbIQC_OK.Text = ($"OK: {countOK_IQC.ToString()}");
-            lbNG_IQC.Text = ($"NG: {countNG_IQC.ToString()}");
-            lbTotal_IQC.Text = ($"Total: {countOK_IQC + countNG_IQC}");
+            lbIQC_OK.Text = ($"OK: {MyParam.runParam.countOK_IQC.ToString()}");
+            lbNG_IQC.Text = ($"NG: {MyParam.runParam.countNG_IQC.ToString()}");
+            lbTotal_IQC.Text = ($"Total: {MyParam.runParam.countOK_IQC + MyParam.runParam.countNG_IQC}");
 
         }
         public void UpdateLabelDataBase()
@@ -1387,6 +1388,10 @@ namespace TanHungHa.Tabs
 
             UpdateLabelRollName(MyParam.runParam.DataBaseName);
             swFlushDB.Checked = true;
+            UpdateChart(chartIQC, MyParam.runParam.countOK_IQC, MyParam.runParam.countNG_IQC);
+            UpdateLabelIQC();
+            UpdateChart(chartOQC, MyParam.runParam.countOK_OQC, MyParam.runParam.countNG_OQC);
+            UpdateLabelOQC();
 
         }
 

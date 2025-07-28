@@ -79,6 +79,17 @@ namespace TanHungHa.Common
         [Browsable(false)]
         public HashSet<string> HistoryOQCData { get; set; } = new HashSet<string>();
 
+        [Browsable(false)]
+        public int countOK_IQC { get; set; }
+        [Browsable(false)]
+        public int countNG_IQC { get; set; }
+
+        [Browsable(false)]
+        public int countOK_OQC { get; set; }
+        [Browsable(false)]
+        public int countNG_OQC { get; set; }
+
+
         [JsonIgnore]
         [Browsable(false)]
         public ePRGSTATUS ProgramStatus = ePRGSTATUS.Start_Up;
@@ -101,6 +112,10 @@ namespace TanHungHa.Common
             HistoryDamCaMauData = new HashSet<string>();
             HistoryIQCData = new HashSet<string>();
             HistoryOQCData = new HashSet<string>();
+            countOK_IQC = 0;
+            countNG_IQC = 0;
+            countOK_OQC = 0;
+            countNG_OQC = 0;
         }
     }
 }
