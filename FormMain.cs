@@ -1,6 +1,7 @@
 ﻿using MaterialSkin;
 using MaterialSkin.Controls;
 using System;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using TanHungHa.Common;
@@ -57,6 +58,10 @@ namespace TanHungHa
             //Load parameter
             MyLib.LoadParameter();
             var x = THHInitial.RunHeatbeat();
+            if (!Directory.Exists(MyDefine.backupFolder))
+            {
+                Directory.CreateDirectory(MyDefine.backupFolder);
+            }
             //sttVersion.Text = MyDefine.VERSION;
         }
 

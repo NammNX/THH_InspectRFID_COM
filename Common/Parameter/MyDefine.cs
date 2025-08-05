@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.InkML;
+using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -8,7 +9,8 @@ namespace TanHungHa.Common
     public class MyDefine
     {
         //public static DateTime expried_time = new DateTime(2024, 8, 13, 9, 0, 0);
-        public const string VERSION = @"Ver 3.0.0.270625";
+        //public const string VERSION = @"Ver 3.0.0.270625";
+        public const string VERSION = @"Ver 4.0.0.040825";
 
         public const int HEIGHT_OF_ROW = 50;
 
@@ -18,11 +20,10 @@ namespace TanHungHa.Common
         public const int ROUND_DIGIT = 5;
         public const int RATIO = 1000;
 
-
-
+        public static readonly string backupFolder = @"C:\ProgramData\RFID_Inspection\ExcelBackup";
 
         public static readonly string title = "RFID Inspection";
-        public static readonly string version = "Version 3.0.0 \r\n 27/06/2025";
+        public static readonly string version = "Version 4.0.0 \r\n 04/08/2025";
 
         public const string treenodeRunParam = "Run Param";
         public const string treenodeRS232 = "RS232";

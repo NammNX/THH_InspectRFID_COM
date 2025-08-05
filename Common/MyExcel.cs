@@ -14,6 +14,8 @@ using DevExpress.Internal.WinApi.Windows.UI.Notifications;
 using System.IO;
 using System.Collections.Concurrent;
 using TanHungHa.PopUp;
+using SharpCompress.Common;
+using System.Threading;
 
 namespace TanHungHa.Common
 {
@@ -47,8 +49,20 @@ namespace TanHungHa.Common
         {
             epcRowMap.Clear();
             sheet = spreadsheet.Document.Worksheets[0];
-            sheet.Columns.AutoFit(0, sheet.Columns.LastUsedIndex);
-            sheet.Columns[tidColumnIndex].Width = MyParam.commonParam.devParam.WidthTidColumn;
+            if (spreadsheet.InvokeRequired)
+            {
+                spreadsheet.BeginInvoke(new Action(() =>
+                {
+                    sheet.Columns.AutoFit(0, sheet.Columns.LastUsedIndex);
+                    sheet.Columns[tidColumnIndex].Width = MyParam.commonParam.devParam.WidthTidColumn;
+                }));
+            }
+            else
+            {
+                sheet.Columns.AutoFit(0, sheet.Columns.LastUsedIndex);
+                sheet.Columns[tidColumnIndex].Width = MyParam.commonParam.devParam.WidthTidColumn;
+            }
+            
             CellRange usedRange = sheet.GetUsedRange();
 
             int startRow = usedRange.TopRowIndex;
@@ -211,15 +225,49 @@ namespace TanHungHa.Common
         /// <param name="filePath">Đường dẫn muốn lưu file, ví dụ: "C:\\Data\\output.xlsx"</param>
         /// <returns>True nếu lưu thành công, false nếu có lỗi.</returns>
         /// 
+        // Throttle: Lần đầu save ngay, các lần sau phải đợi đủ 3 giây
+        private DateTime lastSaveTime = DateTime.MinValue;
+        private readonly object saveLock = new object();
 
-        public bool SaveExcelToPath(string filePath)
+        public void SaveExcelToPath1(string filePath)
+        {
+            lock (saveLock)
+            {
+                var now = DateTime.Now;
+                var timeSinceLastSave = now - lastSaveTime;
+
+                // Nếu chưa từng save hoặc đã đủ 3 giây -> save ngay
+                if (lastSaveTime == DateTime.MinValue || timeSinceLastSave >= TimeSpan.FromSeconds(3))
+                {
+                    ExecuteSave(filePath);
+                    lastSaveTime = DateTime.Now;
+                }
+                else
+                {
+                    // Chưa đủ 3 giây -> phải đợi
+                    var remainingTime = TimeSpan.FromSeconds(3) - timeSinceLastSave;
+                    Console.WriteLine($"Phải đợi thêm {remainingTime.TotalMilliseconds:F0}ms trước khi save tiếp");
+
+                    // Đợi trên background thread để không block UI
+                    Task.Run(() =>
+                    {
+                        Thread.Sleep(remainingTime);
+                        lock (saveLock)
+                        {
+                            ExecuteSave(filePath);
+                            lastSaveTime = DateTime.Now;
+                        }
+                    });
+                }
+            }
+        }
+
+        private void ExecuteSave(string filePath)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(filePath))
                     throw new ArgumentException("Invalid file path.");
-
-
 
                 // Đảm bảo gọi SaveDocument trên UI thread
                 if (spreadsheet.InvokeRequired)
@@ -233,12 +281,41 @@ namespace TanHungHa.Common
                 {
                     spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
                 }
-                return true;
+
+                Console.WriteLine($"Đã save file: {filePath} lúc {DateTime.Now}");
             }
             catch (Exception ex)
             {
+                MainProcess.AddLogAuto($"[SOS]-----Error saving Excel file: {ex.Message}\n\nPath: {filePath}----------");
+                Console.WriteLine($"--[SaveExcelToPath] Error saving Excel file:\n{ex.Message}\n\nPath: {filePath}-------------------------");
+            }
+        }
+
+        public void SaveExcelToPath(string filePath)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(filePath))
+                    throw new ArgumentException("Invalid file path.");
+                // Đảm bảo gọi SaveDocument trên UI thread
+                if (spreadsheet.InvokeRequired)
+                {
+                    spreadsheet.BeginInvoke(new Action(() =>
+                    {
+                        spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                    }));
+                }
+                else
+                {
+                    spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                MainProcess.AddLogAuto($"SOS-----Error saving Excel file: {ex.Message}\n\nPath: {filePath}----------");
                 Console.WriteLine($"----------------------[SaveExcelToPath] Error saving Excel file:\n{ex.Message}\n\nPath: {filePath}-------------------------");
-                return false;
+                
             }
         }
 
@@ -313,7 +390,7 @@ namespace TanHungHa.Common
                 string valD = sheet.Cells[row, tidColumnIndex].Value.TextValue?.Trim().ToLower();
                 string valE = sheet.Cells[row, QrCodeColumnIndex].Value.TextValue?.Trim().ToLower(); // Cột E
 
-                if ((valD != null && valD.Contains(target)) || (valE != null && valE.Contains(target)))
+                if ((valD != null && valD == target) || (valE != null && valE==target))
                 {
                     matchedRows.Add(row);
                 }

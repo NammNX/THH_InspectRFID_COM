@@ -14,9 +14,7 @@ using System.Threading;
 using System.Windows.Forms;
 using TanHungHa.Common.Parameter;
 using static TanHungHa.Common.MyComport;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
-using Excel = Microsoft.Office.Interop.Excel;
-using System.Runtime.InteropServices;
+
 using System.Diagnostics;
 
 

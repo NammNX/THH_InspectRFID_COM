@@ -34,6 +34,7 @@
             this.tabPageAuto = new System.Windows.Forms.TabPage();
             this.panelAuto = new System.Windows.Forms.Panel();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.sttVer = new System.Windows.Forms.ToolStripStatusLabel();
             this.sttIQC = new System.Windows.Forms.ToolStripStatusLabel();
             this.sttOQC = new System.Windows.Forms.ToolStripStatusLabel();
             this.sttRAM = new System.Windows.Forms.ToolStripStatusLabel();
@@ -50,7 +51,7 @@
             this.tabPageTeaching = new System.Windows.Forms.TabPage();
             this.panelTeaching = new System.Windows.Forms.Panel();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.sttVer = new System.Windows.Forms.ToolStripStatusLabel();
+            this.sttMinLength = new System.Windows.Forms.ToolStripStatusLabel();
             this.materialTabControl1.SuspendLayout();
             this.tabPageAuto.SuspendLayout();
             this.panelAuto.SuspendLayout();
@@ -110,12 +111,19 @@
             this.sttVer,
             this.sttIQC,
             this.sttOQC,
-            this.sttRAM});
+            this.sttRAM,
+            this.sttMinLength});
             this.statusStrip1.Location = new System.Drawing.Point(0, 590);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1260, 22);
             this.statusStrip1.TabIndex = 4;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // sttVer
+            // 
+            this.sttVer.Name = "sttVer";
+            this.sttVer.Size = new System.Drawing.Size(23, 17);
+            this.sttVer.Text = "Ver";
             // 
             // sttIQC
             // 
@@ -286,11 +294,11 @@
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // sttVer
+            // sttMinLength
             // 
-            this.sttVer.Name = "sttVer";
-            this.sttVer.Size = new System.Drawing.Size(23, 17);
-            this.sttVer.Text = "Ver";
+            this.sttMinLength.Name = "sttMinLength";
+            this.sttMinLength.Size = new System.Drawing.Size(65, 17);
+            this.sttMinLength.Text = "MinLength";
             // 
             // FormMain
             // 
@@ -343,6 +351,7 @@
         public System.Windows.Forms.ToolStripStatusLabel sttOQC;
         public System.Windows.Forms.ToolStripStatusLabel sttRAM;
         public System.Windows.Forms.ToolStripStatusLabel sttVer;
+        public System.Windows.Forms.ToolStripStatusLabel sttMinLength;
     }
 }
 

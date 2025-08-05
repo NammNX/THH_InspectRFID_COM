@@ -252,7 +252,7 @@ namespace TanHungHa.Common
                 return;
             }
             MyLib.KillAllExcelProcesses();
-            var x = MyParam.autoForm.SaveFileExcel();
+            MyParam.autoForm.SaveFileExcel();
         }
 
         public static void LoopProcessDCM()
@@ -920,7 +920,7 @@ namespace TanHungHa.Common
                 default:
                     break;
             }
-            MyLib.log(message, SvLogger.LogType.SEQUENCE);
+           // MyLib.log(message, SvLogger.LogType.SEQUENCE);
         }
 
 
@@ -995,7 +995,7 @@ namespace TanHungHa.Common
                     MyParam.mainForm.sttRAM.Text = $"(RAM: {RamInfo})";
                     MyParam.mainForm.sttIQC.Text = IQC;
                     MyParam.mainForm.sttOQC.Text = OQC;
-
+                    MyParam.mainForm.sttMinLength.Text = $"(Min Length: {MyParam.commonParam.devParam.LengthNG})";
 
 
                 }));
