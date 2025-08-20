@@ -124,6 +124,9 @@ namespace TanHungHa.Common
                 sheet.Rows[rowIndex].FillColor = Color.LightGreen;
 
                 ScrollExcel(rowIndex);
+                UpdateIndexRoll(rowIndex);
+
+
                 if (MyParam.autoForm.swCheckMissItem.Checked)
                 {
                     CheckMissItem(rowIndex);
@@ -132,6 +135,28 @@ namespace TanHungHa.Common
             stopwatch.Stop();
             Console.WriteLine($"[---Hàm vẽ excel UI---] Time taken: {stopwatch.ElapsedMilliseconds} ms");
         }
+
+        private int lastIndexRoll = -1;
+        private void UpdateIndexRoll(int rowIndex)
+        {
+            int indexRoll = ((rowIndex - 1) / 3000) + 1;
+            if (indexRoll == lastIndexRoll) return; // không đổi thì bỏ qua
+
+            lastIndexRoll = indexRoll;
+
+            if (MyParam.autoForm.btnIndexRoll.InvokeRequired)
+            {
+                MyParam.autoForm.btnIndexRoll.BeginInvoke(new Action(() =>
+                {
+                    MyParam.autoForm.btnIndexRoll.Text = $"Cuộn số: {indexRoll}";
+                }));
+            }
+            else
+            {
+                MyParam.autoForm.btnIndexRoll.Text = $"Cuộn số: {indexRoll}";
+            }
+        }
+
         private FormCheckMissItems checkMissItemForm = null;
         private void CheckMissItem(int rowIndex)
         {
@@ -175,7 +200,7 @@ namespace TanHungHa.Common
         }
 
         private DateTime lastScrollTime = DateTime.MinValue;
-        private const int SCROLL_THROTTLE_MS = 1500;
+        private const int SCROLL_THROTTLE_MS = 2000;
         private void ScrollExcel(int rowIndex)
         {
             DateTime now = DateTime.Now;
@@ -268,18 +293,27 @@ namespace TanHungHa.Common
             {
                 if (string.IsNullOrWhiteSpace(filePath))
                     throw new ArgumentException("Invalid file path.");
+                string tempFilePath = filePath + ".tmp";
 
                 // Đảm bảo gọi SaveDocument trên UI thread
                 if (spreadsheet.InvokeRequired)
                 {
                     spreadsheet.BeginInvoke(new Action(() =>
                     {
-                        spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                       // spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+
+                        spreadsheet.SaveDocument(tempFilePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                        File.Copy(tempFilePath, filePath, true);
+                        File.Delete(tempFilePath);
                     }));
                 }
                 else
                 {
-                    spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                   // spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+
+                    spreadsheet.SaveDocument(tempFilePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                    File.Copy(tempFilePath, filePath, true);
+                    File.Delete(tempFilePath);
                 }
 
                 Console.WriteLine($"Đã save file: {filePath} lúc {DateTime.Now}");
@@ -291,10 +325,60 @@ namespace TanHungHa.Common
             }
         }
 
+
+
+        public void SaveExcelToPathBackUp(string filePath)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(filePath))
+                    throw new ArgumentException("Invalid file path.");
+
+                // Nếu file đã tồn tại, tạo tên file mới với hậu tố (01), (02), ...
+                string directory = System.IO.Path.GetDirectoryName(filePath);
+                string filenameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(filePath);
+                string extension = System.IO.Path.GetExtension(filePath);
+
+                string finalPath = filePath;
+                int index = 1;
+
+                while (File.Exists(finalPath))
+                {
+                    finalPath = System.IO.Path.Combine(directory, $"{filenameWithoutExt} ({index}){extension}");
+                    index++;
+                }
+
+                string tempFilePath = finalPath + ".tmp";
+
+                Action saveAction = () =>
+                {
+                    spreadsheet.SaveDocument(tempFilePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                    File.Copy(tempFilePath, finalPath, true);
+                    File.Delete(tempFilePath);
+                };
+
+                if (spreadsheet.InvokeRequired)
+                {
+                    spreadsheet.BeginInvoke(saveAction);
+                }
+                else
+                {
+                    saveAction();
+                }
+            }
+            catch (Exception ex)
+            {
+                MainProcess.AddLogAuto($"SOS-----Error saving Excel file: {ex.Message}\n\nPath: {filePath}----------");
+                Console.WriteLine($"----------------------[SaveExcelToPath] Error saving Excel file:\n{ex.Message}\n\nPath: {filePath}-------------------------");
+            }
+        }
+
+
         public void SaveExcelToPath(string filePath)
         {
             try
             {
+                string tempFilePath = filePath + ".tmp";
                 if (string.IsNullOrWhiteSpace(filePath))
                     throw new ArgumentException("Invalid file path.");
                 // Đảm bảo gọi SaveDocument trên UI thread
@@ -302,12 +386,19 @@ namespace TanHungHa.Common
                 {
                     spreadsheet.BeginInvoke(new Action(() =>
                     {
-                        spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                      //  spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+
+                        spreadsheet.SaveDocument(tempFilePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                        File.Copy(tempFilePath, filePath, true);
+                        File.Delete(tempFilePath);
                     }));
                 }
                 else
                 {
-                    spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                  //  spreadsheet.SaveDocument(filePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                    spreadsheet.SaveDocument(tempFilePath, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+                    File.Copy(tempFilePath, filePath, true);
+                    File.Delete(tempFilePath);
                 }
                
             }

@@ -176,7 +176,7 @@ namespace TanHungHa.Tabs
                 {
                     MyLib.KillAllExcelProcesses();
                     MyParam.autoForm.SaveFileExcel();
-                    MyParam.commonParam.myExcel.SaveExcelToPath($"{MyDefine.backupFolder}//{MyParam.runParam.FileNameDamCaMau}");
+                    MyParam.commonParam.myExcel.SaveExcelToPathBackUp($"{MyDefine.backupFolder}//{MyParam.runParam.FileNameDamCaMau}");
                     Thread.Sleep(2000);
 
                     MaterialDialog materialDialog = new MaterialDialog(this, "Thông báo", "Bạn có muốn mở thư mục chứa file Excel", "OK", true, "Cancel");
