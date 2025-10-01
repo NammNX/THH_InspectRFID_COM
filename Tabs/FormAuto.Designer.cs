@@ -1055,7 +1055,7 @@
             this.btnNewRoll.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnNewRoll.Name = "btnNewRoll";
             this.btnNewRoll.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnNewRoll.Size = new System.Drawing.Size(52, 79);
+            this.btnNewRoll.Size = new System.Drawing.Size(51, 79);
             this.btnNewRoll.TabIndex = 0;
             this.btnNewRoll.Text = "New Roll";
             this.btnNewRoll.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -1072,12 +1072,12 @@
             this.btnRollName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRollName.HighEmphasis = true;
             this.btnRollName.Icon = null;
-            this.btnRollName.Location = new System.Drawing.Point(181, 6);
+            this.btnRollName.Location = new System.Drawing.Point(180, 6);
             this.btnRollName.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnRollName.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnRollName.Name = "btnRollName";
             this.btnRollName.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnRollName.Size = new System.Drawing.Size(105, 79);
+            this.btnRollName.Size = new System.Drawing.Size(106, 79);
             this.btnRollName.TabIndex = 1;
             this.btnRollName.Text = "Empty";
             this.btnRollName.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
@@ -1093,7 +1093,7 @@
             this.groupBoxSpeedDCM.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBoxSpeedDCM.Location = new System.Drawing.Point(3, 3);
             this.groupBoxSpeedDCM.Name = "groupBoxSpeedDCM";
-            this.groupBoxSpeedDCM.Size = new System.Drawing.Size(100, 82);
+            this.groupBoxSpeedDCM.Size = new System.Drawing.Size(99, 82);
             this.groupBoxSpeedDCM.TabIndex = 13;
             this.groupBoxSpeedDCM.TabStop = false;
             this.groupBoxSpeedDCM.Text = "Speed";
@@ -1108,7 +1108,7 @@
             this.tableLayoutPanel21.Name = "tableLayoutPanel21";
             this.tableLayoutPanel21.RowCount = 1;
             this.tableLayoutPanel21.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel21.Size = new System.Drawing.Size(94, 61);
+            this.tableLayoutPanel21.Size = new System.Drawing.Size(93, 61);
             this.tableLayoutPanel21.TabIndex = 0;
             // 
             // lbSpeedDCM
@@ -1118,7 +1118,7 @@
             this.lbSpeedDCM.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbSpeedDCM.Location = new System.Drawing.Point(3, 0);
             this.lbSpeedDCM.Name = "lbSpeedDCM";
-            this.lbSpeedDCM.Size = new System.Drawing.Size(88, 61);
+            this.lbSpeedDCM.Size = new System.Drawing.Size(87, 61);
             this.lbSpeedDCM.TabIndex = 2;
             this.lbSpeedDCM.Text = "0 pcs/s";
             this.lbSpeedDCM.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1585,7 +1585,7 @@
             this.tableLayoutPanel24.ColumnCount = 3;
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.14584F));
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.85417F));
-            this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 112F));
+            this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 113F));
             this.tableLayoutPanel24.Controls.Add(this.tableLayoutPanelSpeedIQCOQC, 0, 0);
             this.tableLayoutPanel24.Controls.Add(this.btnRollName, 2, 0);
             this.tableLayoutPanel24.Controls.Add(this.btnNewRoll, 1, 0);
@@ -1795,7 +1795,7 @@
             this.tableLayoutPanel26.ColumnCount = 3;
             this.tableLayoutPanel26.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45.63758F));
             this.tableLayoutPanel26.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 54.36242F));
-            this.tableLayoutPanel26.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.tableLayoutPanel26.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 56F));
             this.tableLayoutPanel26.Controls.Add(this.groupBoxSpeedDCM, 0, 0);
             this.tableLayoutPanel26.Controls.Add(this.btnFileNameExcel, 1, 0);
             this.tableLayoutPanel26.Controls.Add(this.btnIndexRoll, 2, 0);
@@ -1815,7 +1815,7 @@
             this.btnFileNameExcel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnFileNameExcel.HighEmphasis = true;
             this.btnFileNameExcel.Icon = null;
-            this.btnFileNameExcel.Location = new System.Drawing.Point(110, 6);
+            this.btnFileNameExcel.Location = new System.Drawing.Point(109, 6);
             this.btnFileNameExcel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnFileNameExcel.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnFileNameExcel.Name = "btnFileNameExcel";
@@ -1836,12 +1836,12 @@
             this.btnIndexRoll.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnIndexRoll.HighEmphasis = true;
             this.btnIndexRoll.Icon = null;
-            this.btnIndexRoll.Location = new System.Drawing.Point(236, 6);
+            this.btnIndexRoll.Location = new System.Drawing.Point(235, 6);
             this.btnIndexRoll.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnIndexRoll.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnIndexRoll.Name = "btnIndexRoll";
             this.btnIndexRoll.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnIndexRoll.Size = new System.Drawing.Size(48, 76);
+            this.btnIndexRoll.Size = new System.Drawing.Size(49, 76);
             this.btnIndexRoll.TabIndex = 15;
             this.btnIndexRoll.Text = "Index Roll";
             this.btnIndexRoll.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;

@@ -8,6 +8,7 @@ using System.Diagnostics;
 using TanHungHa.Common.Parameter;
 using TanHungHa.Common.TaskLoopCustomize;
 using TanHungHa.Tabs;
+using TanHungHa.Tabs.ManagerTab;
 using TanHungHa.Tabs.ManualTab;
 using static MaterialSkin.Controls.MaterialForm;
 
@@ -90,7 +91,8 @@ namespace TanHungHa.Common
         static int number_create = 0;
         public static List<TaskLoop> taskLoops = new List<TaskLoop>();
         public static MaterialSkinManager materialSkinManager;
-        
+        public static List<MyModel> list_models = null;
+
         [JsonIgnore]
         public static eMainView curMainView = eMainView.AUTO_VIEW;
         
@@ -112,14 +114,12 @@ namespace TanHungHa.Common
 
         //sub tab of Manual TAB
         public static RS232Form tabRS232 = null;
-       
-        
-
+        public static VisionForm tabVision = null;
 
         //sub tab of Manager TAB
         public static ManParamForm tabManagerParam = null;
         public static ManThemeForm tabManagerTheme = null;
-
+        public static ManModelForm tabManagerModel = null;
 
 
         public static void initial()
@@ -134,14 +134,16 @@ namespace TanHungHa.Common
             uIParam = UIParam.GetInstance();
             commonParam = CommonParam.GetInstance();
             runParam = RunParam.GetInstance();
+            list_models = new List<MyModel>();
 
             //form
             tabRS232 = RS232Form.GetInstance();
-           
+            tabVision = VisionForm.GetInstance();
 
             //manual
             tabManagerParam = ManParamForm.GetInstance();
             tabManagerTheme = ManThemeForm.GetInstance();
+            tabManagerModel = ManModelForm.GetInstance();
 
             autoForm = FormAuto.GetInstance();
             infoForm = FormInfo.GetInstance();

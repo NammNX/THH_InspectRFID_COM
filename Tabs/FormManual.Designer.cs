@@ -32,6 +32,7 @@
             this.materialTabSelector1 = new MaterialSkin.Controls.MaterialTabSelector();
             this.materialTabControlManual = new MaterialSkin.Controls.MaterialTabControl();
             this.tabPageSerial = new System.Windows.Forms.TabPage();
+            this.tabPageVision = new System.Windows.Forms.TabPage();
             this.tabPageEthernet = new System.Windows.Forms.TabPage();
             this.tabTeachRobot = new System.Windows.Forms.TabPage();
             this.tabPageVM = new System.Windows.Forms.TabPage();
@@ -76,6 +77,7 @@
             // 
             // materialTabControlManual
             // 
+            this.materialTabControlManual.Controls.Add(this.tabPageVision);
             this.materialTabControlManual.Controls.Add(this.tabPageSerial);
             this.materialTabControlManual.Depth = 0;
             this.materialTabControlManual.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -98,6 +100,16 @@
             this.tabPageSerial.Size = new System.Drawing.Size(920, 467);
             this.tabPageSerial.TabIndex = 1;
             this.tabPageSerial.Text = "Serial";
+            // 
+            // tabPageVision
+            // 
+            this.tabPageVision.Location = new System.Drawing.Point(4, 22);
+            this.tabPageVision.Name = "tabPageVision";
+            this.tabPageVision.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageVision.Size = new System.Drawing.Size(920, 467);
+            this.tabPageVision.TabIndex = 2;
+            this.tabPageVision.Text = "Vision";
+            this.tabPageVision.UseVisualStyleBackColor = true;
             // 
             // tabPageEthernet
             // 
@@ -209,6 +221,7 @@
         private System.Windows.Forms.TabPage tabVisionPro;
         private System.Windows.Forms.TabPage tabPageVM;
         private System.Windows.Forms.TabPage tabTeachRobot;
+        private System.Windows.Forms.TabPage tabPageVision;
         //private System.Windows.Forms.TabPage tabPage1;
     }
 }

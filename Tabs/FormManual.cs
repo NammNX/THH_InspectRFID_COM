@@ -36,14 +36,24 @@ namespace TanHungHa.Tabs
             MyParam.tabRS232.TopLevel = false;
             MyParam.tabRS232.FormBorderStyle = FormBorderStyle.None;
             MyParam.tabRS232.Dock = DockStyle.Fill;
-            
+
+            MyParam.tabVision.TopLevel = false;
+            MyParam.tabVision.FormBorderStyle = FormBorderStyle.None;
+            MyParam.tabVision.Dock = DockStyle.Fill;
+
             tabPageSerial.Controls.Add(MyParam.tabRS232);
             tabPageSerial.Tag = (MyParam.tabRS232);
 
+            tabPageVision.Controls.Add(MyParam.tabVision);
+            tabPageVision.Tag = (MyParam.tabVision);
+
             MyParam.tabRS232.BringToFront();
             MyParam.tabRS232.Show();
-            
-           
+
+            MyParam.tabVision.BringToFront();
+            MyParam.tabVision.Show();
+
+
         }
 
 
@@ -60,7 +70,12 @@ namespace TanHungHa.Tabs
 
             switch (e.TabPage.Name)
             {
-                case "tabPageVisionpro":
+                
+                case "tabPageSerial":
+                    break;
+                case "tabPageVision":
+                    
+                  
                     break;
             }
         }

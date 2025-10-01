@@ -14,8 +14,8 @@ using System.Threading;
 using System.Windows.Forms;
 using TanHungHa.Common.Parameter;
 using static TanHungHa.Common.MyComport;
-
 using System.Diagnostics;
+using VM.Core;
 
 
 
@@ -167,6 +167,7 @@ namespace TanHungHa.Common
             SaveLoadParameter.Save_Parameter(MyParam.uIParam, MyDefine.file_uiParam);
             SaveLoadParameter.Save_Parameter(MyParam.commonParam, MyDefine.file_config);
             SaveLoadParameter.Save_Parameter(MyParam.runParam, MyDefine.file_runParam);
+            SaveLoadParameter.Save_Parameter(MyParam.list_models, MyDefine.file_model);
         }
         public static void LoadParameter()
         {
@@ -193,9 +194,25 @@ namespace TanHungHa.Common
                 ShowInfo("Create default runParam");
             }
 
+            MyParam.list_models = SaveLoadParameter.Load_Parameter(MyParam.list_models, MyDefine.file_model) as List<MyModel>;
+            if (MyParam.list_models == null)
+            {
+                MyParam.list_models = new List<MyModel>();
+                MyParam.list_models.Add(new MyModel("THH-Demo"));
+                ShowInfo("Create default runParam");
+            }
+
 
         }
-
+        public static void DeleteFolder(string path_folder)
+        {
+            bool result = Directory.Exists(path_folder);
+            if (!result)
+            {
+                return;
+            }
+            Directory.Delete(path_folder, true);
+        }
 
         public static void showDlgError(string message)
         {
@@ -693,6 +710,28 @@ namespace TanHungHa.Common
                          new ListViewItem(new string[] { $"{timeStr}", $"{message}", $"{typeData.ToString()}"}));
             }
         }
+        //public static string GetSDKError(Exception ex)
+        //{
+        //    VmException vmEx = VmSolution.GetVmException(ex);
+        //    if (null != vmEx)
+        //    {
+        //        string codeError = Convert.ToString(vmEx.errorCode, 16).ToUpper();
+        //        string strMsg = " Error Code: " + codeError;
+        //        if (MyParam.list_sdk_error != null)
+        //        {
+        //            var errCode = MyParam.list_sdk_error.Find(code => code.code.Contains(codeError));
+        //            if (errCode != null)
+        //            {
+        //                strMsg = " Error Code: " + errCode.PrintInfo();
+        //            }
+        //        }
+        //        //MyLib.showDlgError(strMsg);
+        //        //MyLib.log(strMsg, SvLogger.LogType.ERROR);
+        //        return strMsg;
+        //    }
+
+        //    return string.Empty;
+        //}
 
         public static void ShowLogListview(ListView listview, string message)
         {

@@ -99,6 +99,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="Apps.UIHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=74fbc55729e22a3e" />
     <Reference Include="ClosedXML, Version=0.104.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\ClosedXML.0.104.2\lib\netstandard2.0\ClosedXML.dll</HintPath>
     </Reference>
@@ -144,6 +145,7 @@
     <Reference Include="FluentListView, Version=3.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\FluentListView.3.0.4\lib\net45\FluentListView.dll</HintPath>
     </Reference>
+    <Reference Include="FrontendUI.Design, Version=1.0.0.0, Culture=neutral, PublicKeyToken=eccf82445a4321cb" />
     <Reference Include="HslCommunication, Version=11.5.3.0, Culture=neutral, PublicKeyToken=3d72ad3b6b5ec0e3, processorArchitecture=MSIL">
       <HintPath>packages\HslCommunication.11.5.3\lib\net451\HslCommunication.dll</HintPath>
     </Reference>
@@ -190,6 +192,8 @@
     <Reference Include="OpenCvSharp.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
       <HintPath>packages\OpenCvSharp4.Extensions.4.6.0.20220608\lib\netstandard2.0\OpenCvSharp.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="RBush, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\RBush.4.0.0\lib\net47\RBush.dll</HintPath>
     </Reference>
@@ -320,7 +324,14 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="VM.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=61600122bc9264b9" />
+    <Reference Include="VMControls.BaseInterface, Version=1.0.0.0, Culture=neutral, PublicKeyToken=14444b8df74b6e6a" />
+    <Reference Include="VMControls.Interface, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cb41614600cf774b" />
+    <Reference Include="VMControls.RenderInterface, Version=1.0.0.0, Culture=neutral, PublicKeyToken=4bcfc50547abbb24" />
+    <Reference Include="VMControls.Winform.Release, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2efa940dfee4dc7e, processorArchitecture=MSIL" />
+    <Reference Include="VMControls.WPF.Release, Version=1.0.0.0, Culture=neutral, PublicKeyToken=fdd2c8be7291c30c" />
     <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
     <Reference Include="ZstdSharp, Version=0.7.3.0, Culture=neutral, PublicKeyToken=8d151af33a4ad5cf, processorArchitecture=MSIL">
       <HintPath>packages\ZstdSharp.Port.0.7.3\lib\net461\ZstdSharp.dll</HintPath>
     </Reference>
@@ -336,6 +347,7 @@
     <Compile Include="Common\MyComport.cs" />
     <Compile Include="Common\Parameter\MyDefine.cs" />
     <Compile Include="Common\MyLib.cs" />
+    <Compile Include="Common\Parameter\MyModel.cs" />
     <Compile Include="Common\Parameter\MyParam.cs" />
     <Compile Include="Common\Parameter\StepControl.cs" />
     <Compile Include="Common\Parameter\TimeDelay.cs" />
@@ -344,6 +356,12 @@
     <Compile Include="Common\TaskCustomize\TaskLoop.cs" />
     <Compile Include="Common\TaskCustomize\THHInitial.cs" />
     <Compile Include="Common\TaskCustomize\THHTask.cs" />
+    <Compile Include="Common\VM\MainViewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Common\VM\MainViewControl.Designer.cs">
+      <DependentUpon>MainViewControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -418,6 +436,12 @@
     <Compile Include="Tabs\FormManual.Designer.cs">
       <DependentUpon>FormManual.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\ManagerTab\ManModelForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\ManagerTab\ManModelForm.Designer.cs">
+      <DependentUpon>ManModelForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\ManagerTab\ManParamForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -436,6 +460,15 @@
     <Compile Include="Tabs\ManualTab\RS232Form.Designer.cs">
       <DependentUpon>RS232Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\ManualTab\VisionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\ManualTab\VisionForm.Designer.cs">
+      <DependentUpon>VisionForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Common\VM\MainViewControl.resx">
+      <DependentUpon>MainViewControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -485,6 +518,9 @@
     <EmbeddedResource Include="Tabs\FormManual.resx">
       <DependentUpon>FormManual.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\ManagerTab\ManModelForm.resx">
+      <DependentUpon>ManModelForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tabs\ManagerTab\ManParamForm.resx">
       <DependentUpon>ManParamForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -493,6 +529,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\ManualTab\RS232Form.resx">
       <DependentUpon>RS232Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\ManualTab\VisionForm.resx">
+      <DependentUpon>VisionForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Data\Configs\config_param.json" />
     <None Include="Data\Configs\plc_assignment.json" />
@@ -507,6 +546,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="TemplateModel\THH-Model\RFID_Inspect.solw">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

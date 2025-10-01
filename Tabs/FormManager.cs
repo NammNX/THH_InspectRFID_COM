@@ -45,19 +45,28 @@ namespace TanHungHa.Tabs
             MyParam.tabManagerTheme.FormBorderStyle = FormBorderStyle.None;
             MyParam.tabManagerTheme.Dock = DockStyle.Fill;
 
-            
+            MyParam.tabManagerModel.TopLevel = false;
+            MyParam.tabManagerModel.FormBorderStyle = FormBorderStyle.None;
+            MyParam.tabManagerModel.Dock = DockStyle.Fill;
+
+
             tabPageParameter.Controls.Add(MyParam.tabManagerParam);
             tabPageParameter.Tag = (MyParam.tabManagerParam);
 
-
             tabPageTheme.Controls.Add(MyParam.tabManagerTheme);
             tabPageTheme.Tag = (MyParam.tabManagerTheme);
+            
+            tabPageModell.Controls.Add(MyParam.tabManagerModel);
+            tabPageModell.Tag = (MyParam.tabManagerModel);
 
             MyParam.tabManagerParam.BringToFront();
             MyParam.tabManagerParam.Show();
 
             MyParam.tabManagerTheme.BringToFront();
             MyParam.tabManagerTheme.Show();
+
+            MyParam.tabManagerModel.BringToFront();
+            MyParam.tabManagerModel.Show();
 
 
         }
@@ -87,6 +96,11 @@ namespace TanHungHa.Tabs
                 case "tabPageTheme":
                     MyParam.curManagerView = eManagerView.MANAGER_THEME_VIEW;
                     break;
+                case "tabPageModell":
+                    MyParam.curManagerView = eManagerView.MANAGER_MODEL_VIEW;
+                    MyParam.tabManagerModel.InitToolblockUI();
+                    break;
+
 
 
             }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using TanHungHa.Common.Parameter;
 
 
 namespace TanHungHa.Common
@@ -32,6 +33,23 @@ namespace TanHungHa.Common
                 }
             }
             return _instance;
+        }
+        public MyModel curModel
+        {
+            get
+            {
+                var activedModel = MyParam.list_models.Find(model => model.IsActive == true);
+                if (activedModel != null)
+                {
+                    //activedModel.PrintInfo();
+                    return activedModel;
+                }
+                else
+                {
+                    return new MyModel("THH-Demo");
+                }
+            }
+
         }
 
         //--------------------Variable------------------

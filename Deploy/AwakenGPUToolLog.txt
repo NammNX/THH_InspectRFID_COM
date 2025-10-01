@@ -1,0 +1,3 @@
+Awake Gpu start
+Have no cuda device, err = 35
+Awake Gpu end.

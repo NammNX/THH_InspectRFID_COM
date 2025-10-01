@@ -71,6 +71,14 @@ namespace TanHungHa.Common
 
         public static readonly string pathDefaultSaveFileExcel = String.Format($"{workingDirectory}\\Excel");
 
+
+        // vision master
+        public const string NAME_JOB = "RFID_Inspect.solw";
+        public static readonly string path_template_model = String.Format($"{workingDirectory}\\TemplateModel\\THH-Model");
+        public static readonly string path_solution = String.Format($"{path_template_model}\\{NAME_JOB}");
+        // model
+        public static readonly string path_model = String.Format($"{workingDirectory}\\Model");
+
         #region Path file json
 
 

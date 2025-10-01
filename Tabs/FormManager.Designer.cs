@@ -33,7 +33,7 @@
             this.tabPageTheme = new System.Windows.Forms.TabPage();
             this.materialTabSelector1 = new MaterialSkin.Controls.MaterialTabSelector();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tabPageModel = new System.Windows.Forms.TabPage();
+            this.tabPageModell = new System.Windows.Forms.TabPage();
             this.materialTabControlManager.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -41,7 +41,7 @@
             // materialTabControlManager
             // 
             this.materialTabControlManager.Controls.Add(this.tabPageParameter);
-            //this.materialTabControlManager.Controls.Add(this.tabPageModel);
+            this.materialTabControlManager.Controls.Add(this.tabPageModell);
             this.materialTabControlManager.Controls.Add(this.tabPageTheme);
             this.materialTabControlManager.Depth = 0;
             this.materialTabControlManager.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -104,15 +104,15 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(928, 518);
             this.tableLayoutPanel1.TabIndex = 27;
             // 
-            // tabPageModel
+            // tabPageModell
             // 
-            this.tabPageModel.Location = new System.Drawing.Point(4, 22);
-            this.tabPageModel.Name = "tabPageModel";
-            this.tabPageModel.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageModel.Size = new System.Drawing.Size(920, 467);
-            this.tabPageModel.TabIndex = 8;
-            this.tabPageModel.Text = "Model";
-            this.tabPageModel.UseVisualStyleBackColor = true;
+            this.tabPageModell.Location = new System.Drawing.Point(4, 22);
+            this.tabPageModell.Name = "tabPageModell";
+            this.tabPageModell.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageModell.Size = new System.Drawing.Size(920, 467);
+            this.tabPageModell.TabIndex = 8;
+            this.tabPageModell.Text = "Model";
+            this.tabPageModell.UseVisualStyleBackColor = true;
             // 
             // FormManager
             // 
@@ -137,6 +137,6 @@
         private System.Windows.Forms.TabPage tabPageTheme;
         private MaterialSkin.Controls.MaterialTabSelector materialTabSelector1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TabPage tabPageModel;
+        private System.Windows.Forms.TabPage tabPageModell;
     }
 }

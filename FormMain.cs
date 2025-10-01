@@ -177,6 +177,8 @@ namespace TanHungHa
                 
                 case "tabPageManual":
                     MyParam.curMainView = eMainView.MANUAL_VIEW;
+                    MyParam.tabVision.InitJobPath();
+                    MyParam.tabVision.InitUI();
                     break;
                 case "tabPageManager":
                     MyParam.curMainView = eMainView.MANAGER_VIEW;
